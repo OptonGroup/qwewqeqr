@@ -4203,3 +4203,22 @@ client_session: <aiohttp.client.ClientSession object at 0x0000020D726C62C0>
 2025-03-13 19:33:23,209 - WDM - INFO - Driver [C:\Users\maxsi\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver-win32/chromedriver.exe] found in cache
 2025-03-13 19:33:24,432 - pinterest - INFO - Selenium WebDriver успешно инициализирован
 2025-03-13 19:33:24,432 - pinterest - INFO - Загружаем страницу поиска: https://www.pinterest.com/search/pins/?q=%D0%9F%D0%BE%D0%B2%D1%81%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D1%8B%D0%B9%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%20%D0%BD%D0%B0%20%D0%BE%D1%81%D0%B5%D0%BD%D1%8C
+2025-03-13 19:33:46,206 - pinterest - INFO - Найден селектор: div[data-test-id='pin']
+2025-03-13 19:33:46,206 - pinterest - INFO - Страница загружена, прокручиваем для загрузки изображений
+2025-03-13 19:33:58,254 - pinterest - INFO - Ищем изображения на странице
+2025-03-13 19:33:58,297 - pinterest - INFO - Найдены пины через селектор: div[data-test-id='pin']
+2025-03-13 19:33:58,298 - pinterest - INFO - Найдено 29 потенциальных пинов
+2025-03-13 19:33:59,121 - pinterest - INFO - Изображение сохранено: photo\a6b593a29d6e504aad588fd9aed5d0a9.jpg
+2025-03-13 19:33:59,136 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/41/a5/a3/41a5a3200a57f2cc54a73e09188f8e97.jpg
+2025-03-13 19:34:00,516 - pinterest - INFO - Изображение сохранено: photo\a7b0f34dae804738e0c95a07a600ccd9.jpg
+2025-03-13 19:34:00,516 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/videos/thumbnails/originals/15/9c/ea/159ceab40b309c0d5eeae59f23cb7bcc.0000000.jpg
+2025-03-13 19:34:01,273 - pinterest - INFO - Изображение сохранено: photo\2feba8d04ed09dafd11906246584423e.jpg
+2025-03-13 19:34:01,274 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/79/d8/d6/79d8d67d2ce86cd3f626d83804007fb7.jpg
+2025-03-13 19:34:01,277 - pinterest - INFO - Кеш сохранен
+2025-03-13 19:34:01,277 - pinterest - INFO - Найдено 3 пинов по запросу 'Повседневный образ на осень'
+2025-03-13 19:34:03,699 - visual_analyzer - INFO - Анализ изображения: photo\a6b593a29d6e504aad588fd9aed5d0a9.jpg
+2025-03-13 19:34:03,700 - visual_analyzer - INFO - Анализ изображения завершен. Найдено 2 предметов одежды.
+2025-03-13 19:34:03,700 - visual_analyzer - INFO - Анализ изображения: photo\a7b0f34dae804738e0c95a07a600ccd9.jpg
+2025-03-13 19:34:03,701 - visual_analyzer - INFO - Анализ изображения завершен. Найдено 2 предметов одежды.
+2025-03-13 19:34:03,701 - visual_analyzer - INFO - Анализ изображения: photo\2feba8d04ed09dafd11906246584423e.jpg
+2025-03-13 19:34:03,701 - visual_analyzer - INFO - Анализ изображения завершен. Найдено 2 предметов одежды.
