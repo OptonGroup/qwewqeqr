@@ -14,3 +14,4 @@ web-interface/cache/*
 web-interface/wildberries_cache/*
 web-interface/__pycache__/*
 web-interface/node_modules/*
+web-interface/.next/*

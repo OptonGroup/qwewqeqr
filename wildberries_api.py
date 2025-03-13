@@ -143,11 +143,15 @@ class WildberriesService:
             for product in raw_products:
                 try:
                     # Преобразуем цены в числа
-                    price = int(str(product.get('price', '0')).replace(' ', ''))
+                    price = int(str(product.get('priceU', '0')).replace(' ', '')) // 100
                     sale_price = int(str(product.get('salePriceU', '0')).replace(' ', '')) // 100
                     
+                    # Обновляем: Если sale_price равен 0, используем price
+                    if sale_price == 0:
+                        sale_price = price
+                    
                     # Рассчитываем скидку
-                    discount = round((1 - sale_price / price) * 100) if price > 0 else 0
+                    discount = round((1 - sale_price / price) * 100) if price > 0 and sale_price < price else 0
                     
                     processed_product = {
                         'id': product.get('id'),
@@ -158,7 +162,8 @@ class WildberriesService:
                         'discount': discount,
                         'rating': product.get('rating', 0),
                         'image_url': f"https://images.wbstatic.net/c516x688/new/{str(product.get('id'))[0:4]}/{str(product.get('id'))}-1.jpg",
-                        'product_url': f"https://www.wildberries.ru/catalog/{product.get('id')}/detail.aspx"
+                        'product_url': f"https://www.wildberries.ru/catalog/{product.get('id')}/detail.aspx",
+                        'gender': gender or "унисекс"
                     }
                     products.append(processed_product)
                     

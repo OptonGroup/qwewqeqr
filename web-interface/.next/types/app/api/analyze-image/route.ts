@@ -1,4 +1,4 @@
-// File: C:\Users\opton\Downloads\pinterest_parser-main\web-interface\src\app\api\analyze-image\route.ts
+// File: C:\Users\maxsi\qwewqeqr\web-interface\src\app\api\analyze-image\route.ts
 import * as entry from '../../../../../src/app/api/analyze-image/route.js'
 import type { NextRequest } from 'next/server.js'
 

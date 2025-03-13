@@ -166,80 +166,8 @@ export default function Home() {
 
   // Показываем соответствующего ассистента в зависимости от выбранной роли
   return (
-    <main className="min-h-screen bg-background p-4">
-      <Button 
-        variant="outline" 
-        onClick={() => setSelectedRole(null)} 
-        className="mb-4"
-      >
-        ← Назад к выбору
-      </Button>
-      
-      {selectedRole === 'stylist' && <StylistAssistant />}
-      {selectedRole === 'cosmetologist' && <CosmetologistAssistant />}
-      {selectedRole === 'nutritionist' && <NutritionistAssistant />}
-      {selectedRole === 'designer' && <DesignerAssistant />}
-
-      <Tabs defaultValue="photo" className="w-full">
-        <TabsList className="mb-4">
-          <TabsTrigger value="photo">Поиск по фото</TabsTrigger>
-          <TabsTrigger value="description">Поиск по описанию</TabsTrigger>
-          <TabsTrigger value="wardrobe">Мой гардероб</TabsTrigger>
-          <TabsTrigger value="recommendations">Рекомендации</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="photo">
-          <div className="space-y-6">
-            <h1 className="text-2xl font-bold">Найдите похожие вещи по фотографии</h1>
-            <p className="text-gray-600">
-              Загрузите изображение одежды, и мы найдем похожие товары
-            </p>
-
-            <div className="border rounded-lg p-6">
-              <ImageUploader
-                onImageUpload={handleImageUpload}
-                imageUrl={imageUrl}
-                className="w-full max-w-md mx-auto"
-              />
-
-              {selectedImage && (
-                <div className="mt-4 flex justify-center">
-                  <Button
-                    onClick={handleAnalyzeImage}
-                    disabled={isLoading}
-                    className="w-full max-w-md"
-                  >
-                    {isLoading ? 'Анализируем...' : 'Найти похожие'}
-                  </Button>
-                </div>
-              )}
-            </div>
-
-            {analysisResults && (
-              <ImageAnalysisResults
-                elements={analysisResults.elements}
-                analysis={analysisResults.analysis}
-                image_path={analysisResults.image_path}
-              />
-            )}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="description">
-          <h2>Поиск по описанию</h2>
-          {/* Содержимое вкладки поиска по описанию */}
-        </TabsContent>
-
-        <TabsContent value="wardrobe">
-          <h2>Мой гардероб</h2>
-          {/* Содержимое вкладки гардероба */}
-        </TabsContent>
-
-        <TabsContent value="recommendations">
-          <h2>Рекомендации</h2>
-          {/* Содержимое вкладки рекомендаций */}
-        </TabsContent>
-      </Tabs>
+    <main className="min-h-screen bg-background">
+      <StylistAssistant />
     </main>
   );
 } 

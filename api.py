@@ -536,10 +536,21 @@ async def clear_assistant_history(user_id: str):
 @app.get("/", response_class=HTMLResponse)
 async def get_index():
     """
-    Возвращает HTML-страницу с интерфейсом для работы с API
+    Перенаправляет на страницу документации API
     """
-    with open("static/index.html", "r", encoding="utf-8") as f:
-        return f.read()
+    html_content = """
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta http-equiv="refresh" content="0;url=/docs" />
+            <title>Перенаправление</title>
+        </head>
+        <body>
+            <p>Перенаправление на <a href="/docs">документацию API</a>...</p>
+        </body>
+    </html>
+    """
+    return html_content
 
 # Монтируем статические файлы
 app.mount("/static", StaticFiles(directory="static"), name="static")

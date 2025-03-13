@@ -44,116 +44,229 @@ export async function POST(request: NextRequest) {
     
     // Получаем FormData из запроса
     const formData = await request.formData();
-    const file = formData.get('file') as File | null;
+    const image = formData.get('image') as File | null;
+    const gender = formData.get('gender') as string || 'унисекс';
 
-    if (!file) {
+    if (!image) {
       return NextResponse.json(
-        { error: 'Файл не найден' },
+        { error: 'Изображение не найдено' },
         { status: 400 }
       );
     }
 
-    // Проверяем тип файла
-    if (!file.type.startsWith('image/')) {
-      return NextResponse.json(
-        { error: 'Пожалуйста, загрузите изображение' },
-        { status: 400 }
-      );
-    }
+    console.log(`Параметр gender: ${gender}`);
 
-    // Создаем директорию для загрузок, если она не существует
-    const uploadDir = join(process.cwd(), 'public', 'uploads');
+    // Создаем временный путь для сохранения изображения
+    const bytes = await image.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const tempDir = path.join(process.cwd(), 'public', 'temp');
+    
+    // Создаем директорию temp, если она не существует
     try {
-      await access(uploadDir);
+      await access(tempDir);
     } catch {
-      await mkdir(uploadDir, { recursive: true });
+      await mkdir(tempDir, { recursive: true });
+      console.log(`Создана директория: ${tempDir}`);
     }
+    
+    const fileName = `${Date.now()}_${image.name}`;
+    const filePath = path.join(tempDir, fileName);
+    const fileUrl = `/temp/${fileName}`;
 
-    // Создаем уникальное имя файла
-    const fileExt = path.extname(file.name) || '.jpg';
-    const filename = `${uuidv4()}${fileExt}`;
-    const filepath = join(uploadDir, filename);
+    // Сохраняем изображение
+    await writeFile(filePath, buffer);
+    console.log(`Изображение сохранено: ${filePath}`);
 
-    try {
-      // Читаем содержимое файла
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-
-      // Сохраняем файл локально
-      await writeFile(filepath, buffer);
-
-      // URL файла для использования во фронтенде
-      const fileUrl = `/uploads/${filename}`;
-
+    // Если Python API доступен, отправляем запрос туда
+    if (isApiAvailable) {
       try {
-        // Если API недоступен, сразу возвращаем заглушку с предупреждением
-        if (!isApiAvailable) {
-          console.error('Python API недоступен, возвращаем тестовые данные');
-          return NextResponse.json({
-            ...getMockAnalysisResponse(fileUrl),
-            imageUrl: fileUrl,
-            error: 'Python API недоступен. Возможно, сервер не запущен или запущен не на порту 8000. Возвращены тестовые данные.'
-          });
-        }
+        console.log('Отправляем запрос на Python API');
         
         // Создаем новый FormData для отправки в Python API
         const pythonApiFormData = new FormData();
         
         // В Python API ожидается файл с именем 'file'
-        pythonApiFormData.append('file', new Blob([buffer], { type: file.type }), filename);
+        pythonApiFormData.append('file', new Blob([buffer], { type: image.type }), fileName);
+        // Добавляем параметр gender
+        pythonApiFormData.append('gender', gender);
         
-        console.log(`Отправляем запрос к Python API: ${PYTHON_API_URL}/analyze-image`);
-        
-        // Пытаемся отправить запрос на анализ изображения в Python API
+        // Отправляем запрос на Python API
         const pythonApiResponse = await fetch(`${PYTHON_API_URL}/analyze-image`, {
           method: 'POST',
           body: pythonApiFormData,
         });
-
-        if (pythonApiResponse.ok) {
-          // Если успешно получили ответ от Python API
-          const analysisData = await pythonApiResponse.json();
-          console.log('Ответ от Python API:', analysisData);
-          
-          return NextResponse.json({
-            items: parseClothingItemsFromAnalysis(analysisData),
-            fullDescription: analysisData.analysis || '',
-            imageUrl: fileUrl
-          });
-        } else {
+        
+        if (!pythonApiResponse.ok) {
           const errorText = await pythonApiResponse.text();
-          console.error(`Ошибка Python API: ${pythonApiResponse.status} ${pythonApiResponse.statusText}`, errorText);
-          
-          // Если не удалось получить ответ от Python API, используем моковые данные
-          return NextResponse.json({
-            ...getMockAnalysisResponse(fileUrl),
-            imageUrl: fileUrl,
-            error: `Не удалось подключиться к серверу анализа изображений: ${pythonApiResponse.status} ${pythonApiResponse.statusText}. Возвращены тестовые данные.`
-          });
+          console.error(`Ошибка Python API: ${pythonApiResponse.status}`, errorText);
+          throw new Error(`Ошибка Python API: ${pythonApiResponse.status}`);
         }
+        
+        const analysisData = await pythonApiResponse.json();
+        console.log('Получен ответ от Python API:', analysisData);
+        
+        // Обрабатываем ответ от Python API и преобразуем в формат для фронтенда
+        let results = [];
+        
+        if (analysisData.results && Array.isArray(analysisData.results)) {
+          results = analysisData.results;
+        } else if (analysisData.items && Array.isArray(analysisData.items)) {
+          // Преобразуем формат данных из Python API в формат для фронтенда
+          results = analysisData.items.map((item: any, index: number) => ({
+            id: `${index + 1}`,
+            name: item.name || item.type || 'Предмет одежды',
+            description: item.description || `${item.color || ''} ${item.material || ''}`.trim(),
+            price: Math.floor(Math.random() * 5000) + 500, // Демо-цена
+            imageUrl: item.imageUrl || `https://basket-0${(index % 9) + 1}.wbbasket.ru/vol${index + 1}00/part${index + 1}00${index + 1}/100${index + 1}${index + 1}${index + 1}/images/c516x688/1.webp`,
+            category: item.category || 'Одежда',
+            gender: item.gender || 'унисекс'
+          }));
+        } else if (analysisData.elements && Array.isArray(analysisData.elements)) {
+          // Обрабатываем формат с полем elements
+          let allProducts: any[] = [];
+          
+          // Проходим по каждому элементу одежды
+          for (const element of analysisData.elements) {
+            if (element.wb_products && Array.isArray(element.wb_products)) {
+              // Преобразуем продукты из Wildberries в наш формат
+              const products = element.wb_products.map((product: any, idx: number) => ({
+                id: product.id || `${element.type}-${idx}`,
+                name: product.name || `${element.color} ${element.type}`,
+                description: product.description || element.description || `${element.color} ${element.type}`,
+                price: product.price || 0,
+                oldPrice: product.priceU ? product.priceU / 100 : undefined,
+                sale_price: product.sale_price || product.salePriceU ? product.salePriceU / 100 : undefined,
+                imageUrl: product.imageUrl || product.img || product.pics && product.pics[0],
+                category: element.type || 'Одежда',
+                gender: element.gender || gender || 'унисекс',
+                url: product.url || product.link,
+                brand: product.brand
+              }));
+              
+              allProducts = [...allProducts, ...products];
+            } else {
+              // Если нет wb_products, создаем демо-продукт на основе описания элемента
+              allProducts.push({
+                id: `${element.type}-demo`,
+                name: `${element.color} ${element.type}`,
+                description: element.description || `${element.color} ${element.type}`,
+                price: Math.floor(Math.random() * 5000) + 500,
+                imageUrl: `https://basket-0${(allProducts.length % 9) + 1}.wbbasket.ru/vol${allProducts.length + 1}00/part${allProducts.length + 1}00${allProducts.length + 1}/100${allProducts.length + 1}${allProducts.length + 1}${allProducts.length + 1}/images/c516x688/1.webp`,
+                category: element.type || 'Одежда',
+                gender: element.gender || gender || 'унисекс'
+              });
+            }
+          }
+          
+          results = allProducts;
+        } else {
+          // Если ничего не найдено, используем моковые данные
+          console.log('Неизвестный формат данных от Python API, используем моковые данные');
+          results = getMockResults(gender).results;
+        }
+        
+        return NextResponse.json({ 
+          results,
+          imageUrl: fileUrl,
+          api_source: 'python',
+          analysis: analysisData.analysis || ""
+        });
+        
       } catch (error) {
         console.error('Ошибка при обращении к Python API:', error);
-        // В случае ошибки вызова Python API возвращаем моковые данные
-        return NextResponse.json({
-          ...getMockAnalysisResponse(fileUrl),
+        
+        // В случае ошибки возвращаем моковые данные
+        const mockData = getMockResults(gender);
+        return NextResponse.json({ 
+          results: mockData.results,
           imageUrl: fileUrl,
-          error: `Не удалось подключиться к серверу анализа изображений: ${error.message}. Возвращены тестовые данные.`
+          error: `Ошибка при обращении к Python API: ${error instanceof Error ? error.message : 'Неизвестная ошибка'}`,
+          api_source: 'mock',
+          analysis: "Не удалось проанализировать изображение из-за ошибки API."
         });
       }
-    } catch (error) {
-      console.error('Ошибка при сохранении файла:', error);
-      return NextResponse.json(
-        { error: 'Ошибка при обработке файла' },
-        { status: 500 }
-      );
+    } else {
+      // Если Python API недоступен, используем моковые данные
+      console.log('Python API недоступен, используем моковые данные');
+      const mockData = getMockResults(gender);
+      return NextResponse.json({ 
+        results: mockData.results,
+        imageUrl: fileUrl,
+        api_source: 'mock',
+        analysis: "Анализ недоступен - сервер анализа изображений не отвечает."
+      });
     }
   } catch (error) {
-    console.error('Ошибка при обработке запроса:', error);
+    console.error('Ошибка при обработке изображения:', error);
     return NextResponse.json(
-      { error: 'Внутренняя ошибка сервера' },
+      { error: 'Произошла ошибка при обработке изображения' },
       { status: 500 }
     );
   }
+}
+
+// Функция для получения моковых данных
+function getMockResults(gender: string = 'унисекс') {
+  const userGender = gender.toLowerCase();
+  
+  return {
+    results: [
+      {
+        id: '1',
+        name: 'Белая хлопковая футболка',
+        description: 'Базовая футболка из органического хлопка с круглым вырезом',
+        price: 999,
+        imageUrl: 'https://basket-01.wbbasket.ru/vol1001/part100135/100135766/images/c516x688/1.webp',
+        category: 'Верх',
+        gender: userGender
+      },
+      {
+        id: '2',
+        name: 'Белая футболка оверсайз',
+        description: 'Свободная футболка свободного кроя из мягкого хлопка',
+        price: 1299,
+        imageUrl: 'https://basket-03.wbbasket.ru/vol283/part28364/28364770/images/c516x688/1.webp',
+        category: 'Верх',
+        gender: userGender
+      },
+      {
+        id: '3',
+        name: 'Футболка с принтом',
+        description: 'Стильная хлопковая футболка с графическим принтом',
+        price: 1599,
+        imageUrl: 'https://basket-05.wbbasket.ru/vol758/part75846/75846387/images/c516x688/1.webp',
+        category: 'Верх',
+        gender: userGender === 'мужской' ? 'мужской' : 'женский'
+      },
+      {
+        id: '4',
+        name: 'Базовая белая блузка',
+        description: 'Элегантная блузка из смесового хлопка со свободным силуэтом',
+        price: 2499,
+        imageUrl: 'https://basket-11.wbbasket.ru/vol1457/part145766/145766287/images/c516x688/1.webp',
+        category: 'Верх',
+        gender: 'женский'
+      },
+      {
+        id: '5',
+        name: 'Черная хлопковая футболка',
+        description: 'Классическая черная футболка из премиального хлопка',
+        price: 1099,
+        imageUrl: 'https://basket-10.wbbasket.ru/vol1418/part141812/141812883/images/c516x688/1.webp',
+        category: 'Верх',
+        gender: 'мужской'
+      },
+      {
+        id: '6',
+        name: 'Белая рубашка',
+        description: 'Классическая рубашка из хлопка с длинным рукавом',
+        price: 2999,
+        imageUrl: 'https://basket-12.wbbasket.ru/vol1688/part168842/168842122/images/c516x688/1.webp',
+        category: 'Верх',
+        gender: userGender === 'женский' ? 'женский' : 'мужской'
+      }
+    ]
+  };
 }
 
 // Функция для разбора ответа от Python API и преобразования в формат ClothingRecognitionData

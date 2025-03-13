@@ -5,9 +5,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Upload, Search, RefreshCw, ShoppingBag, Plus, Pencil, Link } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
-import { ProductCard, GarmentItem } from './product-card';
+import { Search, ShoppingBag, Plus, Pencil } from 'lucide-react';
+import { ProductCard } from './product-card';
+import type { GarmentItem } from './product-card';
 import PinterestOutfitSection from './pinterest-outfit-section';
 import { Badge } from '@/components/ui/badge';
 
@@ -44,19 +44,6 @@ const getBase64ImageByCategory = (category: string): string => {
   return BASE64_IMAGES.default;
 };
 
-interface GarmentItem {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  oldPrice?: number;
-  imageUrl: string;
-  imageUrls?: string[]; // Добавляем массив альтернативных URL изображений
-  category: string;
-  url?: string;
-  gender?: string;
-}
-
 // Моковые данные для тестирования интерфейса
 const mockItems: GarmentItem[] = [
   {
@@ -65,11 +52,6 @@ const mockItems: GarmentItem[] = [
     description: 'Универсальная хлопковая футболка свободного кроя',
     price: 999,
     imageUrl: 'https://basket-01.wbbasket.ru/vol1001/part100135/100135766/images/c516x688/1.webp',
-    imageUrls: [
-      'https://basket-01.wbbasket.ru/vol1001/part100135/100135766/images/c516x688/1.webp',
-      'https://basket-02.wbbasket.ru/vol1001/part100135/100135766/images/c516x688/2.webp',
-      'https://basket-03.wbbasket.ru/vol1001/part100135/100135766/images/c516x688/3.webp'
-    ],
     category: 'Верх'
   },
   {
@@ -78,11 +60,6 @@ const mockItems: GarmentItem[] = [
     description: 'Прямые джинсы из плотного денима',
     price: 2499,
     imageUrl: 'https://basket-13.wbbasket.ru/vol1995/part199573/199573766/images/c516x688/1.webp',
-    imageUrls: [
-      'https://basket-13.wbbasket.ru/vol1995/part199573/199573766/images/c516x688/1.webp',
-      'https://basket-12.wbbasket.ru/vol1995/part199573/199573766/images/c516x688/2.webp',
-      'https://basket-11.wbbasket.ru/vol1995/part199573/199573766/images/c516x688/3.webp'
-    ],
     category: 'Низ'
   },
   {
@@ -91,11 +68,6 @@ const mockItems: GarmentItem[] = [
     description: 'Куртка из искусственной кожи с подкладкой',
     price: 5999,
     imageUrl: 'https://basket-16.wbbasket.ru/vol2573/part257301/257301422/images/c516x688/1.webp',
-    imageUrls: [
-      'https://basket-16.wbbasket.ru/vol2573/part257301/257301422/images/c516x688/1.webp',
-      'https://basket-15.wbbasket.ru/vol2573/part257301/257301422/images/c516x688/2.webp',
-      'https://basket-14.wbbasket.ru/vol2573/part257301/257301422/images/c516x688/3.webp'
-    ],
     category: 'Верхняя одежда'
   },
   {
@@ -104,11 +76,6 @@ const mockItems: GarmentItem[] = [
     description: 'Белые кеды из хлопчатобумажной ткани',
     price: 1999,
     imageUrl: 'https://basket-05.wbbasket.ru/vol758/part75846/75846387/images/c516x688/1.webp',
-    imageUrls: [
-      'https://basket-05.wbbasket.ru/vol758/part75846/75846387/images/c516x688/1.webp',
-      'https://basket-06.wbbasket.ru/vol758/part75846/75846387/images/c516x688/2.webp',
-      'https://basket-07.wbbasket.ru/vol758/part75846/75846387/images/c516x688/3.webp'
-    ],
     category: 'Обувь'
   }
 ];
@@ -156,21 +123,22 @@ interface PinterestOutfit {
   clothingItems: ClothingItem[];
 }
 
-const StylistAssistant: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+export default function StylistAssistant() {
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<GarmentItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [apiError, setApiError] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isOutfitSearchMode, setIsOutfitSearchMode] = useState(false);
+  const [gender, setGender] = useState<'женский' | 'мужской'>('женский');
+  const [imageAnalysis, setImageAnalysis] = useState<string | null>(null);
   
   // Новые состояния для Pinterest
   const [pinterestQuery, setPinterestQuery] = useState('');
   const [pinterestResults, setPinterestResults] = useState<PinterestOutfit[]>([]);
   const [isPinterestLoading, setIsPinterestLoading] = useState(false);
-  const [isOutfitSearchMode, setIsOutfitSearchMode] = useState(false);
-  const [gender, setGender] = useState('женский');
   
   // Популярные запросы для поиска лука
   const popularOutfitQueries = [
@@ -187,54 +155,86 @@ const StylistAssistant: React.FC = () => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedFile(file);
-      // Создаем URL для предпросмотра изображения
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
-      // Сбрасываем предыдущие результаты
-      setRecommendations([]);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
-  
-  // Функция для анализа изображения с помощью API
+
+  // Функция для анализа изображения
   const handleAnalyzeImage = async () => {
     if (!selectedFile) return;
-    
+
     setIsLoading(true);
-    setApiError(null); // Сбрасываем ошибку перед новым запросом
-    
+    setApiError(null);
+    setSearchResults([]);
+    setImageAnalysis(null);
+
     try {
-      // Создаем FormData для отправки файла
-      const formData = new FormData();
-      formData.append('file', selectedFile);
+      console.log('Начинаем загрузку изображения:', selectedFile.name);
       
-      // Отправляем запрос на анализ изображения
-      const response = await fetch('http://localhost:8000/analyze-image', {
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+      formData.append('gender', gender);
+
+      console.log('Отправляем запрос на API с гендером:', gender);
+      const response = await fetch('/api/analyze-image', {
         method: 'POST',
         body: formData,
       });
-      
+
       if (!response.ok) {
-        throw new Error(`Ошибка при анализе изображения: ${response.statusText}`);
+        const errorText = await response.text();
+        console.error('Ошибка ответа API:', response.status, errorText);
+        throw new Error(`Ошибка при анализе изображения: ${response.status} ${response.statusText}`);
       }
-      
+
+      console.log('Получен успешный ответ от API');
       const data = await response.json();
+      console.log('Данные ответа:', data);
       
-      // Проверяем, содержит ли ответ сообщение об ошибке от сервера
-      if (data.error) {
-        setApiError(data.error);
-        console.error('Ошибка API:', data.error);
-        return;
+      // Обрабатываем результаты
+      if (data.results && Array.isArray(data.results)) {
+        // Добавляем URL для каждого товара (если отсутствует)
+        const resultsWithUrl = data.results.map(item => ({
+          ...item,
+          url: item.url || `https://www.wildberries.ru/catalog/${item.id}/detail.aspx`
+        }));
+        
+        setSearchResults(resultsWithUrl);
+        console.log('Установлены результаты поиска:', resultsWithUrl.length);
+        
+        // Сохраняем анализ для отображения
+        if (data.analysis) {
+          setImageAnalysis(data.analysis);
+        }
+        
+        // Если API вернул сообщение об ошибке, но все равно дал результаты,
+        // покажем предупреждение
+        if (data.error) {
+          setApiError(`Примечание: ${data.error}`);
+        }
+        
+        // Если API использовал моковые данные, покажем сообщение
+        if (data.api_source === 'mock') {
+          setApiError(`Примечание: Использованы тестовые данные, так как произошла ошибка подключения к серверу анализа изображений.`);
+        }
+      } else {
+        console.error('Некорректный формат ответа API:', data);
+        setApiError('Получены некорректные данные от сервера');
+        setSearchResults([]);
       }
-      
-      setRecommendations(data.elements);
     } catch (error) {
-      console.error('Ошибка при анализе изображения:', error);
-      setApiError(`Не удалось выполнить запрос: ${error.message}`);
+      console.error('Ошибка при обработке запроса:', error);
+      setApiError(error instanceof Error ? error.message : 'Произошла ошибка при анализе изображения');
+      setSearchResults([]);
     } finally {
       setIsLoading(false);
     }
   };
-  
+
   // Функция для поиска товаров по текстовому запросу
   const handleTextSearch = async () => {
     if (!searchQuery.trim()) return;
@@ -314,14 +314,12 @@ const StylistAssistant: React.FC = () => {
   const ProductCard: React.FC<{ product: GarmentItem }> = ({ product }) => {
     const [imgSrc, setImgSrc] = useState(product.imageUrl);
     const [imgError, setImgError] = useState(false);
-    const [imgIndex, setImgIndex] = useState(0); // Индекс текущего URL в массиве imageUrls
     const [loadAttempts, setLoadAttempts] = useState(0); // Счетчик попыток загрузки
 
     // Вызываем useEffect для обновления источника изображения при изменении товара
     useEffect(() => {
       setImgSrc(product.imageUrl);
       setImgError(false);
-      setImgIndex(0);
       setLoadAttempts(0);
     }, [product.imageUrl, product.id]);
 
@@ -354,52 +352,34 @@ const StylistAssistant: React.FC = () => {
         return;
       }
       
-      // Если есть массив альтернативных URL изображений
-      if (product.imageUrls && product.imageUrls.length > imgIndex + 1) {
-        // Переходим к следующему URL в массиве
-        const nextIndex = imgIndex + 1;
-        setImgIndex(nextIndex);
-        setImgSrc(product.imageUrls[nextIndex]);
-        console.log(`Пробуем альтернативный URL: ${product.imageUrls[nextIndex]}`);
-      } 
-      // Если нет массива или все URL уже испробованы
-      else if (!imgError) {
-        // Пробуем сгенерировать URL на основе ID товара
-        if (product.id) {
-          const productId = product.id;
-          
-          // Определяем части URL на основе ID товара
-          // Для vol берем первые 3-4 цифры ID
-          const volDigits = productId.length >= 4 ? 4 : (productId.length >= 3 ? 3 : 1);
-          const vol = productId.slice(0, volDigits);
-          
-          // Для part берем первые 5-6 цифр ID
-          const partDigits = productId.length >= 6 ? 6 : (productId.length >= 5 ? 5 : productId.length);
-          const part = productId.slice(0, partDigits);
-          
-          // Определяем номер бакета на основе ID
-          // Используем остаток от деления последних 2 цифр ID на 20 + 1
-          // чтобы получить номера от 1 до 20
-          const lastTwoDigits = productId.slice(-2);
-          const bucketNum = (parseInt(lastTwoDigits) % 20) + 1;
-          const bucketStr = bucketNum.toString().padStart(2, '0');
-          
-          const newImageUrl = `https://basket-${bucketStr}.wbbasket.ru/vol${vol}/part${part}/${productId}/images/c516x688/1.webp`;
-          console.log(`Генерируем URL изображения: ${newImageUrl}`);
-          
-          setImgSrc(newImageUrl);
-        } 
-        // Если не удалось сгенерировать URL, используем base64
-        else {
-          setImgError(true);
-          
-          // Получаем категорию для base64 изображения
-          const category = getCategoryFromName(product.name || product.category || '');
-          const base64Image = getBase64ImageByCategory(category);
-          
-          console.log(`Используем base64 изображение для категории: ${category}`);
-          setImgSrc(base64Image);
-        }
+      // Если не удалось загрузить изображение, пробуем сгенерировать новый URL
+      if (!imgError && product.id) {
+        const productId = product.id;
+        
+        // Определяем части URL на основе ID товара
+        const volDigits = productId.length >= 4 ? 4 : (productId.length >= 3 ? 3 : 1);
+        const vol = productId.slice(0, volDigits);
+        
+        const partDigits = productId.length >= 6 ? 6 : (productId.length >= 5 ? 5 : productId.length);
+        const part = productId.slice(0, partDigits);
+        
+        const lastTwoDigits = productId.slice(-2);
+        const bucketNum = (parseInt(lastTwoDigits) % 20) + 1;
+        const bucketStr = bucketNum.toString().padStart(2, '0');
+        
+        const newImageUrl = `https://basket-${bucketStr}.wbbasket.ru/vol${vol}/part${part}/${productId}/images/c516x688/1.webp`;
+        console.log(`Генерируем URL изображения: ${newImageUrl}`);
+        
+        setImgSrc(newImageUrl);
+      } else {
+        setImgError(true);
+        
+        // Получаем категорию для base64 изображения
+        const category = getCategoryFromName(product.name || product.category || '');
+        const base64Image = getBase64ImageByCategory(category);
+        
+        console.log(`Используем base64 изображение для категории: ${category}`);
+        setImgSrc(base64Image);
       }
     };
 
@@ -426,11 +406,20 @@ const StylistAssistant: React.FC = () => {
           <p className="text-sm text-muted-foreground mb-4">{product.description}</p>
           <div className="flex justify-between items-center">
             <div className="space-y-1">
-              <span className="font-bold">{product.price} ₽</span>
-              {product.oldPrice && (
-                <span className="text-sm text-muted-foreground line-through block">
-                  {product.oldPrice} ₽
-                </span>
+              {product.oldPrice ? (
+                <>
+                  <span className="text-sm text-muted-foreground line-through block">
+                    {product.oldPrice} ₽
+                  </span>
+                  <span className="font-bold text-base text-red-500">
+                    {product.price} ₽
+                  </span>
+                  <span className="text-xs text-red-500 font-medium block">
+                    Скидка {Math.round(100 - (product.price / product.oldPrice * 100))}%
+                  </span>
+                </>
+              ) : (
+                <span className="font-bold">{product.price} ₽</span>
               )}
             </div>
             <Button size="sm" onClick={() => { if (product.url) window.open(product.url, '_blank'); }}>
@@ -447,242 +436,304 @@ const StylistAssistant: React.FC = () => {
     <div className="container mx-auto py-6">
       <h1 className="text-3xl font-bold mb-8 text-foreground/90">Персональный стилист</h1>
       
-      <Tabs defaultValue="text-search" className="w-full">
-        <TabsList className="mb-6 w-full md:w-auto">
-          <TabsTrigger value="image-search">Поиск по фото</TabsTrigger>
-          <TabsTrigger value="text-search">Поиск по описанию</TabsTrigger>
-          <TabsTrigger value="wardrobe">Мой гардероб</TabsTrigger>
-          <TabsTrigger value="recommendations">Рекомендации</TabsTrigger>
+      <Tabs defaultValue="photo-search" className="w-full">
+        <TabsList className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mb-6 w-full md:w-auto">
+          <TabsTrigger 
+            value="photo-search"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+          >
+            Поиск по фото
+          </TabsTrigger>
+          <TabsTrigger 
+            value="text-search"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+          >
+            Поиск по описанию
+          </TabsTrigger>
+          <TabsTrigger 
+            value="wardrobe"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+          >
+            Мой гардероб
+          </TabsTrigger>
+          <TabsTrigger 
+            value="recommendations"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+          >
+            Рекомендации
+          </TabsTrigger>
         </TabsList>
-        
-        <TabsContent value="image-search">
-          <Card>
-            <CardHeader>
-              <CardTitle>Найдите похожие вещи по фотографии</CardTitle>
-              <CardDescription>
+
+        <TabsContent 
+          value="photo-search" 
+          className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          <div className="card rounded-xl border border-border/40 bg-card p-6 shadow-sm transition-all duration-200 hover:shadow-md">
+            <div className="flex flex-col space-y-1.5 pb-4">
+              <h3 className="text-xl font-semibold leading-none tracking-tight text-card-foreground">
+                Найдите похожие вещи по фотографии
+              </h3>
+              <p className="text-sm text-muted-foreground">
                 Загрузите изображение одежды, и мы найдем похожие товары
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+              </p>
+            </div>
+            
+            <div className="pt-0">
               <div className="space-y-8">
-                <div className="border-2 border-dashed rounded-xl p-8 transition-colors hover:border-primary/50 bg-background">
-                  <input
-                    type="file"
-                    id="image-upload"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                  />
+                <div className="space-y-4">
                   <label 
                     htmlFor="image-upload" 
-                    className="cursor-pointer flex flex-col items-center justify-center"
+                    className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-10 flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 transition-colors"
                   >
                     {previewUrl ? (
-                      <div className="w-full">
+                      <div className="relative w-full max-w-xs mx-auto">
                         <img 
                           src={previewUrl} 
                           alt="Preview" 
-                          className="max-h-60 mx-auto rounded-lg object-contain" 
+                          className="rounded-md max-h-[300px] mx-auto object-contain"
                         />
-                        <p className="text-sm text-center mt-4 text-muted-foreground">
-                          Нажмите, чтобы заменить изображение
-                        </p>
                       </div>
                     ) : (
-                      <div className="text-center">
-                        <Upload className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                        <p className="text-lg font-medium mb-2">Загрузите изображение одежды</p>
-                        <p className="text-sm text-muted-foreground">
-                          Перетащите файл сюда или нажмите для выбора
+                      <>
+                        <div className="w-12 h-12 rounded-full bg-muted-foreground/10 flex items-center justify-center mb-4">
+                          <svg 
+                            className="w-6 h-6 text-muted-foreground" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24" 
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                          </svg>
+                        </div>
+                        <div className="text-sm text-center text-muted-foreground">
+                          <span className="font-medium">Перетащите изображение сюда</span> или нажмите для выбора
+                        </div>
+                        <p className="text-xs text-muted-foreground/70 mt-2">
+                          Поддерживаются JPG, PNG и GIF
                         </p>
-                        <p className="text-xs text-muted-foreground mt-2">
-                          Поддерживаемые форматы: JPG, PNG, WEBP
-                        </p>
-                      </div>
+                      </>
                     )}
+                    <input
+                      id="image-upload"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleFileChange}
+                    />
                   </label>
-                </div>
-                
-                <div className="flex justify-center">
-                  <Button 
-                    onClick={handleAnalyzeImage} 
-                    disabled={isLoading || !selectedFile}
-                    className="px-8"
-                  >
-                    {isLoading ? (
-                      <>
-                        <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                        Анализ изображения...
-                      </>
-                    ) : (
-                      <>
-                        <Search className="mr-2 h-4 w-4" />
-                        Найти похожие
-                      </>
-                    )}
-                  </Button>
-                </div>
-                
-                {apiError && (
-                  <div className="mt-4 p-4 bg-destructive/10 text-destructive rounded-md">
-                    <p className="font-medium">Внимание:</p>
-                    <p>{apiError}</p>
-                    <p className="text-sm mt-2">Показаны тестовые данные вместо реального анализа. Проверьте, запущен ли Python API.</p>
+                  
+                  <div className="flex justify-center">
+                    <Button 
+                      onClick={handleAnalyzeImage} 
+                      disabled={!selectedFile || isLoading}
+                      className="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 active:scale-[0.98] h-10 px-4 py-2"
+                    >
+                      {isLoading ? (
+                        <>
+                          <div className="animate-spin mr-2 w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full" />
+                          Анализируем...
+                        </>
+                      ) : 'Найти похожие вещи'}
+                    </Button>
                   </div>
-                )}
-                
-                {recommendations.length > 0 && (
-                  <div className="space-y-8 mt-8">
-                    <div className="bg-gray-50 p-6 rounded-lg">
-                      <h2 className="text-xl font-bold mb-4">Распознанная одежда:</h2>
-                      <ul className="list-disc pl-6 space-y-2">
-                        {recommendations.map((item, index) => (
-                          <li key={index}>
-                            <span className="font-semibold">{item.type}</span>: {item.color} {item.description}
-                          </li>
-                        ))}
-                      </ul>
+                  
+                  {apiError && (
+                    <div className="p-4 bg-destructive/10 text-destructive rounded-md text-sm">
+                      {apiError}
                     </div>
-
-                    <div className="space-y-8">
-                      {recommendations.map((item, index) => (
-                        <div key={index} className="space-y-4">
-                          <h3 className="text-lg font-semibold">{item.type} {item.color}</h3>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {item.wb_products && item.wb_products.length > 0 ? (
-                              item.wb_products.map((product, productIndex) => (
-                                <Card key={`${index}-${productIndex}`} className="overflow-hidden">
-                                  <div className="relative">
-                                    <img 
-                                      src={product.image_url} 
-                                      alt={product.name} 
-                                      className="w-full h-64 object-cover"
-                                    />
-                                    <Badge className="absolute top-2 right-2 bg-gray-800 text-white">
-                                      {item.type}
-                                    </Badge>
-                                  </div>
-                                  <CardHeader className="p-4">
-                                    <CardTitle className="text-lg">{product.name}</CardTitle>
-                                    <div className="text-sm text-gray-500">{product.brand}</div>
-                                  </CardHeader>
-                                  <CardContent className="p-4 pt-0">
-                                    <div className="flex justify-between items-center mb-4">
-                                      <div className="font-bold text-xl">
-                                        {product.sale_price} ₽
-                                      </div>
-                                      {product.discount > 0 && (
-                                        <div className="flex items-center">
-                                          <span className="text-gray-500 line-through text-sm mr-2">
-                                            {product.price} ₽
-                                          </span>
-                                          <Badge className="bg-red-500">-{product.discount}%</Badge>
-                                        </div>
-                                      )}
-                                    </div>
-                                    <Button 
-                                      className="w-full"
-                                      onClick={() => window.open(product.product_url, '_blank')}
-                                    >
-                                      Купить
-                                    </Button>
-                                  </CardContent>
-                                </Card>
-                              ))
-                            ) : (
-                              <Card className="col-span-3">
-                                <CardContent className="p-6">
-                                  <p className="text-center text-gray-500">
-                                    Не найдено товаров для {item.type} {item.color}
-                                  </p>
-                                </CardContent>
-                              </Card>
+                  )}
+                  
+                  {isLoading && (
+                    <div className="text-center py-12">
+                      <div className="animate-spin inline-block w-8 h-8 border-4 border-primary border-t-transparent rounded-full mb-4"></div>
+                      <p className="text-muted-foreground">Анализируем изображение и ищем похожие товары...</p>
+                    </div>
+                  )}
+                  
+                  {searchResults.length > 0 && !isLoading && (
+                    <div className="space-y-4" id="search-results-container">
+                      {imageAnalysis && (
+                        <div className="p-5 mb-6 bg-muted/30 rounded-lg border border-border/40 shadow-sm">
+                          <h3 className="font-bold text-lg mb-3">Анализ изображения:</h3>
+                          <div className="flex items-center gap-3 mb-4">
+                            {previewUrl && (
+                              <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
+                                <img src={previewUrl} alt="Загруженное фото" className="w-full h-full object-cover" />
+                              </div>
                             )}
+                            <div>
+                              <p className="text-sm font-medium text-foreground">Алгоритм определил что на изображении:</p>
+                              <div className="mt-1 text-muted-foreground text-sm flex flex-wrap gap-1">
+                                {searchResults.slice(0, 3).map((item, index) => (
+                                  <Badge key={index} variant="outline" className="bg-primary/10">
+                                    {item.category}: {item.name}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-muted-foreground text-sm whitespace-pre-line border-t border-border/40 pt-3">
+                            <p className="font-medium text-foreground mb-1">Полный анализ:</p>
+                            {imageAnalysis}
                           </div>
                         </div>
-                      ))}
+                      )}
+                      <h2 className="text-xl font-semibold">Найдено {searchResults.length} товаров</h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {searchResults.map((item) => (
+                          <ProductCard key={item.id} product={item} />
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </TabsContent>
-        
-        <TabsContent value="text-search">
-          <Card>
-            <CardHeader>
-              <CardTitle>Поиск одежды по описанию</CardTitle>
-              <CardDescription>
+
+        <TabsContent 
+          value="text-search" 
+          className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          <div className="card rounded-xl border border-border/40 bg-card p-6 shadow-sm transition-all duration-200 hover:shadow-md">
+            <div className="flex flex-col space-y-1.5 pb-4">
+              <h3 className="text-xl font-semibold leading-none tracking-tight text-card-foreground">
+                Поиск одежды по описанию
+              </h3>
+              <p className="text-sm text-muted-foreground">
                 Опишите, что вы ищете, и мы подберем подходящие варианты
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+              </p>
+            </div>
+            <div className="pt-0">
               <div className="space-y-8">
                 <div className="space-y-4">
                   <div className="flex items-center gap-4 mb-2">
                     <Button 
-                      variant={isOutfitSearchMode ? "default" : "outline"} 
+                      variant={isOutfitSearchMode ? "default" : "outline"}
+                      className="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] h-10 px-4 py-2"
                       onClick={() => setIsOutfitSearchMode(true)}
                     >
                       Поиск образов
                     </Button>
                     <Button 
-                      variant={!isOutfitSearchMode ? "default" : "outline"} 
+                      variant={!isOutfitSearchMode ? "default" : "outline"}
+                      className="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] h-10 px-4 py-2"
                       onClick={() => setIsOutfitSearchMode(false)}
                     >
                       Поиск товаров
                     </Button>
                   </div>
                   
-                  {isOutfitSearchMode ? (
+                  {!isOutfitSearchMode ? (
                     <>
-                      {/* Поиск образов */}
-                      <div className="space-y-4">
-                        <div className="flex gap-2">
-                          <Input
-                            placeholder="Опишите желаемый образ, например: Повседневный образ на осень"
-                            value={pinterestQuery}
-                            onChange={(e) => setPinterestQuery(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handlePinterestSearch()}
-                          />
-                          <Button onClick={handlePinterestSearch} disabled={isPinterestLoading}>
-                            {isPinterestLoading ? "Поиск..." : "Найти"}
-                          </Button>
-                        </div>
-                        
-                        <div className="flex gap-2 items-center">
-                          <div className="text-sm text-muted-foreground">Пол:</div>
-                          <Button
-                            variant={gender === 'женский' ? "default" : "outline"}
-                            size="sm"
-                            onClick={() => setGender('женский')}
-                          >
-                            Женский
-                          </Button>
-                          <Button
-                            variant={gender === 'мужской' ? "default" : "outline"}
-                            size="sm"
-                            onClick={() => setGender('мужской')}
-                          >
-                            Мужской
-                          </Button>
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <div className="text-sm text-muted-foreground">Популярные запросы:</div>
-                          <div className="flex flex-wrap gap-2">
-                            {popularOutfitQueries.map((query, index) => (
-                              <Button
-                                key={index}
-                                variant="outline"
-                                size="sm"
-                                onClick={() => usePresetQuery(query)}
-                              >
-                                {query}
-                              </Button>
-                            ))}
-                          </div>
+                      <div className="flex gap-2">
+                        <Input
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                          placeholder="Опишите товар, например: черное платье"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          onKeyDown={(e) => e.key === 'Enter' && handleTextSearch()}
+                        />
+                        <Button 
+                          onClick={handleTextSearch} 
+                          disabled={isLoading}
+                          className="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 active:scale-[0.98] h-10 px-4 py-2"
+                        >
+                          {isLoading ? "Поиск..." : "Найти"}
+                        </Button>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground active:scale-[0.98] h-9 rounded-md px-3 text-xs"
+                          onClick={() => { setSearchQuery('Белая футболка'); handleTextSearch(); }}
+                        >
+                          Белая футболка
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground active:scale-[0.98] h-9 rounded-md px-3 text-xs"
+                          onClick={() => { setSearchQuery('Черные джинсы'); handleTextSearch(); }}
+                        >
+                          Черные джинсы
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground active:scale-[0.98] h-9 rounded-md px-3 text-xs"
+                          onClick={() => { setSearchQuery('Кожаная куртка'); handleTextSearch(); }}
+                        >
+                          Кожаная куртка
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground active:scale-[0.98] h-9 rounded-md px-3 text-xs"
+                          onClick={() => { setSearchQuery('Платье миди'); handleTextSearch(); }}
+                        >
+                          Платье миди
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
+                    // Поиск образов
+                    <div className="space-y-4">
+                      <div className="flex gap-2">
+                        <Input
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                          placeholder="Опишите желаемый образ, например: Повседневный образ на осень"
+                          value={pinterestQuery}
+                          onChange={(e) => setPinterestQuery(e.target.value)}
+                          onKeyDown={(e) => e.key === 'Enter' && handlePinterestSearch()}
+                        />
+                        <Button 
+                          onClick={handlePinterestSearch} 
+                          disabled={isPinterestLoading}
+                          className="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 active:scale-[0.98] h-10 px-4 py-2"
+                        >
+                          {isPinterestLoading ? "Поиск..." : "Найти"}
+                        </Button>
+                      </div>
+                      
+                      <div className="flex gap-2 items-center">
+                        <div className="text-sm text-muted-foreground">Пол:</div>
+                        <Button
+                          variant={gender === 'женский' ? "default" : "outline"}
+                          size="sm"
+                          className="inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 rounded-md px-3 text-xs"
+                          onClick={() => setGender('женский')}
+                        >
+                          Женский
+                        </Button>
+                        <Button
+                          variant={gender === 'мужской' ? "default" : "outline"}
+                          size="sm"
+                          className="inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 rounded-md px-3 text-xs"
+                          onClick={() => setGender('мужской')}
+                        >
+                          Мужской
+                        </Button>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <div className="text-sm text-muted-foreground">Популярные запросы:</div>
+                        <div className="flex flex-wrap gap-2">
+                          {popularOutfitQueries.map((query, index) => (
+                            <Button
+                              key={index}
+                              variant="outline"
+                              size="sm"
+                              className="inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground active:scale-[0.98] h-9 rounded-md px-3 text-xs"
+                              onClick={() => usePresetQuery(query)}
+                            >
+                              {query}
+                            </Button>
+                          ))}
                         </div>
                       </div>
                       
@@ -704,250 +755,28 @@ const StylistAssistant: React.FC = () => {
                           ))}
                         </div>
                       ) : null}
-                    </>
-                  ) : (
-                    <>
-                      {/* Поиск товаров */}
-                      <div className="flex gap-2">
-                        <Input
-                          placeholder="Опишите товар, например: черное платье"
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                          onKeyDown={(e) => e.key === 'Enter' && handleTextSearch()}
-                        />
-                        <Button onClick={handleTextSearch} disabled={isLoading}>
-                          {isLoading ? "Поиск..." : "Найти"}
-                        </Button>
-                      </div>
-                      
-                      <div className="flex flex-wrap gap-2">
-                        <Button variant="outline" size="sm" onClick={() => { setSearchQuery('Белая футболка'); handleTextSearch(); }}>
-                          Белая футболка
-                        </Button>
-                        <Button variant="outline" size="sm" onClick={() => { setSearchQuery('Черные джинсы'); handleTextSearch(); }}>
-                          Черные джинсы
-                        </Button>
-                        <Button variant="outline" size="sm" onClick={() => { setSearchQuery('Кожаная куртка'); handleTextSearch(); }}>
-                          Кожаная куртка
-                        </Button>
-                        <Button variant="outline" size="sm" onClick={() => { setSearchQuery('Платье миди'); handleTextSearch(); }}>
-                          Платье миди
-                        </Button>
-                      </div>
-                      
-                      {/* Результаты поиска товаров */}
-                      {isLoading ? (
-                        <div className="text-center py-12">
-                          <div className="animate-spin inline-block w-8 h-8 border-4 border-primary border-t-transparent rounded-full mb-4"></div>
-                          <p className="text-muted-foreground">Ищем товары...</p>
-                        </div>
-                      ) : searchResults.length > 0 ? (
-                        <div className="mt-8">
-                          <h2 className="text-2xl font-semibold mb-4">Найдено {searchResults.length} товаров</h2>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                            {searchResults.map((product) => (
-                              <ProductCard key={product.id} product={product} />
-                            ))}
-                          </div>
-                        </div>
-                      ) : null}
-                    </>
+                    </div>
                   )}
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </TabsContent>
         
-        <TabsContent value="wardrobe">
-          <Card>
-            <CardHeader>
-              <CardTitle>Мой гардероб</CardTitle>
-              <CardDescription>
-                Управляйте своим гардеробом и создавайте комплекты
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold">Вещи в гардеробе</h3>
-                  <Button size="sm">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Добавить вещь
-                  </Button>
-                </div>
-                
-                <Tabs defaultValue="all" className="w-full">
-                  <TabsList className="mb-4">
-                    <TabsTrigger value="all">Все</TabsTrigger>
-                    <TabsTrigger value="tops">Верх</TabsTrigger>
-                    <TabsTrigger value="bottoms">Низ</TabsTrigger>
-                    <TabsTrigger value="outerwear">Верхняя одежда</TabsTrigger>
-                    <TabsTrigger value="shoes">Обувь</TabsTrigger>
-                    <TabsTrigger value="accessories">Аксессуары</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="all">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                      {mockItems.slice(0, 4).map(item => (
-                        <div 
-                          key={item.id}
-                          className="border rounded-xl overflow-hidden bg-background group hover:border-primary cursor-pointer transition-colors"
-                        >
-                          <div className="h-40 relative">
-                            <img 
-                              src={item.imageUrl}
-                              alt={item.name}
-                              className="w-full h-full object-cover"
-                            />
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                              <Button size="sm" variant="secondary" className="px-2">
-                                <Pencil className="h-4 w-4 mr-1" />
-                                Редактировать
-                              </Button>
-                            </div>
-                          </div>
-                          <div className="p-3">
-                            <p className="font-medium text-sm truncate">{item.name}</p>
-                            <p className="text-xs text-muted-foreground">{item.category}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="tops">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                      {mockItems.filter(item => item.category === 'Верх').map(item => (
-                        <div 
-                          key={item.id}
-                          className="border rounded-xl overflow-hidden bg-background group hover:border-primary cursor-pointer transition-colors"
-                        >
-                          <div className="h-40 relative">
-                            <img 
-                              src={item.imageUrl}
-                              alt={item.name}
-                              className="w-full h-full object-cover"
-                            />
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                              <Button size="sm" variant="secondary" className="px-2">
-                                <Pencil className="h-4 w-4 mr-1" />
-                                Редактировать
-                              </Button>
-                            </div>
-                          </div>
-                          <div className="p-3">
-                            <p className="font-medium text-sm truncate">{item.name}</p>
-                            <p className="text-xs text-muted-foreground">{item.category}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </TabsContent>
-                  
-                  {/* Остальные категории имеют аналогичную структуру */}
-                </Tabs>
-                
-                <div className="pt-8 border-t">
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-lg font-semibold">Мои комплекты</h3>
-                    <Button size="sm">
-                      <Plus className="mr-2 h-4 w-4" />
-                      Создать комплект
-                    </Button>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Card>
-                      <CardHeader className="pb-2">
-                        <CardTitle className="text-base">Повседневный образ</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex gap-3 items-start">
-                          <img 
-                            src={mockItems[0].imageUrl} 
-                            alt="Item" 
-                            className="w-16 h-16 object-cover rounded" 
-                          />
-                          <img 
-                            src={mockItems[1].imageUrl} 
-                            alt="Item" 
-                            className="w-16 h-16 object-cover rounded" 
-                          />
-                          <img 
-                            src={mockItems[3].imageUrl} 
-                            alt="Item" 
-                            className="w-16 h-16 object-cover rounded" 
-                          />
-                        </div>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card>
-                      <CardHeader className="pb-2">
-                        <CardTitle className="text-base">Офисный стиль</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex gap-3 items-start">
-                          <img 
-                            src={mockItems[0].imageUrl} 
-                            alt="Item" 
-                            className="w-16 h-16 object-cover rounded" 
-                          />
-                          <img 
-                            src={mockItems[1].imageUrl} 
-                            alt="Item" 
-                            className="w-16 h-16 object-cover rounded" 
-                          />
-                          <img 
-                            src={mockItems[2].imageUrl} 
-                            alt="Item" 
-                            className="w-16 h-16 object-cover rounded" 
-                          />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <TabsContent 
+          value="wardrobe"
+          className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          {/* Содержимое вкладки Мой гардероб */}
         </TabsContent>
         
-        <TabsContent value="recommendations">
-          <Card>
-            <CardHeader>
-              <CardTitle>Персональные рекомендации</CardTitle>
-              <CardDescription>
-                Основаны на вашем стиле и предпочтениях
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-8">
-                <div>
-                  <h3 className="text-lg font-semibold mb-4">Дополните свой гардероб</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {mockItems.slice(0, 4).map(item => (
-                      <ProductCard key={item.id} product={item} />
-                    ))}
-                  </div>
-                </div>
-                
-                <div>
-                  <h3 className="text-lg font-semibold mb-4">Тренды этого сезона</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {mockItems.slice(0, 4).map(item => (
-                      <ProductCard key={item.id} product={item} />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <TabsContent 
+          value="recommendations"
+          className="mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          {/* Содержимое вкладки Рекомендации */}
         </TabsContent>
       </Tabs>
     </div>
   );
-};
-
-export default StylistAssistant; 
+} 

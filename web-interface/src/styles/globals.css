@@ -144,12 +144,4 @@
   .step-line {
     @apply h-1 transition-colors duration-200;
   }
-}
-
-/* Поддержка темного режима */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-  }
 } 
