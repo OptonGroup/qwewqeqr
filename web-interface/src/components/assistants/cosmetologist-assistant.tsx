@@ -5,7 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { RefreshCw, ShoppingBag, ArrowRight } from 'lucide-react';
+import { RefreshCw, ShoppingBag, ArrowRight, Home } from 'lucide-react';
+import { useAppContext } from '@/context/app-context';
 
 interface CosmeticProduct {
   id: string;
@@ -73,7 +74,12 @@ const skinConcerns = [
   { id: 'oiliness', name: 'Жирность' }
 ];
 
-const CosmetologistAssistant: React.FC = () => {
+interface CosmetologistAssistantProps {
+  onReturnHome?: () => void;
+}
+
+const CosmetologistAssistant: React.FC<CosmetologistAssistantProps> = ({ onReturnHome }) => {
+  const { setSelectedRole } = useAppContext();
   const [selectedSkinType, setSelectedSkinType] = useState<string | null>(null);
   const [selectedConcerns, setSelectedConcerns] = useState<string[]>([]);
   const [age, setAge] = useState<string>('');
@@ -118,8 +124,19 @@ const CosmetologistAssistant: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-3xl font-bold mb-8 text-foreground/90">Персональный косметолог</h1>
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Ассистент косметолога</h1>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => setSelectedRole(null)}
+          className="flex items-center gap-2"
+        >
+          <Home className="h-4 w-4" />
+          Вернуться на главную
+        </Button>
+      </div>
       
       <div className="mb-10">
         <div className="flex items-center mb-6">

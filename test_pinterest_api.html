@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестирование Pinterest API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        input, select, button {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .loading {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .error {
+            color: red;
+            margin: 10px 0;
+        }
+        .outfit {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        .outfit-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .clothing-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Тестирование Pinterest API</h1>
+        
+        <div>
+            <input type="text" id="queryInput" placeholder="Введите поисковый запрос, например 'мужской повседневный образ'" value="мужской повседневный образ">
+            <select id="genderSelect">
+                <option value="мужской">Мужской</option>
+                <option value="женский">Женский</option>
+                <option value="унисекс">Унисекс</option>
+            </select>
+            <input type="number" id="limitInput" placeholder="Количество результатов" value="3" min="1" max="10">
+            <button id="searchButton">Поиск образов</button>
+        </div>
+        
+        <div id="loading" class="loading" style="display: none;">
+            Загрузка данных...
+        </div>
+        
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <div id="results" class="results" style="display: none;"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchButton = document.getElementById('searchButton');
+            const queryInput = document.getElementById('queryInput');
+            const genderSelect = document.getElementById('genderSelect');
+            const limitInput = document.getElementById('limitInput');
+            const resultsDiv = document.getElementById('results');
+            const loadingDiv = document.getElementById('loading');
+            const errorDiv = document.getElementById('error');
+            
+            searchButton.addEventListener('click', async function() {
+                const query = queryInput.value.trim();
+                const gender = genderSelect.value;
+                const limit = parseInt(limitInput.value) || 3;
+                
+                if (!query) {
+                    errorDiv.textContent = 'Пожалуйста, введите поисковый запрос';
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                
+                // Сбрасываем предыдущие результаты
+                resultsDiv.style.display = 'none';
+                errorDiv.style.display = 'none';
+                loadingDiv.style.display = 'block';
+                
+                try {
+                    // Формируем URL для запроса к API
+                    const url = `/api/pinterest/outfit-search`;
+                    
+                    // Отправляем запрос на API
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            query: query,
+                            gender: gender,
+                            num_results: limit
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Ошибка запроса: ${response.status} ${response.statusText}`);
+                    }
+                    
+                    // Парсим ответ
+                    const data = await response.json();
+                    
+                    // Отображаем результаты
+                    displayResults(data);
+                    
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                    errorDiv.textContent = `Произошла ошибка: ${error.message}`;
+                    errorDiv.style.display = 'block';
+                } finally {
+                    loadingDiv.style.display = 'none';
+                }
+            });
+            
+            function displayResults(data) {
+                // Проверяем наличие результатов
+                if (!data || !data.results || data.results.length === 0) {
+                    errorDiv.textContent = 'Не найдено образов по вашему запросу';
+                    errorDiv.style.display = 'block';
+                    return;
+                }
+                
+                // Очищаем контейнер результатов
+                resultsDiv.innerHTML = `<h2>Найдено ${data.results.length} образов</h2>`;
+                
+                // Добавляем каждый образ в результаты
+                data.results.forEach((outfit, index) => {
+                    const outfitElement = document.createElement('div');
+                    outfitElement.className = 'outfit';
+                    
+                    // Изображение образа
+                    let outfitHTML = `
+                        <h3>Образ ${index + 1}</h3>
+                        <img src="${outfit.imageUrl}" alt="Образ Pinterest" class="outfit-image" onerror="this.src='https://placehold.co/600x800?text=Изображение+недоступно'">
+                        <p><strong>Описание:</strong> ${outfit.description || 'Нет описания'}</p>
+                    `;
+                    
+                    // Добавляем предметы одежды
+                    if (outfit.clothingItems && outfit.clothingItems.length > 0) {
+                        outfitHTML += `<h4>Предметы одежды (${outfit.clothingItems.length}):</h4>`;
+                        
+                        outfit.clothingItems.forEach(item => {
+                            outfitHTML += `
+                                <div class="clothing-item">
+                                    <p>
+                                        <strong>Тип:</strong> ${item.type || 'Неизвестно'}<br>
+                                        <strong>Цвет:</strong> ${item.color || 'Неизвестно'}<br>
+                                        <strong>Описание:</strong> ${item.description || 'Нет описания'}<br>
+                                        <strong>Пол:</strong> ${item.gender || 'Унисекс'}
+                                    </p>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        outfitHTML += `<p>Предметы одежды не найдены</p>`;
+                    }
+                    
+                    // Ссылка на оригинал в Pinterest
+                    if (outfit.sourceUrl) {
+                        outfitHTML += `<p><a href="${outfit.sourceUrl}" target="_blank">Посмотреть на Pinterest</a></p>`;
+                    }
+                    
+                    outfitElement.innerHTML = outfitHTML;
+                    resultsDiv.appendChild(outfitElement);
+                });
+                
+                resultsDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html> 

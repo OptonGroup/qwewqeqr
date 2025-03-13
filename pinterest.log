@@ -4222,3 +4222,800 @@ client_session: <aiohttp.client.ClientSession object at 0x0000020D726C62C0>
 2025-03-13 19:34:03,701 - visual_analyzer - INFO - Анализ изображения завершен. Найдено 2 предметов одежды.
 2025-03-13 19:34:03,701 - visual_analyzer - INFO - Анализ изображения: photo\2feba8d04ed09dafd11906246584423e.jpg
 2025-03-13 19:34:03,701 - visual_analyzer - INFO - Анализ изображения завершен. Найдено 2 предметов одежды.
+2025-03-13 19:37:12,783 - api - INFO - Получен запрос на поиск образов в Pinterest: Деловой стиль мужской, пол: мужской
+2025-03-13 19:37:12,783 - pinterest - INFO - Найден Chrome по пути: C:\Program Files\Google\Chrome\Application\chrome.exe
+2025-03-13 19:37:12,783 - WDM - INFO - ====== WebDriver manager ======
+2025-03-13 19:37:14,636 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 19:37:18,865 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 19:37:19,001 - WDM - INFO - Driver [C:\Users\maxsi\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver-win32/chromedriver.exe] found in cache
+2025-03-13 19:37:20,035 - pinterest - INFO - Selenium WebDriver успешно инициализирован
+2025-03-13 19:37:20,036 - pinterest - INFO - Загружаем страницу поиска: https://www.pinterest.com/search/pins/?q=%D0%94%D0%B5%D0%BB%D0%BE%D0%B2%D0%BE%D0%B9%20%D1%81%D1%82%D0%B8%D0%BB%D1%8C%20%D0%BC%D1%83%D0%B6%D1%81%D0%BA%D0%BE%D0%B9
+2025-03-13 19:37:41,826 - pinterest - INFO - Найден селектор: div[data-test-id='pin']
+2025-03-13 19:37:41,826 - pinterest - INFO - Страница загружена, прокручиваем для загрузки изображений
+2025-03-13 19:37:54,881 - pinterest - INFO - Ищем изображения на странице
+2025-03-13 19:37:54,908 - pinterest - INFO - Найдены пины через селектор: div[data-test-id='pin']
+2025-03-13 19:37:54,908 - pinterest - INFO - Найдено 30 потенциальных пинов
+2025-03-13 19:37:55,551 - pinterest - INFO - Изображение сохранено: photo\d6641713e14a907b148fbbc1c45e9504.jpg
+2025-03-13 19:37:55,551 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/db/2c/1b/db2c1ba28952e8e094e0233fc1450b99.jpg
+2025-03-13 19:37:56,298 - pinterest - INFO - Изображение сохранено: photo\59fa1a0e8484eb327bb109490526d10a.jpg
+2025-03-13 19:37:56,313 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/2f/e3/dd/2fe3ddf08c4502b1875fd045a5a610d5.jpg
+2025-03-13 19:37:56,316 - pinterest - INFO - Кеш сохранен
+2025-03-13 19:37:56,316 - pinterest - INFO - Найдено 3 пинов по запросу 'Деловой стиль мужской'
+2025-03-13 19:37:58,746 - visual_analyzer - INFO - Анализ изображения: photo\d6641713e14a907b148fbbc1c45e9504.jpg
+2025-03-13 19:37:58,746 - visual_analyzer - INFO - Анализ изображения завершен. Найдено 2 предметов одежды.
+2025-03-13 19:37:58,746 - visual_analyzer - INFO - Анализ изображения: photo\3f1369ee178f55773dced0a524cd3006.jpg
+2025-03-13 19:37:58,746 - visual_analyzer - INFO - Анализ изображения завершен. Найдено 2 предметов одежды.
+2025-03-13 19:37:58,746 - visual_analyzer - INFO - Анализ изображения: photo\59fa1a0e8484eb327bb109490526d10a.jpg
+2025-03-13 19:37:58,746 - visual_analyzer - INFO - Анализ изображения завершен. Найдено 2 предметов одежды.
+2025-03-13 19:59:16,413 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x00000245F58D66B0>
+2025-03-13 19:59:16,415 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x00000245F58D6710>
+2025-03-13 19:59:16,415 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x00000245F58D7F70>
+2025-03-13 20:03:17,334 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:03:17,370 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:03:17,370 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:03:34,347 - api - INFO - Получен запрос на поиск образов в Pinterest: Офисный стиль женский, пол: женский
+2025-03-13 20:03:34,631 - pinterest - INFO - Создан новый кеш для анализа изображений
+2025-03-13 20:03:34,631 - pinterest - INFO - Анализатор изображений инициализирован
+2025-03-13 20:03:34,631 - pinterest - INFO - Загружен кеш с 46 пинами
+2025-03-13 20:03:34,631 - pinterest - INFO - Pinterest API клиент инициализирован
+2025-03-13 20:03:34,631 - api - INFO - Инициализирован экземпляр Pinterest API с поддержкой анализа изображений
+2025-03-13 20:03:34,631 - pinterest - INFO - HTTP сессия инициализирована
+2025-03-13 20:03:34,631 - pinterest - INFO - Найден Chrome по пути: C:\Program Files\Google\Chrome\Application\chrome.exe
+2025-03-13 20:03:34,631 - WDM - INFO - ====== WebDriver manager ======
+2025-03-13 20:03:36,363 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:03:36,515 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:03:36,680 - WDM - INFO - Driver [C:\Users\maxsi\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver-win32/chromedriver.exe] found in cache
+2025-03-13 20:03:37,820 - pinterest - INFO - Selenium WebDriver успешно инициализирован
+2025-03-13 20:03:37,820 - pinterest - INFO - Загружаем страницу поиска: https://www.pinterest.com/search/pins/?q=%D0%9E%D1%84%D0%B8%D1%81%D0%BD%D1%8B%D0%B9%20%D1%81%D1%82%D0%B8%D0%BB%D1%8C%20%D0%B6%D0%B5%D0%BD%D1%81%D0%BA%D0%B8%D0%B9
+2025-03-13 20:03:59,691 - pinterest - INFO - Найден селектор: div[data-test-id='pin']
+2025-03-13 20:03:59,691 - pinterest - INFO - Страница загружена, прокручиваем для загрузки изображений
+2025-03-13 20:04:11,178 - pinterest - INFO - Ищем изображения на странице
+2025-03-13 20:04:11,200 - pinterest - INFO - Найдены пины через селектор: div[data-test-id='pin']
+2025-03-13 20:04:11,201 - pinterest - INFO - Найдено 30 потенциальных пинов
+2025-03-13 20:04:11,569 - pinterest - INFO - Изображение сохранено: photo\cce7d8ffcefbcf7f220ad134405f913f.jpg
+2025-03-13 20:04:11,569 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/videos/thumbnails/originals/0d/37/70/0d377002d6c413fbf06c292d0a3e7e1c.0000000.jpg
+2025-03-13 20:04:12,075 - pinterest - INFO - Изображение сохранено: photo\6b7fa061f67c91c2fde810046a7652df.jpg
+2025-03-13 20:04:12,076 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/93/ea/8e/93ea8eb0be87b01f045b1da7d5d492ee.jpg
+2025-03-13 20:04:14,094 - pinterest - INFO - Изображение сохранено: photo\a6f33d739ff12e1efa4e501bb9531ec8.jpg
+2025-03-13 20:04:14,095 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/47/55/99/4755997f000390d1c40e8ab2b87c0446.jpg
+2025-03-13 20:04:14,098 - pinterest - INFO - Кеш сохранен
+2025-03-13 20:04:14,099 - pinterest - INFO - Найдено 3 пинов по запросу 'Офисный стиль женский'
+2025-03-13 20:04:14,099 - pinterest - INFO - Анализирую изображение для пина cce7d8ffcefbcf7f220ad134405f913f
+2025-03-13 20:04:14,431 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 403 Forbidden"
+2025-03-13 20:04:14,434 - pinterest - ERROR - Ошибка при анализе изображения https://i.pinimg.com/videos/thumbnails/originals/0d/37/70/0d377002d6c413fbf06c292d0a3e7e1c.0000000.jpg: Error code: 403 - {'error': {'code': 'unsupported_country_region_territory', 'message': 'Country, region, or territory not supported', 'param': None, 'type': 'request_forbidden'}}
+2025-03-13 20:04:14,435 - pinterest - INFO - Определено 0 предметов одежды
+2025-03-13 20:04:14,435 - pinterest - INFO - Анализирую изображение для пина 6b7fa061f67c91c2fde810046a7652df
+2025-03-13 20:04:14,471 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 403 Forbidden"
+2025-03-13 20:04:14,473 - pinterest - ERROR - Ошибка при анализе изображения https://i.pinimg.com/originals/93/ea/8e/93ea8eb0be87b01f045b1da7d5d492ee.jpg: Error code: 403 - {'error': {'code': 'unsupported_country_region_territory', 'message': 'Country, region, or territory not supported', 'param': None, 'type': 'request_forbidden'}}
+2025-03-13 20:04:14,474 - pinterest - INFO - Определено 0 предметов одежды
+2025-03-13 20:04:14,474 - pinterest - INFO - Анализирую изображение для пина a6f33d739ff12e1efa4e501bb9531ec8
+2025-03-13 20:04:14,508 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 403 Forbidden"
+2025-03-13 20:04:14,510 - pinterest - ERROR - Ошибка при анализе изображения https://i.pinimg.com/originals/47/55/99/4755997f000390d1c40e8ab2b87c0446.jpg: Error code: 403 - {'error': {'code': 'unsupported_country_region_territory', 'message': 'Country, region, or territory not supported', 'param': None, 'type': 'request_forbidden'}}
+2025-03-13 20:04:14,511 - pinterest - INFO - Определено 0 предметов одежды
+2025-03-13 20:04:17,180 - api - INFO - Задача de7c3ea2-0f6f-45e2-9e56-8378fa68d595 успешно завершена: найдено 3 образов
+2025-03-13 20:05:41,501 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x00000179FCD55120>
+2025-03-13 20:05:44,211 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:05:44,246 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:05:44,246 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:05:55,450 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:05:55,489 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:05:55,489 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:05:58,330 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:05:58,364 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:05:58,365 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:06:23,550 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:06:23,589 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:06:23,589 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:06:47,578 - api - INFO - Получен файл для анализа: 1741885607568_test_image.jpg
+2025-03-13 20:06:47,580 - api - INFO - Файл сохранен: static/uploads\2db5a71d-4504-4f55-b86e-9c4b0790bf67.jpg
+2025-03-13 20:06:47,583 - api - INFO - API-ключ OpenRouter успешно загружен
+2025-03-13 20:06:47,583 - assistant - INFO - OpenRouterClient для обработки изображений успешно инициализирован
+2025-03-13 20:06:47,583 - assistant - INFO - Инициализирован ChatAssistant с моделью anthropic/claude-3-haiku (тип: openrouter)
+2025-03-13 20:06:47,594 - openrouter_image_client - INFO - Отправка запроса к OpenRouter API для анализа изображения
+2025-03-13 20:06:51,748 - openrouter_image_client - INFO - Полный ответ от OpenRouter API: {"id": "gen-1741885608-09dekUQXXgGTPSOKuY9P", "provider": "Anthropic", "model": "anthropic/claude-3-haiku", "object": "chat.completion", "created": 1741885608, "choices": [{"logprobs": null, "finish_reason": "stop", "native_finish_reason": "stop", "index": 0, "message": {"role": "assistant", "content": "ПОЛ: женский\n\n1. Белая рубашка с длинными рукавами\n2. Серый пиджак\n3. Серые широкие брюки\n\nБЕЛАЯ РУБАШКА:\n- Цвет: белый\n- Пол: женский\n- Материал: неизвестно\n- Описание: классическая белая рубашка с длинными рукавами\n\nСЕРЫЙ ПИДЖАК: \n- Цвет: серый\n- Пол: женский\n- Материал: неизвестно\n- Описание: строгий серый пиджак\n\nСЕРЫЕ БРЮКИ:\n- Цвет: серый\n- Пол: женский\n- Материал: неизвестно\n- Описание: широкие серые брюки\n\nОБЩЕЕ:\nОбраз производит впечатление строгого, офисного стиля. Сочетание белой рубашки, серого пиджака и брюк создает элегантный и профессиональный вид. Акцент сделан на деловой стиль одежды.", "refusal": null}}], "usage": {"prompt_tokens": 1744, "completion_tokens": 300, "total_tokens": 2044}}
+2025-03-13 20:06:51,748 - openrouter_image_client - INFO - Найдена информация о поле: женский
+2025-03-13 20:06:51,748 - assistant - INFO - Изображение static/uploads\2db5a71d-4504-4f55-b86e-9c4b0790bf67.jpg успешно проанализировано
+2025-03-13 20:06:51,748 - api - INFO - Результат анализа: {'elements': [{'type': 'Рубашка', 'color': 'белый', 'description': 'Белая рубашка с длинными рукавами', 'material': None, 'pattern': None, 'gender': 'женский'}, {'type': 'Пиджак', 'color': 'Серый', 'description': 'Серый пиджак', 'material': None, 'pattern': None, 'gender': 'женский'}, {'type': 'Брюки', 'color': 'широкие', 'description': 'Серые широкие брюки', 'material': None, 'pattern': None, 'gender': 'женский'}], 'analysis': 'ПОЛ: женский\n\n1. Белая рубашка с длинными рукавами\n2. Серый пиджак\n3. Серые широкие брюки\n\nБЕЛАЯ РУБАШКА:\n- Цвет: белый\n- Пол: женский\n- Материал: неизвестно\n- Описание: классическая белая рубашка с длинными рукавами\n\nСЕРЫЙ ПИДЖАК: \n- Цвет: серый\n- Пол: женский\n- Материал: неизвестно\n- Описание: строгий серый пиджак\n\nСЕРЫЕ БРЮКИ:\n- Цвет: серый\n- Пол: женский\n- Материал: неизвестно\n- Описание: широкие серые брюки\n\nОБЩЕЕ:\nОбраз производит впечатление строгого, офисного стиля. Сочетание белой рубашки, серого пиджака и брюк создает элегантный и профессиональный вид. Акцент сделан на деловой стиль одежды.'}
+2025-03-13 20:06:51,763 - wildberries - INFO - Создан новый кеш
+2025-03-13 20:06:51,764 - wildberries - INFO - Wildberries API клиент инициализирован
+2025-03-13 20:06:51,765 - wildberries_api - INFO - WildberriesService инициализирован
+2025-03-13 20:06:51,766 - wildberries - INFO - Поиск товаров по запросу 'белый Рубашка Белая рубашка' с параметрами: limit=3, low_price=1, top_price=1000000, discount=None, gender=женский
+2025-03-13 20:06:51,767 - wildberries - INFO - Поиск товаров по URL: https://search.wb.ru/exactmatch/ru/common/v4/search?appType=1&curr=rub&dest=-1257786&locale=ru&page=1&priceU=100;100000000&query=%D0%B1%D0%B5%D0%BB%D1%8B%D0%B9%20%D0%A0%D1%83%D0%B1%D0%B0%D1%88%D0%BA%D0%B0%20%D0%91%D0%B5%D0%BB%D0%B0%D1%8F%20%D1%80%D1%83%D0%B1%D0%B0%D1%88%D0%BA%D0%B0&resultset=catalog&sort=popular&spp=0&suppressSpellcheck=false
+2025-03-13 20:06:53,953 - wildberries - INFO - Всего найдено 100 товаров, обрабатываем максимум 3
+2025-03-13 20:06:53,953 - wildberries - INFO - Добавлен товар: Рубашка классическая приталенная (Цена: 7399 руб., Скидочная цена: 2335 руб., Скидка: 68%)
+2025-03-13 20:06:53,953 - wildberries - INFO - Добавлен товар: Рубашка классическая с длинным рукавом (Цена: 7824 руб., Скидочная цена: 1807 руб., Скидка: 77%)
+2025-03-13 20:06:53,953 - wildberries - INFO - Добавлен товар: Рубашка с длинным рукавом классическая (Цена: 4100 руб., Скидочная цена: 1704 руб., Скидка: 58%)
+2025-03-13 20:06:53,953 - wildberries - INFO - Успешно найдено 3 товаров
+2025-03-13 20:06:53,953 - wildberries_api - INFO - Добавлен товар: Рубашка классическая приталенная (Цена: 7399 руб., Скидочная цена: 2335 руб., Скидка: 68%)
+2025-03-13 20:06:53,953 - wildberries_api - INFO - Добавлен товар: Рубашка классическая с длинным рукавом (Цена: 7824 руб., Скидочная цена: 1807 руб., Скидка: 77%)
+2025-03-13 20:06:53,953 - wildberries_api - INFO - Добавлен товар: Рубашка с длинным рукавом классическая (Цена: 4100 руб., Скидочная цена: 1704 руб., Скидка: 58%)
+2025-03-13 20:06:53,953 - wildberries_api - INFO - Найдено 3 товаров по запросу 'белый Рубашка Белая рубашка'
+2025-03-13 20:06:53,978 - wildberries - INFO - Поиск товаров по запросу 'Серый Пиджак Серый пиджак' с параметрами: limit=3, low_price=1, top_price=1000000, discount=None, gender=женский
+2025-03-13 20:06:53,978 - wildberries - INFO - Поиск товаров по URL: https://search.wb.ru/exactmatch/ru/common/v4/search?appType=1&curr=rub&dest=-1257786&locale=ru&page=1&priceU=100;100000000&query=%D0%A1%D0%B5%D1%80%D1%8B%D0%B9%20%D0%9F%D0%B8%D0%B4%D0%B6%D0%B0%D0%BA%20%D0%A1%D0%B5%D1%80%D1%8B%D0%B9%20%D0%BF%D0%B8%D0%B4%D0%B6%D0%B0%D0%BA&resultset=catalog&sort=popular&spp=0&suppressSpellcheck=false
+2025-03-13 20:06:56,906 - wildberries - INFO - Всего найдено 100 товаров, обрабатываем максимум 3
+2025-03-13 20:06:56,906 - wildberries - INFO - Добавлен товар: Пиджак оверсайз серый удлиненный (Цена: 7990 руб., Скидочная цена: 3629 руб., Скидка: 55%)
+2025-03-13 20:06:56,906 - wildberries - INFO - Добавлен товар: Пиджак серый оверсайз удлиненный (Цена: 8143 руб., Скидочная цена: 3950 руб., Скидка: 51%)
+2025-03-13 20:06:56,922 - wildberries - INFO - Добавлен товар: Пиджак серый оверсайз (Цена: 9050 руб., Скидочная цена: 5574 руб., Скидка: 38%)
+2025-03-13 20:06:56,922 - wildberries - INFO - Успешно найдено 3 товаров
+2025-03-13 20:06:56,922 - wildberries_api - INFO - Добавлен товар: Пиджак оверсайз серый удлиненный (Цена: 7990 руб., Скидочная цена: 3629 руб., Скидка: 55%)
+2025-03-13 20:06:56,922 - wildberries_api - INFO - Добавлен товар: Пиджак серый оверсайз удлиненный (Цена: 8143 руб., Скидочная цена: 3950 руб., Скидка: 51%)
+2025-03-13 20:06:56,922 - wildberries_api - INFO - Добавлен товар: Пиджак серый оверсайз (Цена: 9050 руб., Скидочная цена: 5574 руб., Скидка: 38%)
+2025-03-13 20:06:56,922 - wildberries_api - INFO - Найдено 3 товаров по запросу 'Серый Пиджак Серый пиджак'
+2025-03-13 20:06:56,922 - wildberries - INFO - Поиск товаров по запросу 'широкие Брюки Серые широкие' с параметрами: limit=3, low_price=1, top_price=1000000, discount=None, gender=женский
+2025-03-13 20:06:56,922 - wildberries - INFO - Поиск товаров по URL: https://search.wb.ru/exactmatch/ru/common/v4/search?appType=1&curr=rub&dest=-1257786&locale=ru&page=1&priceU=100;100000000&query=%D1%88%D0%B8%D1%80%D0%BE%D0%BA%D0%B8%D0%B5%20%D0%91%D1%80%D1%8E%D0%BA%D0%B8%20%D0%A1%D0%B5%D1%80%D1%8B%D0%B5%20%D1%88%D0%B8%D1%80%D0%BE%D0%BA%D0%B8%D0%B5&resultset=catalog&sort=popular&spp=0&suppressSpellcheck=false
+2025-03-13 20:06:59,105 - wildberries - INFO - Всего найдено 100 товаров, обрабатываем максимум 3
+2025-03-13 20:06:59,105 - wildberries - INFO - Добавлен товар: Спортивные штаны широкие оверсайз y2k (Цена: 4700 руб., Скидочная цена: 2497 руб., Скидка: 47%)
+2025-03-13 20:06:59,105 - wildberries - INFO - Добавлен товар: Штаны карго оверсайз y2k (Цена: 6609 руб., Скидочная цена: 1577 руб., Скидка: 76%)
+2025-03-13 20:06:59,105 - wildberries - INFO - Добавлен товар: Брюки летние палаццо штаны широкие легкие (Цена: 2790 руб., Скидочная цена: 1654 руб., Скидка: 41%)
+2025-03-13 20:06:59,105 - wildberries - INFO - Успешно найдено 3 товаров
+2025-03-13 20:06:59,105 - wildberries_api - INFO - Добавлен товар: Спортивные штаны широкие оверсайз y2k (Цена: 4700 руб., Скидочная цена: 2497 руб., Скидка: 47%)
+2025-03-13 20:06:59,105 - wildberries_api - INFO - Добавлен товар: Штаны карго оверсайз y2k (Цена: 6609 руб., Скидочная цена: 1577 руб., Скидка: 76%)
+2025-03-13 20:06:59,105 - wildberries_api - INFO - Добавлен товар: Брюки летние палаццо штаны широкие легкие (Цена: 2790 руб., Скидочная цена: 1654 руб., Скидка: 41%)
+2025-03-13 20:06:59,105 - wildberries_api - INFO - Найдено 3 товаров по запросу 'широкие Брюки Серые широкие'
+2025-03-13 20:06:59,105 - api - INFO - Анализ изображения выполнен успешно: 3 предметов найдено
+2025-03-13 20:07:14,462 - api - INFO - Получен запрос на поиск образов в Pinterest: Повседневный образ на осень, пол: женский
+2025-03-13 20:07:14,664 - pinterest - INFO - Создан новый кеш для анализа изображений
+2025-03-13 20:07:14,664 - pinterest - INFO - Анализатор изображений инициализирован
+2025-03-13 20:07:14,664 - pinterest - INFO - Загружен кеш с 49 пинами
+2025-03-13 20:07:14,664 - pinterest - INFO - Pinterest API клиент инициализирован
+2025-03-13 20:07:14,664 - api - INFO - Инициализирован экземпляр Pinterest API с поддержкой анализа изображений
+2025-03-13 20:07:14,664 - pinterest - INFO - HTTP сессия инициализирована
+2025-03-13 20:07:14,680 - pinterest - INFO - Найден Chrome по пути: C:\Program Files\Google\Chrome\Application\chrome.exe
+2025-03-13 20:07:14,680 - WDM - INFO - ====== WebDriver manager ======
+2025-03-13 20:07:16,430 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:07:16,630 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:07:16,880 - WDM - INFO - Driver [C:\Users\maxsi\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver-win32/chromedriver.exe] found in cache
+2025-03-13 20:07:18,267 - pinterest - INFO - Selenium WebDriver успешно инициализирован
+2025-03-13 20:07:18,268 - pinterest - INFO - Загружаем страницу поиска: https://www.pinterest.com/search/pins/?q=%D0%9F%D0%BE%D0%B2%D1%81%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D1%8B%D0%B9%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%20%D0%BD%D0%B0%20%D0%BE%D1%81%D0%B5%D0%BD%D1%8C
+2025-03-13 20:07:40,073 - pinterest - INFO - Найден селектор: div[data-test-id='pin']
+2025-03-13 20:07:40,073 - pinterest - INFO - Страница загружена, прокручиваем для загрузки изображений
+2025-03-13 20:07:51,150 - pinterest - INFO - Ищем изображения на странице
+2025-03-13 20:07:51,175 - pinterest - INFO - Найдены пины через селектор: div[data-test-id='pin']
+2025-03-13 20:07:51,175 - pinterest - INFO - Найдено 30 потенциальных пинов
+2025-03-13 20:07:51,617 - pinterest - INFO - Изображение сохранено: photo\4b5f6507e50e09beb6e6ea107dffd50e.jpg
+2025-03-13 20:07:51,619 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/37/c5/20/37c520fd3ec6d140b4581c0ad230476a.jpg
+2025-03-13 20:07:52,356 - pinterest - INFO - Изображение сохранено: photo\1e59bfd90345a8d3280107b639837a25.jpg
+2025-03-13 20:07:52,357 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/8d/50/df/8d50dfc86e550c76a48af0b678931b62.jpg
+2025-03-13 20:07:52,639 - pinterest - INFO - Изображение сохранено: photo\1055cde33823d8438bcc2462e3641e46.jpg
+2025-03-13 20:07:52,640 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/62/34/24/623424322e72a5807deafd3abe5cbe64.jpg
+2025-03-13 20:07:52,642 - pinterest - INFO - Кеш сохранен
+2025-03-13 20:07:52,643 - pinterest - INFO - Найдено 3 пинов по запросу 'Повседневный образ на осень'
+2025-03-13 20:07:52,643 - pinterest - INFO - Анализирую изображение для пина 4b5f6507e50e09beb6e6ea107dffd50e
+2025-03-13 20:07:52,920 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 403 Forbidden"
+2025-03-13 20:07:52,926 - pinterest - ERROR - Ошибка при анализе изображения https://i.pinimg.com/originals/37/c5/20/37c520fd3ec6d140b4581c0ad230476a.jpg: Error code: 403 - {'error': {'code': 'unsupported_country_region_territory', 'message': 'Country, region, or territory not supported', 'param': None, 'type': 'request_forbidden'}}
+2025-03-13 20:07:52,927 - pinterest - WARNING - API OpenAI недоступен из текущего региона. Будет использован запасной вариант анализа.
+2025-03-13 20:07:52,928 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/originals/37/c5/20/37c520fd3ec6d140b4581c0ad230476a.jpg
+2025-03-13 20:07:52,929 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:07:52,932 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:07:52,933 - pinterest - INFO - Анализирую изображение для пина 1e59bfd90345a8d3280107b639837a25
+2025-03-13 20:07:52,934 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/originals/8d/50/df/8d50dfc86e550c76a48af0b678931b62.jpg (API недоступен)
+2025-03-13 20:07:52,935 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:07:52,937 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:07:52,937 - pinterest - INFO - Анализирую изображение для пина 1055cde33823d8438bcc2462e3641e46
+2025-03-13 20:07:52,937 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/originals/62/34/24/623424322e72a5807deafd3abe5cbe64.jpg (API недоступен)
+2025-03-13 20:07:52,938 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:07:52,939 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:07:55,380 - api - INFO - Задача 3b4f29ea-fc81-4305-8987-7e23a73d2e09 успешно завершена: найдено 3 образов
+2025-03-13 20:08:08,919 - api - INFO - Получен запрос на поиск товаров: синие джинсы прямые
+2025-03-13 20:08:08,920 - api - ERROR - Ошибка при поиске товаров на Wildberries: object of type 'SearchRequest' has no len()
+2025-03-13 20:08:08,922 - api - ERROR - Traceback (most recent call last):
+  File "C:\Users\maxsi\qwewqeqr\api.py", line 1068, in process_wildberries_search
+    tasks[task_id].total_items = len(search_items)
+TypeError: object of type 'SearchRequest' has no len()
+
+2025-03-13 20:08:08,923 - api - INFO - Задача 127b57e4-9539-46dd-b861-0d8025801f57 в процессе выполнения или завершилась с ошибкой
+2025-03-13 20:08:17,365 - api - INFO - Получен запрос на поиск товаров: белая футболка базовая
+2025-03-13 20:08:17,367 - api - ERROR - Ошибка при поиске товаров на Wildberries: object of type 'SearchRequest' has no len()
+2025-03-13 20:08:17,367 - api - ERROR - Traceback (most recent call last):
+  File "C:\Users\maxsi\qwewqeqr\api.py", line 1068, in process_wildberries_search
+    tasks[task_id].total_items = len(search_items)
+TypeError: object of type 'SearchRequest' has no len()
+
+2025-03-13 20:08:17,367 - api - INFO - Задача ebeb7d73-dc58-4db0-8338-16b6127ed068 в процессе выполнения или завершилась с ошибкой
+2025-03-13 20:08:56,110 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:08:56,147 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:08:56,147 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:09:06,565 - api - INFO - Получен запрос на поиск образов в Pinterest: Повседневный образ на осень, пол: женский
+2025-03-13 20:09:06,731 - pinterest - INFO - Загружен кеш с 3 записями
+2025-03-13 20:09:06,731 - pinterest - INFO - Анализатор изображений инициализирован
+2025-03-13 20:09:06,731 - pinterest - INFO - Загружен кеш с 52 пинами
+2025-03-13 20:09:06,731 - pinterest - INFO - Pinterest API клиент инициализирован
+2025-03-13 20:09:06,731 - api - INFO - Инициализирован экземпляр Pinterest API с поддержкой анализа изображений
+2025-03-13 20:09:06,731 - pinterest - INFO - HTTP сессия инициализирована
+2025-03-13 20:09:06,731 - pinterest - INFO - Найден Chrome по пути: C:\Program Files\Google\Chrome\Application\chrome.exe
+2025-03-13 20:09:06,731 - WDM - INFO - ====== WebDriver manager ======
+2025-03-13 20:09:08,347 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:09:08,497 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:09:08,647 - WDM - INFO - Driver [C:\Users\maxsi\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver-win32/chromedriver.exe] found in cache
+2025-03-13 20:09:09,582 - pinterest - INFO - Selenium WebDriver успешно инициализирован
+2025-03-13 20:09:09,582 - pinterest - INFO - Загружаем страницу поиска: https://www.pinterest.com/search/pins/?q=%D0%9F%D0%BE%D0%B2%D1%81%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D1%8B%D0%B9%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%20%D0%BD%D0%B0%20%D0%BE%D1%81%D0%B5%D0%BD%D1%8C
+2025-03-13 20:09:31,411 - pinterest - INFO - Найден селектор: div[data-test-id='pin']
+2025-03-13 20:09:31,411 - pinterest - INFO - Страница загружена, прокручиваем для загрузки изображений
+2025-03-13 20:09:43,401 - pinterest - INFO - Ищем изображения на странице
+2025-03-13 20:09:43,427 - pinterest - INFO - Найдены пины через селектор: div[data-test-id='pin']
+2025-03-13 20:09:43,427 - pinterest - INFO - Найдено 28 потенциальных пинов
+2025-03-13 20:09:44,036 - pinterest - INFO - Изображение сохранено: photo\3dda74721a20bdf6d730914ebe43bb2d.jpg
+2025-03-13 20:09:44,036 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/1c/29/03/1c2903bf69a16bf11625773e0e5c719b.jpg
+2025-03-13 20:09:46,022 - pinterest - INFO - Изображение сохранено: photo\883b612fe8590f54f6f1e8eda4da6c42.jpg
+2025-03-13 20:09:46,023 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/e7/50/45/e75045110e34032df37cf849414bc109.jpg
+2025-03-13 20:09:46,027 - pinterest - INFO - Кеш сохранен
+2025-03-13 20:09:46,027 - pinterest - INFO - Найдено 3 пинов по запросу 'Повседневный образ на осень'
+2025-03-13 20:09:46,028 - pinterest - INFO - Анализирую изображение для пина 3dda74721a20bdf6d730914ebe43bb2d
+2025-03-13 20:09:46,257 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 403 Forbidden"
+2025-03-13 20:09:46,260 - pinterest - ERROR - Ошибка при анализе изображения https://i.pinimg.com/originals/1c/29/03/1c2903bf69a16bf11625773e0e5c719b.jpg: Error code: 403 - {'error': {'code': 'unsupported_country_region_territory', 'message': 'Country, region, or territory not supported', 'param': None, 'type': 'request_forbidden'}}
+2025-03-13 20:09:46,261 - pinterest - WARNING - API OpenAI недоступен из текущего региона. Будет использован запасной вариант анализа.
+2025-03-13 20:09:46,261 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/originals/1c/29/03/1c2903bf69a16bf11625773e0e5c719b.jpg
+2025-03-13 20:09:46,264 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:09:46,265 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:09:46,265 - pinterest - INFO - Анализирую изображение для пина a7b0f34dae804738e0c95a07a600ccd9
+2025-03-13 20:09:46,266 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/videos/thumbnails/originals/15/9c/ea/159ceab40b309c0d5eeae59f23cb7bcc.0000000.jpg (API недоступен)
+2025-03-13 20:09:46,267 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:09:46,268 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:09:46,268 - pinterest - INFO - Анализирую изображение для пина 883b612fe8590f54f6f1e8eda4da6c42
+2025-03-13 20:09:46,269 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/originals/e7/50/45/e75045110e34032df37cf849414bc109.jpg (API недоступен)
+2025-03-13 20:09:46,271 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:09:46,272 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:09:48,526 - api - INFO - Задача 13caa436-b35f-4154-aede-c9aa0555441a успешно завершена: найдено 3 образов
+2025-03-13 20:13:34,309 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000002047D0E55D0>
+2025-03-13 20:13:37,038 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:13:37,071 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:13:37,071 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:16:04,519 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:16:04,561 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:16:04,561 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:16:09,194 - api - INFO - Получен запрос на поиск образов в Pinterest: Деловой стиль мужской, пол: мужской
+2025-03-13 20:16:09,470 - pinterest - INFO - Загружен кеш с 6 записями
+2025-03-13 20:16:09,470 - pinterest - INFO - Анализатор изображений инициализирован
+2025-03-13 20:16:09,470 - pinterest - INFO - Загружен кеш с 54 пинами
+2025-03-13 20:16:09,470 - pinterest - INFO - Pinterest API клиент инициализирован
+2025-03-13 20:16:09,470 - api - INFO - Инициализирован экземпляр Pinterest API с поддержкой анализа изображений
+2025-03-13 20:16:09,470 - pinterest - INFO - HTTP сессия инициализирована
+2025-03-13 20:16:09,480 - pinterest - INFO - Найден Chrome по пути: C:\Program Files\Google\Chrome\Application\chrome.exe
+2025-03-13 20:16:09,481 - WDM - INFO - ====== WebDriver manager ======
+2025-03-13 20:16:11,186 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:16:11,338 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:16:11,482 - WDM - INFO - Driver [C:\Users\maxsi\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver-win32/chromedriver.exe] found in cache
+2025-03-13 20:16:12,435 - pinterest - INFO - Selenium WebDriver успешно инициализирован
+2025-03-13 20:16:12,435 - pinterest - INFO - Загружаем страницу поиска: https://www.pinterest.com/search/pins/?q=%D0%94%D0%B5%D0%BB%D0%BE%D0%B2%D0%BE%D0%B9%20%D1%81%D1%82%D0%B8%D0%BB%D1%8C%20%D0%BC%D1%83%D0%B6%D1%81%D0%BA%D0%BE%D0%B9
+2025-03-13 20:16:34,234 - pinterest - INFO - Найден селектор: div[data-test-id='pin']
+2025-03-13 20:16:34,234 - pinterest - INFO - Страница загружена, прокручиваем для загрузки изображений
+2025-03-13 20:16:45,597 - pinterest - INFO - Ищем изображения на странице
+2025-03-13 20:16:45,639 - pinterest - INFO - Найдены пины через селектор: div[data-test-id='pin']
+2025-03-13 20:16:45,640 - pinterest - INFO - Найдено 29 потенциальных пинов
+2025-03-13 20:16:46,103 - pinterest - INFO - Изображение сохранено: photo\4df3160a589073a30295cb3ddd2eb76d.jpg
+2025-03-13 20:16:46,104 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/b6/46/0f/b6460f28b7211f4f890a97c1f1a3190b.jpg
+2025-03-13 20:16:46,564 - pinterest - INFO - Изображение сохранено: photo\5d3bae998d6d6d6fa1ecf883c95a19dd.jpg
+2025-03-13 20:16:46,565 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/ef/e7/52/efe752538df4f74ead0f9779dacaced8.jpg
+2025-03-13 20:16:46,905 - pinterest - INFO - Изображение сохранено: photo\5728dc111dc6fb422dc390d2176aa765.jpg
+2025-03-13 20:16:46,905 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/5a/f4/23/5af423546f798c30f44349f08edddb6d.jpg
+2025-03-13 20:16:46,910 - pinterest - INFO - Кеш сохранен
+2025-03-13 20:16:46,911 - pinterest - INFO - Найдено 3 пинов по запросу 'Деловой стиль мужской'
+2025-03-13 20:16:46,911 - pinterest - INFO - Анализирую изображение для пина 4df3160a589073a30295cb3ddd2eb76d
+2025-03-13 20:16:47,199 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 403 Forbidden"
+2025-03-13 20:16:47,202 - pinterest - ERROR - Ошибка при анализе изображения https://i.pinimg.com/originals/b6/46/0f/b6460f28b7211f4f890a97c1f1a3190b.jpg: Error code: 403 - {'error': {'code': 'unsupported_country_region_territory', 'message': 'Country, region, or territory not supported', 'param': None, 'type': 'request_forbidden'}}
+2025-03-13 20:16:47,203 - pinterest - WARNING - API OpenAI недоступен из текущего региона. Будет использован запасной вариант анализа.
+2025-03-13 20:16:47,203 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/originals/b6/46/0f/b6460f28b7211f4f890a97c1f1a3190b.jpg
+2025-03-13 20:16:47,204 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:16:47,205 - pinterest - INFO - Определено 0 предметов одежды
+2025-03-13 20:16:47,205 - pinterest - INFO - Анализирую изображение для пина 5d3bae998d6d6d6fa1ecf883c95a19dd
+2025-03-13 20:16:47,206 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/originals/ef/e7/52/efe752538df4f74ead0f9779dacaced8.jpg (API недоступен)
+2025-03-13 20:16:47,207 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:16:47,208 - pinterest - INFO - Определено 0 предметов одежды
+2025-03-13 20:16:47,209 - pinterest - INFO - Анализирую изображение для пина 5728dc111dc6fb422dc390d2176aa765
+2025-03-13 20:16:47,209 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/originals/5a/f4/23/5af423546f798c30f44349f08edddb6d.jpg (API недоступен)
+2025-03-13 20:16:47,210 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:16:47,211 - pinterest - INFO - Определено 0 предметов одежды
+2025-03-13 20:16:49,418 - api - ERROR - Ошибка при поиске образов в Pinterest: 'PinterestAPI' object has no attribute 'api'
+2025-03-13 20:16:49,418 - api - ERROR - Traceback (most recent call last):
+  File "C:\Users\maxsi\qwewqeqr\api.py", line 745, in process_pinterest_outfit_search
+    if hasattr(pinterest.api, 'image_analyzer'):
+AttributeError: 'PinterestAPI' object has no attribute 'api'
+
+2025-03-13 20:18:27,736 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x0000014AC85DBA90>
+2025-03-13 20:18:30,471 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:18:30,524 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:18:30,524 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:24:17,104 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:24:24,897 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:24:25,013 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:24:25,013 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:24:56,850 - api - INFO - Получен запрос на поиск образов в Pinterest: Повседневный образ на осень, пол: женский
+2025-03-13 20:24:57,263 - pinterest - INFO - Загружен кеш с 9 записями
+2025-03-13 20:24:57,263 - pinterest - INFO - Анализатор изображений инициализирован
+2025-03-13 20:24:57,263 - pinterest - INFO - Загружен кеш с 57 пинами
+2025-03-13 20:24:57,263 - pinterest - INFO - Pinterest API клиент инициализирован
+2025-03-13 20:24:57,263 - api - INFO - Инициализирован экземпляр Pinterest API с поддержкой анализа изображений
+2025-03-13 20:24:57,263 - pinterest - INFO - HTTP сессия инициализирована
+2025-03-13 20:24:57,263 - pinterest - INFO - Найден Chrome по пути: C:\Program Files\Google\Chrome\Application\chrome.exe
+2025-03-13 20:24:57,263 - WDM - INFO - ====== WebDriver manager ======
+2025-03-13 20:25:01,065 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:25:01,247 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:25:01,423 - WDM - INFO - Driver [C:\Users\maxsi\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver-win32/chromedriver.exe] found in cache
+2025-03-13 20:25:02,942 - pinterest - INFO - Selenium WebDriver успешно инициализирован
+2025-03-13 20:25:02,942 - pinterest - INFO - Загружаем страницу поиска: https://www.pinterest.com/search/pins/?q=%D0%9F%D0%BE%D0%B2%D1%81%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D1%8B%D0%B9%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%20%D0%BD%D0%B0%20%D0%BE%D1%81%D0%B5%D0%BD%D1%8C
+2025-03-13 20:25:26,412 - pinterest - INFO - Найден селектор: div[data-test-id='pin']
+2025-03-13 20:25:26,412 - pinterest - INFO - Страница загружена, прокручиваем для загрузки изображений
+2025-03-13 20:25:42,428 - pinterest - INFO - Ищем изображения на странице
+2025-03-13 20:25:42,525 - pinterest - INFO - Найдены пины через селектор: div[data-test-id='pin']
+2025-03-13 20:25:42,525 - pinterest - INFO - Найдено 27 потенциальных пинов
+2025-03-13 20:25:46,568 - pinterest - INFO - Изображение сохранено: photo\6759b606deb7426b058ce3f1d7ab1607.jpg
+2025-03-13 20:25:46,576 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/24/3a/62/243a62e57344061a5d95578170ad6430.jpg
+2025-03-13 20:25:47,190 - pinterest - INFO - Изображение сохранено: photo\2d52aa1e9f7907da12daeea241c2cc8e.jpg
+2025-03-13 20:25:47,191 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/3e/61/2a/3e612ac568a4b2cd0922d6954008e66a.jpg
+2025-03-13 20:25:47,817 - pinterest - INFO - Изображение сохранено: photo\3622e4cbcf617e0bc842f221479eebe8.jpg
+2025-03-13 20:25:47,819 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/34/f2/37/34f2375ab06cc5ecaf4bd60d6a2be0df.jpg
+2025-03-13 20:25:47,827 - pinterest - INFO - Кеш сохранен
+2025-03-13 20:25:47,828 - pinterest - INFO - Найдено 3 пинов по запросу 'Повседневный образ на осень'
+2025-03-13 20:25:47,828 - pinterest - INFO - Анализирую изображение для пина 6759b606deb7426b058ce3f1d7ab1607
+2025-03-13 20:25:48,159 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 403 Forbidden"
+2025-03-13 20:25:48,165 - pinterest - ERROR - Ошибка при анализе изображения https://i.pinimg.com/originals/24/3a/62/243a62e57344061a5d95578170ad6430.jpg: Error code: 403 - {'error': {'code': 'unsupported_country_region_territory', 'message': 'Country, region, or territory not supported', 'param': None, 'type': 'request_forbidden'}}
+2025-03-13 20:25:48,167 - pinterest - WARNING - API OpenAI недоступен из текущего региона. Будет использован запасной вариант анализа.
+2025-03-13 20:25:48,167 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/originals/24/3a/62/243a62e57344061a5d95578170ad6430.jpg
+2025-03-13 20:25:48,169 - pinterest - INFO - Используем предустановленные предметы категории 'повседневный образ' для пола 'женский'
+2025-03-13 20:25:48,172 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:25:48,173 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:25:48,174 - pinterest - INFO - Анализирую изображение для пина 2d52aa1e9f7907da12daeea241c2cc8e
+2025-03-13 20:25:48,175 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/originals/3e/61/2a/3e612ac568a4b2cd0922d6954008e66a.jpg (API недоступен)
+2025-03-13 20:25:48,176 - pinterest - INFO - Используем предустановленные предметы категории 'повседневный образ' для пола 'женский'
+2025-03-13 20:25:48,180 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:25:48,181 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:25:48,182 - pinterest - INFO - Анализирую изображение для пина 3622e4cbcf617e0bc842f221479eebe8
+2025-03-13 20:25:48,183 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/originals/34/f2/37/34f2375ab06cc5ecaf4bd60d6a2be0df.jpg (API недоступен)
+2025-03-13 20:25:48,184 - pinterest - INFO - Используем предустановленные предметы категории 'повседневный образ' для пола 'женский'
+2025-03-13 20:25:48,187 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:25:48,188 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:25:52,102 - api - INFO - Задача 90da1cae-1e32-4dc6-bd9e-11cb5aa1cb04 успешно завершена: найдено 3 образов
+2025-03-13 20:25:52,104 - pinterest - INFO - Все соединения закрыты
+2025-03-13 20:30:54,103 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:30:59,676 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:30:59,996 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:30:59,996 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:31:11,258 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:31:11,344 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:31:11,344 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:31:30,869 - api - INFO - Получен запрос на поиск образов в Pinterest: Офисный стиль женский, пол: женский
+2025-03-13 20:31:31,330 - pinterest - INFO - Загружен кеш с 12 записями
+2025-03-13 20:31:31,330 - pinterest - INFO - Анализатор изображений инициализирован
+2025-03-13 20:31:31,330 - pinterest - INFO - Загружен кеш с 60 пинами
+2025-03-13 20:31:31,345 - pinterest - INFO - Pinterest API клиент инициализирован
+2025-03-13 20:31:31,348 - api - INFO - Инициализирован экземпляр Pinterest API с поддержкой анализа изображений
+2025-03-13 20:31:31,348 - pinterest - INFO - HTTP сессия инициализирована
+2025-03-13 20:31:31,348 - pinterest - INFO - Найден Chrome по пути: C:\Program Files\Google\Chrome\Application\chrome.exe
+2025-03-13 20:31:31,356 - WDM - INFO - ====== WebDriver manager ======
+2025-03-13 20:31:35,111 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:31:35,453 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:31:35,597 - WDM - INFO - Driver [C:\Users\maxsi\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver-win32/chromedriver.exe] found in cache
+2025-03-13 20:31:37,101 - pinterest - INFO - Selenium WebDriver успешно инициализирован
+2025-03-13 20:31:37,101 - pinterest - INFO - Загружаем страницу поиска: https://www.pinterest.com/search/pins/?q=%D0%9E%D1%84%D0%B8%D1%81%D0%BD%D1%8B%D0%B9%20%D1%81%D1%82%D0%B8%D0%BB%D1%8C%20%D0%B6%D0%B5%D0%BD%D1%81%D0%BA%D0%B8%D0%B9
+2025-03-13 20:32:00,286 - pinterest - INFO - Найден селектор: div[data-test-id='pin']
+2025-03-13 20:32:00,288 - pinterest - INFO - Страница загружена, прокручиваем для загрузки изображений
+2025-03-13 20:32:17,062 - pinterest - INFO - Ищем изображения на странице
+2025-03-13 20:32:18,073 - pinterest - INFO - Найдены пины через селектор: div[data-test-id='pin']
+2025-03-13 20:32:18,073 - pinterest - INFO - Найдено 32 потенциальных пинов
+2025-03-13 20:32:20,739 - pinterest - INFO - Изображение сохранено: photo\2fb72941ee781dcc4127d1e5115b3e24.jpg
+2025-03-13 20:32:20,747 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/f5/d8/b3/f5d8b39604565e79c54a3719cd2203e9.jpg
+2025-03-13 20:32:21,843 - pinterest - INFO - Изображение сохранено: photo\4fe16b3867c0cb141e8246025dc62c2a.jpg
+2025-03-13 20:32:21,843 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/8e/41/e6/8e41e6fa2a2c9c2874cd67b76a6a740a.jpg
+2025-03-13 20:32:23,160 - pinterest - INFO - Изображение сохранено: photo\c0ae794e1201b4385afa0e6e648227f5.jpg
+2025-03-13 20:32:23,160 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/4b/87/68/4b876871a97a276fc5d432abea1cf7d1.jpg
+2025-03-13 20:32:23,166 - pinterest - INFO - Кеш сохранен
+2025-03-13 20:32:23,168 - pinterest - INFO - Найдено 3 пинов по запросу 'Офисный стиль женский'
+2025-03-13 20:32:23,168 - pinterest - INFO - Анализирую изображение для пина 2fb72941ee781dcc4127d1e5115b3e24
+2025-03-13 20:32:24,545 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 403 Forbidden"
+2025-03-13 20:32:24,561 - pinterest - WARNING - API OpenAI недоступен из текущего региона. Будет использован запасной вариант анализа.
+2025-03-13 20:32:24,569 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/originals/f5/d8/b3/f5d8b39604565e79c54a3719cd2203e9.jpg
+2025-03-13 20:32:24,569 - pinterest - INFO - Используем предустановленные предметы категории 'офисный стиль женский' для пола 'женский'
+2025-03-13 20:32:24,577 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:32:24,577 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:32:24,577 - pinterest - INFO - Анализирую изображение для пина 4fe16b3867c0cb141e8246025dc62c2a
+2025-03-13 20:32:24,585 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/originals/8e/41/e6/8e41e6fa2a2c9c2874cd67b76a6a740a.jpg (API недоступен)
+2025-03-13 20:32:24,585 - pinterest - INFO - Используем предустановленные предметы категории 'офисный стиль женский' для пола 'женский'
+2025-03-13 20:32:24,593 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:32:24,593 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:32:24,601 - pinterest - INFO - Анализирую изображение для пина c0ae794e1201b4385afa0e6e648227f5
+2025-03-13 20:32:24,601 - pinterest - INFO - Использую запасной вариант анализа для https://i.pinimg.com/originals/4b/87/68/4b876871a97a276fc5d432abea1cf7d1.jpg (API недоступен)
+2025-03-13 20:32:24,601 - pinterest - INFO - Используем предустановленные предметы категории 'офисный стиль женский' для пола 'женский'
+2025-03-13 20:32:24,601 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:32:24,601 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:32:28,214 - api - INFO - Задача e13cb440-859d-4509-b80c-5c93921a6b1d успешно завершена: найдено 3 образов
+2025-03-13 20:32:28,214 - pinterest - INFO - Все соединения закрыты
+2025-03-13 20:35:00,979 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:35:01,103 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:35:01,103 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:36:54,102 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:36:54,214 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:36:54,214 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:36:56,593 - api - INFO - Получен файл для анализа: 1741887416572_test_image.jpg
+2025-03-13 20:36:56,596 - api - INFO - Файл сохранен: static/uploads\001f1117-8721-4a39-8c75-006186fb7c12.jpg
+2025-03-13 20:36:56,596 - api - INFO - API-ключ OpenRouter успешно загружен
+2025-03-13 20:36:56,596 - assistant - INFO - OpenRouterClient для обработки изображений успешно инициализирован
+2025-03-13 20:36:56,596 - assistant - INFO - Инициализирован ChatAssistant с моделью anthropic/claude-3-haiku (тип: openrouter)
+2025-03-13 20:36:56,616 - openrouter_image_client - INFO - Отправка запроса к OpenRouter API для анализа изображения
+2025-03-13 20:37:00,581 - openrouter_image_client - INFO - Полный ответ от OpenRouter API: {"id": "gen-1741887417-s0ssWhbKqY8pJjCrGWrK", "provider": "Anthropic", "model": "anthropic/claude-3-haiku", "object": "chat.completion", "created": 1741887417, "choices": [{"logprobs": null, "finish_reason": "stop", "native_finish_reason": "stop", "index": 0, "message": {"role": "assistant", "content": "Пол: женский\n\n1. Пиджак светло-серый\n2. Блузка белая\n3. Брюки светло-серые\n\nПИДЖАК:\n- Цвет: светло-серый\n- Пол: женский\n- Материал: неизвестно\n- Описание: Классический крой, с лацканами\n\nБЛУЗКА: \n- Цвет: белый\n- Пол: женский\n- Материал: неизвестно\n- Описание: Простой дизайн, длинные рукава\n\nБРЮКИ:\n- Цвет: светло-серый\n- Пол: женский\n- Материал: неизвестно\n- Описание: Строгий прямой крой, длина до щиколотки\n\nОБЩЕЕ:\nОбраз представляет собой деловой стиль одежды, подходящий для офисной или официальной обстановки. Светлая цветовая гамма и элегантный крой создают приятное и профессиональное впечатление.", "refusal": null}}], "usage": {"prompt_tokens": 1744, "completion_tokens": 293, "total_tokens": 2037}}
+2025-03-13 20:37:00,581 - openrouter_image_client - INFO - Найдена информация о поле: женский
+2025-03-13 20:37:00,581 - assistant - INFO - Изображение static/uploads\001f1117-8721-4a39-8c75-006186fb7c12.jpg успешно проанализировано
+2025-03-13 20:37:00,634 - api - INFO - Результат анализа: {'elements': [{'type': 'Пиджак', 'color': 'светло-серый', 'description': 'Классический крой, с лацканами', 'material': None, 'pattern': None, 'gender': 'женский'}, {'type': 'Блузка', 'color': None, 'description': 'Блузка белая', 'material': None, 'pattern': None, 'gender': 'женский'}, {'type': 'Брюки', 'color': 'светло-серый', 'description': 'Строгий прямой крой, длина до щиколотки', 'material': None, 'pattern': None, 'gender': 'женский'}], 'analysis': 'Пол: женский\n\n1. Пиджак светло-серый\n2. Блузка белая\n3. Брюки светло-серые\n\nПИДЖАК:\n- Цвет: светло-серый\n- Пол: женский\n- Материал: неизвестно\n- Описание: Классический крой, с лацканами\n\nБЛУЗКА: \n- Цвет: белый\n- Пол: женский\n- Материал: неизвестно\n- Описание: Простой дизайн, длинные рукава\n\nБРЮКИ:\n- Цвет: светло-серый\n- Пол: женский\n- Материал: неизвестно\n- Описание: Строгий прямой крой, длина до щиколотки\n\nОБЩЕЕ:\nОбраз представляет собой деловой стиль одежды, подходящий для офисной или официальной обстановки. Светлая цветовая гамма и элегантный крой создают приятное и профессиональное впечатление.'}
+2025-03-13 20:37:00,634 - wildberries - INFO - Создан новый кеш
+2025-03-13 20:37:00,634 - wildberries - INFO - Wildberries API клиент инициализирован
+2025-03-13 20:37:00,634 - wildberries_api - INFO - WildberriesService инициализирован
+2025-03-13 20:37:00,642 - wildberries - INFO - Поиск товаров по запросу 'светло-серый Пиджак Классический крой,' с параметрами: limit=3, low_price=1, top_price=1000000, discount=None, gender=женский
+2025-03-13 20:37:00,642 - wildberries - INFO - Поиск товаров по URL: https://search.wb.ru/exactmatch/ru/common/v4/search?appType=1&curr=rub&dest=-1257786&locale=ru&page=1&priceU=100;100000000&query=%D1%81%D0%B2%D0%B5%D1%82%D0%BB%D0%BE-%D1%81%D0%B5%D1%80%D1%8B%D0%B9%20%D0%9F%D0%B8%D0%B4%D0%B6%D0%B0%D0%BA%20%D0%9A%D0%BB%D0%B0%D1%81%D1%81%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%BA%D1%80%D0%BE%D0%B9%2C&resultset=catalog&sort=popular&spp=0&suppressSpellcheck=false
+2025-03-13 20:37:03,013 - wildberries - INFO - Всего найдено 100 товаров, обрабатываем максимум 3
+2025-03-13 20:37:03,013 - wildberries - INFO - Добавлен товар: Пиджак женский большие размеры (Цена: 10999 руб., Скидочная цена: 3472 руб., Скидка: 68%)
+2025-03-13 20:37:03,013 - wildberries - INFO - Добавлен товар: Пиджак оверсайз классический (Цена: 8000 руб., Скидочная цена: 1601 руб., Скидка: 80%)
+2025-03-13 20:37:03,013 - wildberries - INFO - Добавлен товар: Пиджак приталенный короткий (Цена: 14499 руб., Скидочная цена: 4688 руб., Скидка: 68%)
+2025-03-13 20:37:03,013 - wildberries - INFO - Успешно найдено 3 товаров
+2025-03-13 20:37:03,013 - wildberries_api - INFO - Добавлен товар: Пиджак женский большие размеры (Цена: 10999 руб., Скидочная цена: 3472 руб., Скидка: 68%)
+2025-03-13 20:37:03,026 - wildberries_api - INFO - Добавлен товар: Пиджак оверсайз классический (Цена: 8000 руб., Скидочная цена: 1601 руб., Скидка: 80%)
+2025-03-13 20:37:03,026 - wildberries_api - INFO - Добавлен товар: Пиджак приталенный короткий (Цена: 14499 руб., Скидочная цена: 4688 руб., Скидка: 68%)
+2025-03-13 20:37:03,026 - wildberries_api - INFO - Найдено 3 товаров по запросу 'светло-серый Пиджак Классический крой,'
+2025-03-13 20:37:03,026 - wildberries - INFO - Поиск товаров по запросу 'None Блузка Блузка белая' с параметрами: limit=3, low_price=1, top_price=1000000, discount=None, gender=женский
+2025-03-13 20:37:03,034 - wildberries - INFO - Поиск товаров по URL: https://search.wb.ru/exactmatch/ru/common/v4/search?appType=1&curr=rub&dest=-1257786&locale=ru&page=1&priceU=100;100000000&query=None%20%D0%91%D0%BB%D1%83%D0%B7%D0%BA%D0%B0%20%D0%91%D0%BB%D1%83%D0%B7%D0%BA%D0%B0%20%D0%B1%D0%B5%D0%BB%D0%B0%D1%8F&resultset=catalog&sort=popular&spp=0&suppressSpellcheck=false
+2025-03-13 20:37:05,430 - wildberries - INFO - Всего найдено 45 товаров, обрабатываем максимум 3
+2025-03-13 20:37:05,430 - wildberries - INFO - Добавлен товар: Блузка школьная трикотажная со съемным бантом (Цена: 1673 руб., Скидочная цена: 656 руб., Скидка: 61%)
+2025-03-13 20:37:05,430 - wildberries - INFO - Добавлен товар: Блузка-поло трикотажная в школу с длинным рукавом (Цена: 1543 руб., Скидочная цена: 641 руб., Скидка: 58%)
+2025-03-13 20:37:05,471 - wildberries - INFO - Добавлен товар: Блузка школьная трикотажная со съемным бантом (Цена: 1715 руб., Скидочная цена: 633 руб., Скидка: 63%)
+2025-03-13 20:37:05,471 - wildberries - INFO - Успешно найдено 3 товаров
+2025-03-13 20:37:05,471 - wildberries_api - INFO - Добавлен товар: Блузка школьная трикотажная со съемным бантом (Цена: 1673 руб., Скидочная цена: 656 руб., Скидка: 61%)
+2025-03-13 20:37:05,471 - wildberries_api - INFO - Добавлен товар: Блузка-поло трикотажная в школу с длинным рукавом (Цена: 1543 руб., Скидочная цена: 641 руб., Скидка: 58%)
+2025-03-13 20:37:05,471 - wildberries_api - INFO - Добавлен товар: Блузка школьная трикотажная со съемным бантом (Цена: 1715 руб., Скидочная цена: 633 руб., Скидка: 63%)
+2025-03-13 20:37:05,471 - wildberries_api - INFO - Найдено 3 товаров по запросу 'None Блузка Блузка белая'
+2025-03-13 20:37:05,480 - wildberries - INFO - Поиск товаров по запросу 'светло-серый Брюки Строгий прямой' с параметрами: limit=3, low_price=1, top_price=1000000, discount=None, gender=женский
+2025-03-13 20:37:05,480 - wildberries - INFO - Поиск товаров по URL: https://search.wb.ru/exactmatch/ru/common/v4/search?appType=1&curr=rub&dest=-1257786&locale=ru&page=1&priceU=100;100000000&query=%D1%81%D0%B2%D0%B5%D1%82%D0%BB%D0%BE-%D1%81%D0%B5%D1%80%D1%8B%D0%B9%20%D0%91%D1%80%D1%8E%D0%BA%D0%B8%20%D0%A1%D1%82%D1%80%D0%BE%D0%B3%D0%B8%D0%B9%20%D0%BF%D1%80%D1%8F%D0%BC%D0%BE%D0%B9&resultset=catalog&sort=popular&spp=0&suppressSpellcheck=false
+2025-03-13 20:37:07,780 - wildberries - INFO - Всего найдено 100 товаров, обрабатываем максимум 3
+2025-03-13 20:37:07,780 - wildberries - INFO - Добавлен товар: Брюки классические палаццо с высокой посадкой с резинкой (Цена: 9632 руб., Скидочная цена: 3411 руб., Скидка: 65%)
+2025-03-13 20:37:07,780 - wildberries - INFO - Добавлен товар: Брюки женские классические в клетку серые (Цена: 9199 руб., Скидочная цена: 4249 руб., Скидка: 54%)
+2025-03-13 20:37:07,780 - wildberries - INFO - Добавлен товар: Брюки летние классические (Цена: 13999 руб., Скидочная цена: 4419 руб., Скидка: 68%)
+2025-03-13 20:37:07,780 - wildberries - INFO - Успешно найдено 3 товаров
+2025-03-13 20:37:07,780 - wildberries_api - INFO - Добавлен товар: Брюки классические палаццо с высокой посадкой с резинкой (Цена: 9632 руб., Скидочная цена: 3411 руб., Скидка: 65%)
+2025-03-13 20:37:07,793 - wildberries_api - INFO - Добавлен товар: Брюки женские классические в клетку серые (Цена: 9199 руб., Скидочная цена: 4249 руб., Скидка: 54%)
+2025-03-13 20:37:07,793 - wildberries_api - INFO - Добавлен товар: Брюки летние классические (Цена: 13999 руб., Скидочная цена: 4419 руб., Скидка: 68%)
+2025-03-13 20:37:07,793 - wildberries_api - INFO - Найдено 3 товаров по запросу 'светло-серый Брюки Строгий прямой'
+2025-03-13 20:37:07,793 - api - INFO - Анализ изображения выполнен успешно: 3 предметов найдено
+2025-03-13 20:40:18,281 - api - INFO - Получен запрос на поиск образов в Pinterest: Деловой стиль мужской, пол: мужской
+2025-03-13 20:40:18,713 - pinterest - INFO - Загружен кеш с 15 записями
+2025-03-13 20:40:18,713 - pinterest - INFO - Анализатор изображений инициализирован
+2025-03-13 20:40:18,713 - pinterest - INFO - Загружен кеш с 63 пинами
+2025-03-13 20:40:18,713 - pinterest - INFO - Pinterest API клиент инициализирован
+2025-03-13 20:40:18,713 - api - INFO - Инициализирован экземпляр Pinterest API с поддержкой анализа изображений
+2025-03-13 20:40:18,724 - pinterest - INFO - HTTP сессия инициализирована
+2025-03-13 20:40:18,724 - pinterest - INFO - Найден Chrome по пути: C:\Program Files\Google\Chrome\Application\chrome.exe
+2025-03-13 20:40:18,724 - WDM - INFO - ====== WebDriver manager ======
+2025-03-13 20:40:22,922 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:40:23,129 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:40:23,309 - WDM - INFO - Driver [C:\Users\maxsi\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver-win32/chromedriver.exe] found in cache
+2025-03-13 20:40:25,343 - pinterest - INFO - Selenium WebDriver успешно инициализирован
+2025-03-13 20:40:25,343 - pinterest - INFO - Загружаем страницу поиска: https://www.pinterest.com/search/pins/?q=%D0%94%D0%B5%D0%BB%D0%BE%D0%B2%D0%BE%D0%B9%20%D1%81%D1%82%D0%B8%D0%BB%D1%8C%20%D0%BC%D1%83%D0%B6%D1%81%D0%BA%D0%BE%D0%B9
+2025-03-13 20:40:48,170 - pinterest - INFO - Найден селектор: div[data-test-id='pin']
+2025-03-13 20:40:48,170 - pinterest - INFO - Страница загружена, прокручиваем для загрузки изображений
+2025-03-13 20:41:01,796 - pinterest - INFO - Ищем изображения на странице
+2025-03-13 20:41:02,221 - pinterest - INFO - Найдены пины через селектор: div[data-test-id='pin']
+2025-03-13 20:41:02,222 - pinterest - INFO - Найдено 31 потенциальных пинов
+2025-03-13 20:41:05,503 - pinterest - ERROR - Ошибка при скачивании изображения: 403
+2025-03-13 20:41:06,742 - pinterest - INFO - Изображение сохранено: photo\6dda2394be265907beb5b2ada72efc69.jpg
+2025-03-13 20:41:06,780 - pinterest - INFO - Добавлен пин: https://i.pinimg.com/originals/90/c6/b1/90c6b1dc3a923030fdef5b9c2fcfff67.jpg
+2025-03-13 20:41:06,780 - pinterest - INFO - Кеш сохранен
+2025-03-13 20:41:06,789 - pinterest - INFO - Найдено 2 пинов по запросу 'Деловой стиль мужской'
+2025-03-13 20:41:06,789 - pinterest - INFO - Анализирую изображение для пина 3886833f301848f3899a4659f1f4c6ef
+2025-03-13 20:41:06,789 - pinterest - INFO - Использую локальный метод анализа для https://i.pinimg.com/originals/2f/71/03/2f7103077a92b1785f7e0ffd9540f37c.jpg
+2025-03-13 20:41:06,789 - pinterest - INFO - Используем все предустановленные предметы категории 'офисный стиль женский'
+2025-03-13 20:41:06,789 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:41:06,789 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:41:06,789 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:41:06,789 - pinterest - INFO - Анализирую изображение для пина 6dda2394be265907beb5b2ada72efc69
+2025-03-13 20:41:06,797 - pinterest - INFO - Использую локальный метод анализа для https://i.pinimg.com/originals/90/c6/b1/90c6b1dc3a923030fdef5b9c2fcfff67.jpg
+2025-03-13 20:41:06,797 - pinterest - INFO - Используем все предустановленные предметы категории 'офисный стиль женский'
+2025-03-13 20:41:06,797 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 20:41:06,797 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:41:06,797 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 20:41:10,150 - api - INFO - Задача c0129cca-05a6-4275-be63-64ba29f6015c успешно завершена: найдено 2 образов
+2025-03-13 20:41:10,150 - pinterest - INFO - Все соединения закрыты
+2025-03-13 20:44:28,251 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000001CD93106110>
+2025-03-13 20:44:28,251 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x000001CD931056F0>
+2025-03-13 20:44:35,180 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:44:35,285 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:44:35,285 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:45:02,341 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:45:02,432 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:45:02,435 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:45:41,873 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:45:41,983 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:45:41,984 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:45:47,956 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:45:48,085 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:45:48,085 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:46:30,650 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:46:30,793 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:46:30,796 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:46:38,045 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:46:38,162 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:46:38,162 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:47:09,171 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:47:09,253 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:47:09,254 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:56:53,386 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:56:53,529 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:56:53,529 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 20:57:07,325 - api - INFO - Получен запрос на поиск образов в Pinterest: Офисный стиль женский, пол: женский
+2025-03-13 20:57:07,712 - pinterest - INFO - Загружен кеш с 17 записями
+2025-03-13 20:57:07,712 - pinterest - INFO - Анализатор изображений инициализирован
+2025-03-13 20:57:07,712 - pinterest - INFO - Загружен кеш с 64 пинами
+2025-03-13 20:57:07,712 - pinterest - INFO - Pinterest API клиент инициализирован
+2025-03-13 20:57:07,712 - api - INFO - Инициализирован экземпляр Pinterest API с поддержкой анализа изображений
+2025-03-13 20:57:07,712 - pinterest - INFO - Найден Chrome по пути: C:\Program Files\Google\Chrome\Application\chrome.exe
+2025-03-13 20:57:07,712 - WDM - INFO - ====== WebDriver manager ======
+2025-03-13 20:57:11,637 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:57:11,857 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:57:11,993 - WDM - INFO - Driver [C:\Users\maxsi\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver-win32/chromedriver.exe] found in cache
+2025-03-13 20:57:13,433 - pinterest - INFO - Selenium WebDriver успешно инициализирован
+2025-03-13 20:57:13,433 - pinterest - INFO - Загружаем страницу поиска: https://www.pinterest.com/search/pins/?q=%D0%9E%D1%84%D0%B8%D1%81%D0%BD%D1%8B%D0%B9+%D1%81%D1%82%D0%B8%D0%BB%D1%8C+%D0%B6%D0%B5%D0%BD%D1%81%D0%BA%D0%B8%D0%B9
+2025-03-13 20:57:13,433 - pinterest - ERROR - Ошибка при загрузке страницы поиска: object NoneType can't be used in 'await' expression
+2025-03-13 20:57:17,068 - pinterest - ERROR - Повторная ошибка при загрузке страницы: object NoneType can't be used in 'await' expression
+2025-03-13 20:57:19,279 - pinterest - INFO - Все соединения закрыты
+2025-03-13 20:57:49,928 - api - INFO - Получен запрос на поиск образов в Pinterest: Летний пляжный лук, пол: женский
+2025-03-13 20:57:49,928 - pinterest - INFO - Найден Chrome по пути: C:\Program Files\Google\Chrome\Application\chrome.exe
+2025-03-13 20:57:49,928 - WDM - INFO - ====== WebDriver manager ======
+2025-03-13 20:57:53,612 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:57:57,963 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 20:57:58,112 - WDM - INFO - Driver [C:\Users\maxsi\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver-win32/chromedriver.exe] found in cache
+2025-03-13 20:57:59,545 - pinterest - INFO - Selenium WebDriver успешно инициализирован
+2025-03-13 20:57:59,546 - pinterest - INFO - Загружаем страницу поиска: https://www.pinterest.com/search/pins/?q=%D0%9B%D0%B5%D1%82%D0%BD%D0%B8%D0%B9+%D0%BF%D0%BB%D1%8F%D0%B6%D0%BD%D1%8B%D0%B9+%D0%BB%D1%83%D0%BA
+2025-03-13 20:57:59,546 - pinterest - ERROR - Ошибка при загрузке страницы поиска: object NoneType can't be used in 'await' expression
+2025-03-13 20:58:03,148 - pinterest - ERROR - Повторная ошибка при загрузке страницы: object NoneType can't be used in 'await' expression
+2025-03-13 20:58:05,329 - pinterest - INFO - Все соединения закрыты
+2025-03-13 20:59:58,468 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 20:59:58,562 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 20:59:58,562 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 21:00:22,719 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 21:00:22,835 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 21:00:22,835 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 21:02:25,991 - api - INFO - Получен запрос на поиск образов в Pinterest: Деловой стиль мужской, пол: мужской
+2025-03-13 21:02:26,357 - pinterest - INFO - Загружен кеш с 17 записями
+2025-03-13 21:02:26,358 - pinterest - INFO - Анализатор изображений инициализирован
+2025-03-13 21:02:26,361 - pinterest - INFO - Загружен кеш с 64 пинами
+2025-03-13 21:02:26,362 - pinterest - INFO - Pinterest API клиент инициализирован
+2025-03-13 21:02:26,363 - api - INFO - Инициализирован экземпляр Pinterest API с поддержкой анализа изображений
+2025-03-13 21:02:26,364 - pinterest - INFO - Найден Chrome по пути: C:\Program Files\Google\Chrome\Application\chrome.exe
+2025-03-13 21:02:26,365 - WDM - INFO - ====== WebDriver manager ======
+2025-03-13 21:02:30,381 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 21:02:30,538 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 21:02:30,714 - WDM - INFO - Driver [C:\Users\maxsi\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver-win32/chromedriver.exe] found in cache
+2025-03-13 21:02:32,050 - pinterest - INFO - Selenium WebDriver успешно инициализирован
+2025-03-13 21:02:32,051 - pinterest - INFO - Загружаем страницу поиска: https://www.pinterest.com/search/pins/?q=%D0%94%D0%B5%D0%BB%D0%BE%D0%B2%D0%BE%D0%B9+%D1%81%D1%82%D0%B8%D0%BB%D1%8C+%D0%BC%D1%83%D0%B6%D1%81%D0%BA%D0%BE%D0%B9
+2025-03-13 21:02:34,873 - pinterest - INFO - Ждем загрузку контента...
+2025-03-13 21:02:38,132 - pinterest - INFO - Найден селектор: div[data-test-id='pin']
+2025-03-13 21:02:38,132 - pinterest - INFO - Страница загружена, прокручиваем для загрузки изображений
+2025-03-13 21:02:46,364 - pinterest - INFO - Ищем изображения на странице
+2025-03-13 21:02:47,275 - pinterest - INFO - Найдены пины через селектор: div[data-test-id='pin']
+2025-03-13 21:02:47,277 - pinterest - INFO - Найдено 31 потенциальных пинов
+2025-03-13 21:03:09,047 - pinterest - INFO - HTTP сессия инициализирована
+2025-03-13 21:03:09,353 - pinterest - INFO - Изображение сохранено: photo\e73f7d4445e277141fbbc03f286095f5.jpg
+2025-03-13 21:03:29,884 - pinterest - INFO - Изображение сохранено: photo\4942ed6d76cf944364883748433f0df3.jpg
+2025-03-13 21:03:50,322 - pinterest - ERROR - Ошибка при скачивании изображения: 403
+2025-03-13 21:03:50,323 - pinterest - INFO - Пробуем альтернативный URL с размером 736x: https://i.pinimg.com/736xinals/31/4d/e2/314de26ceb3c29d7194e9ed421a42fef.jpg
+2025-03-13 21:03:50,561 - pinterest - INFO - Пробуем альтернативный URL с размером 564x: https://i.pinimg.com/564xinals/31/4d/e2/314de26ceb3c29d7194e9ed421a42fef.jpg
+2025-03-13 21:03:50,761 - pinterest - INFO - Пробуем альтернативный URL с размером 474x: https://i.pinimg.com/474xinals/31/4d/e2/314de26ceb3c29d7194e9ed421a42fef.jpg
+2025-03-13 21:03:50,981 - pinterest - INFO - Пробуем альтернативный URL с размером 236x: https://i.pinimg.com/236xinals/31/4d/e2/314de26ceb3c29d7194e9ed421a42fef.jpg
+2025-03-13 21:03:51,484 - pinterest - ERROR - Ошибка при сохранении кеша: Object of type PinInfo is not JSON serializable
+2025-03-13 21:03:51,492 - pinterest - INFO - Найдено 3 пинов по запросу 'Деловой стиль мужской'
+2025-03-13 21:03:51,493 - pinterest - INFO - Анализирую изображение для пина e73f7d4445e277141fbbc03f286095f5
+2025-03-13 21:03:51,493 - pinterest - INFO - Использую локальный метод анализа для https://i.pinimg.com/originals/1d/6f/5b/1d6f5bfd480411bbee28e548e9ae281a.jpg
+2025-03-13 21:03:51,493 - pinterest - INFO - Определена категория: деловой стиль мужской, пол: мужской
+2025-03-13 21:03:51,493 - pinterest - INFO - Используем предустановленные предметы категории 'деловой стиль мужской'
+2025-03-13 21:03:51,493 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 21:03:51,501 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 21:03:51,501 - pinterest - INFO - Анализирую изображение для пина 4942ed6d76cf944364883748433f0df3
+2025-03-13 21:03:51,501 - pinterest - INFO - Использую локальный метод анализа для https://i.pinimg.com/originals/a1/0c/84/a10c84c6d4374a57ea4d707adb129fca.jpg
+2025-03-13 21:03:51,501 - pinterest - INFO - Определена категория: деловой стиль мужской, пол: мужской
+2025-03-13 21:03:51,501 - pinterest - INFO - Используем предустановленные предметы категории 'деловой стиль мужской'
+2025-03-13 21:03:51,501 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 21:03:51,509 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 21:03:51,509 - pinterest - INFO - Анализирую изображение для пина f6ba51661074499fd3dcb614ceeaec78
+2025-03-13 21:03:51,509 - pinterest - INFO - Использую локальный метод анализа для https://i.pinimg.com/originals/31/4d/e2/314de26ceb3c29d7194e9ed421a42fef.jpg
+2025-03-13 21:03:51,509 - pinterest - INFO - Определена категория: деловой стиль мужской, пол: мужской
+2025-03-13 21:03:51,509 - pinterest - INFO - Используем предустановленные предметы категории 'деловой стиль мужской'
+2025-03-13 21:03:51,517 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 21:03:51,517 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 21:03:51,517 - pinterest - ERROR - Ошибка при сохранении кеша: Object of type PinInfo is not JSON serializable
+2025-03-13 21:03:51,562 - api - INFO - Задача fbc5faf7-49fd-4f5f-87b8-614689653413 успешно завершена: найдено 3 образов
+2025-03-13 21:03:53,778 - pinterest - INFO - Все соединения закрыты
+2025-03-13 21:07:38,246 - api - INFO - Получен запрос на поиск образов в Pinterest: Спортивный стиль, пол: женский
+2025-03-13 21:07:38,246 - pinterest - INFO - Найден Chrome по пути: C:\Program Files\Google\Chrome\Application\chrome.exe
+2025-03-13 21:07:38,251 - WDM - INFO - ====== WebDriver manager ======
+2025-03-13 21:07:42,479 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 21:07:42,679 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 21:07:42,897 - WDM - INFO - Driver [C:\Users\maxsi\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver-win32/chromedriver.exe] found in cache
+2025-03-13 21:07:44,661 - pinterest - INFO - Selenium WebDriver успешно инициализирован
+2025-03-13 21:07:44,661 - pinterest - INFO - Загружаем страницу поиска: https://www.pinterest.com/search/pins/?q=%D0%A1%D0%BF%D0%BE%D1%80%D1%82%D0%B8%D0%B2%D0%BD%D1%8B%D0%B9+%D1%81%D1%82%D0%B8%D0%BB%D1%8C
+2025-03-13 21:07:47,718 - pinterest - INFO - Ждем загрузку контента...
+2025-03-13 21:07:52,160 - pinterest - INFO - Найден селектор: div[data-test-id='pin']
+2025-03-13 21:07:52,168 - pinterest - INFO - Страница загружена, прокручиваем для загрузки изображений
+2025-03-13 21:08:00,903 - pinterest - INFO - Ищем изображения на странице
+2025-03-13 21:08:00,996 - pinterest - INFO - Найдены пины через селектор: div[data-test-id='pin']
+2025-03-13 21:08:00,996 - pinterest - INFO - Найдено 24 потенциальных пинов
+2025-03-13 21:08:21,230 - pinterest - ERROR - Ошибка при скачивании изображения: Session is closed
+2025-03-13 21:08:41,352 - pinterest - ERROR - Ошибка при скачивании изображения: Session is closed
+2025-03-13 21:09:01,495 - pinterest - ERROR - Ошибка при скачивании изображения: Session is closed
+2025-03-13 21:09:01,495 - pinterest - ERROR - Ошибка при сохранении кеша: Object of type PinInfo is not JSON serializable
+2025-03-13 21:09:01,503 - pinterest - INFO - Найдено 3 пинов по запросу 'Спортивный стиль'
+2025-03-13 21:09:01,504 - pinterest - INFO - Анализирую изображение для пина 2b08b7811dcdb7f6b655a84648c0b859
+2025-03-13 21:09:01,504 - pinterest - INFO - Использую локальный метод анализа для https://i.pinimg.com/originals/5b/ae/3c/5bae3c7b49cf1162d6713b1d68992e0d.jpg
+2025-03-13 21:09:01,504 - pinterest - INFO - Определена категория: спортивный стиль, пол: женский
+2025-03-13 21:09:01,507 - pinterest - INFO - Используем предустановленные предметы категории 'офисный стиль женский' для пола 'женский'
+2025-03-13 21:09:01,507 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 21:09:01,507 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 21:09:01,507 - pinterest - INFO - Анализирую изображение для пина c25b7269859d661b85e3f71a764ceb0c
+2025-03-13 21:09:01,515 - pinterest - INFO - Использую локальный метод анализа для https://i.pinimg.com/originals/75/b2/4e/75b24e16409d037c16512ccaf2478302.jpg
+2025-03-13 21:09:01,515 - pinterest - INFO - Определена категория: спортивный стиль, пол: женский
+2025-03-13 21:09:01,515 - pinterest - INFO - Используем предустановленные предметы категории 'офисный стиль женский' для пола 'женский'
+2025-03-13 21:09:01,515 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 21:09:01,515 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 21:09:01,515 - pinterest - INFO - Анализирую изображение для пина 57814054470d272a9c5da8cc1bfa1c0d
+2025-03-13 21:09:01,523 - pinterest - INFO - Использую локальный метод анализа для https://i.pinimg.com/originals/ec/6b/87/ec6b8762067f01db0db64df6c5eaf9e3.jpg
+2025-03-13 21:09:01,523 - pinterest - INFO - Определена категория: спортивный стиль, пол: женский
+2025-03-13 21:09:01,523 - pinterest - INFO - Используем предустановленные предметы категории 'офисный стиль женский' для пола 'женский'
+2025-03-13 21:09:01,528 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 21:09:01,528 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 21:09:01,536 - pinterest - ERROR - Ошибка при сохранении кеша: Object of type PinInfo is not JSON serializable
+2025-03-13 21:09:01,536 - api - INFO - Задача e121bab2-c03d-441a-b1ad-e4302fdb0010 успешно завершена: найдено 3 образов
+2025-03-13 21:09:03,827 - pinterest - INFO - Все соединения закрыты
+2025-03-13 21:12:04,116 - api - INFO - Получен запрос на поиск образов в Pinterest: Спортивный стиль, пол: female
+2025-03-13 21:12:04,116 - pinterest - INFO - Найден Chrome по пути: C:\Program Files\Google\Chrome\Application\chrome.exe
+2025-03-13 21:12:04,116 - WDM - INFO - ====== WebDriver manager ======
+2025-03-13 21:12:07,752 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 21:12:12,028 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-03-13 21:12:12,179 - WDM - INFO - Driver [C:\Users\maxsi\.wdm\drivers\chromedriver\win64\134.0.6998.88\chromedriver-win32/chromedriver.exe] found in cache
+2025-03-13 21:12:13,572 - pinterest - INFO - Selenium WebDriver успешно инициализирован
+2025-03-13 21:12:13,572 - pinterest - INFO - Загружаем страницу поиска: https://www.pinterest.com/search/pins/?q=%D0%A1%D0%BF%D0%BE%D1%80%D1%82%D0%B8%D0%B2%D0%BD%D1%8B%D0%B9+%D1%81%D1%82%D0%B8%D0%BB%D1%8C
+2025-03-13 21:12:16,217 - pinterest - INFO - Ждем загрузку контента...
+2025-03-13 21:12:18,001 - pinterest - INFO - Найден селектор: div[data-test-id='pin']
+2025-03-13 21:12:18,001 - pinterest - INFO - Страница загружена, прокручиваем для загрузки изображений
+2025-03-13 21:12:31,474 - pinterest - INFO - Ищем изображения на странице
+2025-03-13 21:12:34,840 - pinterest - INFO - Найдены пины через селектор: div[data-test-id='pin']
+2025-03-13 21:12:34,840 - pinterest - INFO - Найдено 31 потенциальных пинов
+2025-03-13 21:13:01,145 - pinterest - ERROR - Ошибка при скачивании изображения: Session is closed
+2025-03-13 21:13:21,316 - pinterest - ERROR - Ошибка при скачивании изображения: Session is closed
+2025-03-13 21:13:41,434 - pinterest - ERROR - Ошибка при скачивании изображения: Session is closed
+2025-03-13 21:13:41,438 - pinterest - ERROR - Ошибка при сохранении кеша: Object of type PinInfo is not JSON serializable
+2025-03-13 21:13:41,439 - pinterest - INFO - Найдено 3 пинов по запросу 'Спортивный стиль'
+2025-03-13 21:13:41,440 - pinterest - INFO - Анализирую изображение для пина 9b442432e2ab2f3d4949a42072998be5
+2025-03-13 21:13:41,441 - pinterest - INFO - Использую локальный метод анализа для https://i.pinimg.com/originals/39/4b/8c/394b8c93c5df459c0ce9c1397e63bf79.jpg
+2025-03-13 21:13:41,442 - pinterest - INFO - Определена категория: спортивный стиль, пол: female
+2025-03-13 21:13:41,442 - pinterest - INFO - Используем все предустановленные предметы категории 'деловой стиль'
+2025-03-13 21:13:41,446 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 21:13:41,447 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 21:13:41,448 - pinterest - INFO - Анализирую изображение для пина 811f6f1f3c29f77a21b95f1251a01c73
+2025-03-13 21:13:41,448 - pinterest - INFO - Использую локальный метод анализа для https://i.pinimg.com/originals/d7/66/59/d766598e31e967df3744f000b0d5d78b.jpg
+2025-03-13 21:13:41,449 - pinterest - INFO - Определена категория: спортивный стиль, пол: female
+2025-03-13 21:13:41,450 - pinterest - INFO - Используем все предустановленные предметы категории 'деловой стиль'
+2025-03-13 21:13:41,453 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 21:13:41,454 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 21:13:41,455 - pinterest - INFO - Анализирую изображение для пина 9d774d190789c182206e5cdab629b2a7
+2025-03-13 21:13:41,456 - pinterest - INFO - Использую локальный метод анализа для https://i.pinimg.com/originals/ae/00/2a/ae002aa0f8547830189653b8d0acd51c.jpg
+2025-03-13 21:13:41,457 - pinterest - INFO - Определена категория: спортивный стиль, пол: female
+2025-03-13 21:13:41,458 - pinterest - INFO - Используем все предустановленные предметы категории 'деловой стиль'
+2025-03-13 21:13:41,462 - pinterest - INFO - Кеш анализа изображений сохранен
+2025-03-13 21:13:41,464 - pinterest - INFO - Определено 3 предметов одежды
+2025-03-13 21:13:41,471 - pinterest - ERROR - Ошибка при сохранении кеша: Object of type PinInfo is not JSON serializable
+2025-03-13 21:13:41,473 - api - INFO - Задача d83e2589-15ce-4d93-ba8b-6b51fcb4ffed успешно завершена: найдено 3 образов
+2025-03-13 21:13:43,814 - pinterest - INFO - Все соединения закрыты
+2025-03-13 21:13:43,822 - api - INFO - Получен запрос на прямой поиск товаров: Черные джинсы, пол: , лимит: 8
+2025-03-13 21:13:43,823 - wildberries - INFO - Создан новый кеш
+2025-03-13 21:13:43,824 - wildberries - INFO - Wildberries API клиент инициализирован
+2025-03-13 21:13:43,825 - wildberries_api - INFO - WildberriesService инициализирован
+2025-03-13 21:13:43,826 - wildberries_api - INFO - Поиск товаров: 'Черные джинсы', лимит: 8, мин. цена: 0.0, макс. цена: 1000000.0, пол: 
+2025-03-13 21:13:43,826 - wildberries - WARNING - Минимальная цена скорректирована до 1
+2025-03-13 21:13:43,827 - wildberries - INFO - Поиск товаров по запросу 'Черные джинсы' с параметрами: limit=8, low_price=1, top_price=1000000, discount=None, gender=
+2025-03-13 21:13:43,828 - wildberries - INFO - Поиск товаров по URL: https://search.wb.ru/exactmatch/ru/common/v4/search?appType=1&curr=rub&dest=-1257786&locale=ru&page=1&priceU=100;100000000&query=%D0%A7%D0%B5%D1%80%D0%BD%D1%8B%D0%B5%20%D0%B4%D0%B6%D0%B8%D0%BD%D1%81%D1%8B&resultset=catalog&sort=popular&spp=0&suppressSpellcheck=false
+2025-03-13 21:13:54,200 - wildberries - INFO - Всего найдено 100 товаров, обрабатываем максимум 8
+2025-03-13 21:13:54,201 - wildberries - INFO - Добавлен товар: Джинсы широкие багги оверсайз y2k (Цена: 10000 руб., Скидочная цена: 3542 руб., Скидка: 65%)
+2025-03-13 21:13:54,202 - wildberries - INFO - Добавлен товар: Джинсы бананы широкие зауженные к низу момы (Цена: 7000 руб., Скидочная цена: 3341 руб., Скидка: 52%)
+2025-03-13 21:13:54,203 - wildberries - INFO - Добавлен товар: Джинсы бананы стрейч (Цена: 10900 руб., Скидочная цена: 2517 руб., Скидка: 77%)
+2025-03-13 21:13:54,204 - wildberries - INFO - Добавлен товар: Джинсы с высокой посадкой бананы мом широкие (Цена: 14900 руб., Скидочная цена: 2524 руб., Скидка: 83%)
+2025-03-13 21:13:54,205 - wildberries - INFO - Добавлен товар: Джинсы бананы мужские Турция (Цена: 5000 руб., Скидочная цена: 3100 руб., Скидка: 38%)
+2025-03-13 21:13:54,206 - wildberries - INFO - Добавлен товар: Джинсы бананы с высокой посадкой (Цена: 11470 руб., Скидочная цена: 2914 руб., Скидка: 75%)
+2025-03-13 21:13:54,207 - wildberries - INFO - Добавлен товар: Широкие джинсы черные трубы с высокой посадкой (Цена: 5000 руб., Скидочная цена: 2695 руб., Скидка: 46%)
+2025-03-13 21:13:54,208 - wildberries - INFO - Добавлен товар: Джинсы с высокой посадкой скинни зауженные стрейч пушап (Цена: 15300 руб., Скидочная цена: 1884 руб., Скидка: 88%)
+2025-03-13 21:13:54,210 - wildberries - INFO - Успешно найдено 8 товаров
+2025-03-13 21:13:54,211 - wildberries_api - ERROR - Ошибка при обработке товара 320290251: unsupported operand type(s) for //: 'str' and 'int'
+2025-03-13 21:13:54,213 - wildberries_api - ERROR - Ошибка при обработке товара 196681476: unsupported operand type(s) for //: 'str' and 'int'
+2025-03-13 21:13:54,214 - wildberries_api - ERROR - Ошибка при обработке товара 226961761: unsupported operand type(s) for //: 'str' and 'int'
+2025-03-13 21:13:54,216 - wildberries_api - ERROR - Ошибка при обработке товара 164348237: unsupported operand type(s) for //: 'str' and 'int'
+2025-03-13 21:13:54,217 - wildberries_api - ERROR - Ошибка при обработке товара 260299332: unsupported operand type(s) for //: 'str' and 'int'
+2025-03-13 21:13:54,218 - wildberries_api - ERROR - Ошибка при обработке товара 58771663: unsupported operand type(s) for //: 'str' and 'int'
+2025-03-13 21:13:54,220 - wildberries_api - ERROR - Ошибка при обработке товара 317380304: unsupported operand type(s) for //: 'str' and 'int'
+2025-03-13 21:13:54,221 - wildberries_api - ERROR - Ошибка при обработке товара 60630299: unsupported operand type(s) for //: 'str' and 'int'
+2025-03-13 21:13:54,222 - wildberries_api - INFO - Найдено 0 товаров по запросу 'Черные джинсы'
+2025-03-13 21:13:54,223 - api - INFO - Найдено 0 товаров по запросу 'Черные джинсы'
+2025-03-13 21:15:09,819 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x0000021421C97FD0>
+2025-03-13 21:16:06,411 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 21:16:06,558 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 21:16:06,559 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 21:17:26,488 - api - INFO - Получен файл для анализа: 1741889846469_test_image.jpg
+2025-03-13 21:17:26,488 - api - INFO - Файл сохранен: static/uploads\3e91884c-8278-4148-b00c-e4625c49ce64.jpg
+2025-03-13 21:17:26,496 - api - INFO - API-ключ OpenRouter успешно загружен
+2025-03-13 21:17:26,496 - assistant - INFO - OpenRouterClient для обработки изображений успешно инициализирован
+2025-03-13 21:17:26,496 - assistant - INFO - Инициализирован ChatAssistant с моделью anthropic/claude-3-haiku (тип: openrouter)
+2025-03-13 21:17:26,512 - openrouter_image_client - INFO - Отправка запроса к OpenRouter API для анализа изображения
+2025-03-13 21:17:30,489 - openrouter_image_client - INFO - Полный ответ от OpenRouter API: {"id": "gen-1741889847-8MLGD2aVR3MeF29sRW4G", "provider": "Google", "model": "anthropic/claude-3-haiku", "object": "chat.completion", "created": 1741889847, "choices": [{"logprobs": null, "finish_reason": "stop", "native_finish_reason": "stop", "index": 0, "message": {"role": "assistant", "content": "ПОЛ: женский\n\n1. Пиджак серый\n2. Рубашка белая\n3. Брюки серые\n\nПИДЖАК:\n- Цвет: серый\n- Пол: женский\n- Материал: неизвестно\n- Описание: классический пиджак со строгим кроем\n\nРУБАШКА:\n- Цвет: белый\n- Пол: женский \n- Материал: неизвестно\n- Описание: классическая белая рубашка с длинными рукавами\n\nБРЮКИ:\n- Цвет: серый\n- Пол: женский\n- Материал: неизвестно\n- Описание: прямого кроя брюки в классическом стиле\n\nОБЩЕЕ:\nНа изображении показана женщина в строгом офисном костюме, состоящем из серого пиджака, белой рубашки и серых брюк. Образ выглядит элегантно и профессионально.", "refusal": null}}], "usage": {"prompt_tokens": 1744, "completion_tokens": 279, "total_tokens": 2023}}
+2025-03-13 21:17:30,546 - openrouter_image_client - INFO - Найдена информация о поле: женский
+2025-03-13 21:17:30,546 - assistant - INFO - Изображение static/uploads\3e91884c-8278-4148-b00c-e4625c49ce64.jpg успешно проанализировано
+2025-03-13 21:17:30,546 - api - INFO - Результат анализа: {'elements': [{'type': 'Пиджак', 'color': 'серый', 'description': 'классический пиджак со строгим кроем', 'material': None, 'pattern': None, 'gender': 'женский'}, {'type': 'Рубашка', 'color': 'белый', 'description': 'классическая белая рубашка с длинными рукавами', 'material': None, 'pattern': None, 'gender': 'женский'}, {'type': 'Брюки', 'color': 'серый', 'description': 'прямого кроя брюки в классическом стиле', 'material': None, 'pattern': None, 'gender': 'женский'}], 'analysis': 'ПОЛ: женский\n\n1. Пиджак серый\n2. Рубашка белая\n3. Брюки серые\n\nПИДЖАК:\n- Цвет: серый\n- Пол: женский\n- Материал: неизвестно\n- Описание: классический пиджак со строгим кроем\n\nРУБАШКА:\n- Цвет: белый\n- Пол: женский \n- Материал: неизвестно\n- Описание: классическая белая рубашка с длинными рукавами\n\nБРЮКИ:\n- Цвет: серый\n- Пол: женский\n- Материал: неизвестно\n- Описание: прямого кроя брюки в классическом стиле\n\nОБЩЕЕ:\nНа изображении показана женщина в строгом офисном костюме, состоящем из серого пиджака, белой рубашки и серых брюк. Образ выглядит элегантно и профессионально.'}
+2025-03-13 21:17:30,557 - wildberries - INFO - Создан новый кеш
+2025-03-13 21:17:30,557 - wildberries - INFO - Wildberries API клиент инициализирован
+2025-03-13 21:17:30,557 - wildberries_api - INFO - WildberriesService инициализирован
+2025-03-13 21:17:30,561 - wildberries - INFO - Поиск товаров по запросу 'серый Пиджак классический пиджак' с параметрами: limit=3, low_price=1, top_price=1000000, discount=None, gender=женский
+2025-03-13 21:17:30,562 - wildberries - INFO - Поиск товаров по URL: https://search.wb.ru/exactmatch/ru/common/v4/search?appType=1&curr=rub&dest=-1257786&locale=ru&page=1&priceU=100;100000000&query=%D1%81%D0%B5%D1%80%D1%8B%D0%B9%20%D0%9F%D0%B8%D0%B4%D0%B6%D0%B0%D0%BA%20%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%BF%D0%B8%D0%B4%D0%B6%D0%B0%D0%BA&resultset=catalog&sort=popular&spp=0&suppressSpellcheck=false
+2025-03-13 21:17:32,825 - wildberries - INFO - Всего найдено 100 товаров, обрабатываем максимум 3
+2025-03-13 21:17:32,828 - wildberries - INFO - Добавлен товар: Пиджак классический повседневный под джинсы (Цена: 15000 руб., Скидочная цена: 5082 руб., Скидка: 66%)
+2025-03-13 21:17:32,828 - wildberries - INFO - Добавлен товар: Пиджак классический под джинсы трикотажный жакет (Цена: 12200 руб., Скидочная цена: 3663 руб., Скидка: 70%)
+2025-03-13 21:17:32,828 - wildberries - INFO - Добавлен товар: Пиджак оверсайз классический (Цена: 15200 руб., Скидочная цена: 3511 руб., Скидка: 77%)
+2025-03-13 21:17:32,831 - wildberries - INFO - Успешно найдено 3 товаров
+2025-03-13 21:17:32,832 - wildberries_api - INFO - Добавлен товар: Пиджак классический повседневный под джинсы (Цена: 15000 руб., Скидочная цена: 5082 руб., Скидка: 66%)
+2025-03-13 21:17:32,832 - wildberries_api - INFO - Добавлен товар: Пиджак классический под джинсы трикотажный жакет (Цена: 12200 руб., Скидочная цена: 3663 руб., Скидка: 70%)
+2025-03-13 21:17:32,832 - wildberries_api - INFO - Добавлен товар: Пиджак оверсайз классический (Цена: 15200 руб., Скидочная цена: 3511 руб., Скидка: 77%)
+2025-03-13 21:17:32,832 - wildberries_api - INFO - Найдено 3 товаров по запросу 'серый Пиджак классический пиджак'
+2025-03-13 21:17:32,832 - wildberries - INFO - Поиск товаров по запросу 'белый Рубашка классическая белая' с параметрами: limit=3, low_price=1, top_price=1000000, discount=None, gender=женский
+2025-03-13 21:17:32,832 - wildberries - INFO - Поиск товаров по URL: https://search.wb.ru/exactmatch/ru/common/v4/search?appType=1&curr=rub&dest=-1257786&locale=ru&page=1&priceU=100;100000000&query=%D0%B1%D0%B5%D0%BB%D1%8B%D0%B9%20%D0%A0%D1%83%D0%B1%D0%B0%D1%88%D0%BA%D0%B0%20%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%20%D0%B1%D0%B5%D0%BB%D0%B0%D1%8F&resultset=catalog&sort=popular&spp=0&suppressSpellcheck=false
+2025-03-13 21:17:35,501 - wildberries - INFO - Всего найдено 100 товаров, обрабатываем максимум 3
+2025-03-13 21:17:35,502 - wildberries - INFO - Добавлен товар: Рубашка классическая CLASSIC FIT с длинным рукавом (Цена: 7400 руб., Скидочная цена: 2051 руб., Скидка: 72%)
+2025-03-13 21:17:35,503 - wildberries - INFO - Добавлен товар: Рубашка Slim Fit Классическая с длинным рукавом (Цена: 3500 руб., Скидочная цена: 1540 руб., Скидка: 56%)
+2025-03-13 21:17:35,503 - wildberries - INFO - Добавлен товар: Рубашка с длинным рукавом приталенная (Цена: 10322 руб., Скидочная цена: 1828 руб., Скидка: 82%)
+2025-03-13 21:17:35,503 - wildberries - INFO - Успешно найдено 3 товаров
+2025-03-13 21:17:35,503 - wildberries_api - INFO - Добавлен товар: Рубашка классическая CLASSIC FIT с длинным рукавом (Цена: 7400 руб., Скидочная цена: 2051 руб., Скидка: 72%)
+2025-03-13 21:17:35,503 - wildberries_api - INFO - Добавлен товар: Рубашка Slim Fit Классическая с длинным рукавом (Цена: 3500 руб., Скидочная цена: 1540 руб., Скидка: 56%)
+2025-03-13 21:17:35,509 - wildberries_api - INFO - Добавлен товар: Рубашка с длинным рукавом приталенная (Цена: 10322 руб., Скидочная цена: 1828 руб., Скидка: 82%)
+2025-03-13 21:17:35,509 - wildberries_api - INFO - Найдено 3 товаров по запросу 'белый Рубашка классическая белая'
+2025-03-13 21:17:35,511 - wildberries - INFO - Поиск товаров по запросу 'серый Брюки прямого кроя' с параметрами: limit=3, low_price=1, top_price=1000000, discount=None, gender=женский
+2025-03-13 21:17:35,511 - wildberries - INFO - Поиск товаров по URL: https://search.wb.ru/exactmatch/ru/common/v4/search?appType=1&curr=rub&dest=-1257786&locale=ru&page=1&priceU=100;100000000&query=%D1%81%D0%B5%D1%80%D1%8B%D0%B9%20%D0%91%D1%80%D1%8E%D0%BA%D0%B8%20%D0%BF%D1%80%D1%8F%D0%BC%D0%BE%D0%B3%D0%BE%20%D0%BA%D1%80%D0%BE%D1%8F&resultset=catalog&sort=popular&spp=0&suppressSpellcheck=false
+2025-03-13 21:17:37,803 - wildberries - INFO - Всего найдено 100 товаров, обрабатываем максимум 3
+2025-03-13 21:17:37,803 - wildberries - INFO - Добавлен товар: Брюки прямые (Цена: 7855 руб., Скидочная цена: 2298 руб., Скидка: 71%)
+2025-03-13 21:17:37,803 - wildberries - INFO - Добавлен товар: Брюки классические прямые (Цена: 4514 руб., Скидочная цена: 2780 руб., Скидка: 38%)
+2025-03-13 21:17:37,803 - wildberries - INFO - Добавлен товар: Кожаные брюки прямые с высокой посадкой (Цена: 11875 руб., Скидочная цена: 4389 руб., Скидка: 63%)
+2025-03-13 21:17:37,803 - wildberries - INFO - Успешно найдено 3 товаров
+2025-03-13 21:17:37,803 - wildberries_api - INFO - Добавлен товар: Брюки прямые (Цена: 7855 руб., Скидочная цена: 2298 руб., Скидка: 71%)
+2025-03-13 21:17:37,803 - wildberries_api - INFO - Добавлен товар: Брюки классические прямые (Цена: 4514 руб., Скидочная цена: 2780 руб., Скидка: 38%)
+2025-03-13 21:17:37,819 - wildberries_api - INFO - Добавлен товар: Кожаные брюки прямые с высокой посадкой (Цена: 11875 руб., Скидочная цена: 4389 руб., Скидка: 63%)
+2025-03-13 21:17:37,819 - wildberries_api - INFO - Найдено 3 товаров по запросу 'серый Брюки прямого кроя'
+2025-03-13 21:17:37,819 - api - INFO - Анализ изображения выполнен успешно: 3 предметов найдено
+2025-03-13 21:24:30,981 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x0000017FFBA01E40>
+2025-03-13 21:24:30,981 - asyncio - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x0000017FFBA01420>
+2025-03-13 21:24:40,671 - assistant - WARNING - Не удалось инициализировать bank_statement_parser. Анализ банковских выписок будет недоступен.
+2025-03-13 21:24:40,794 - visual_analyzer - INFO - VisualAnalyzer инициализирован
+2025-03-13 21:24:40,794 - api - INFO - Визуальный анализатор успешно инициализирован
+2025-03-13 21:32:04,766 - api - INFO - Получен файл для анализа: 1741890724673_a80893087aa9796cbd1814f1139382ff.jpg
+2025-03-13 21:32:04,766 - api - INFO - Файл сохранен: static/uploads\221a53e2-e11d-4c02-8346-c4211ecdec3b.jpg
+2025-03-13 21:32:04,780 - api - INFO - API-ключ OpenRouter успешно загружен
+2025-03-13 21:32:04,780 - assistant - INFO - OpenRouterClient для обработки изображений успешно инициализирован
+2025-03-13 21:32:04,780 - assistant - INFO - Инициализирован ChatAssistant с моделью anthropic/claude-3-haiku (тип: openrouter)
+2025-03-13 21:32:04,802 - openrouter_image_client - INFO - Отправка запроса к OpenRouter API для анализа изображения
+2025-03-13 21:32:08,221 - openrouter_image_client - INFO - Полный ответ от OpenRouter API: {"id": "gen-1741890726-duoUH6S4MH5W0Hhu0Fu1", "provider": "Anthropic", "model": "anthropic/claude-3-haiku", "object": "chat.completion", "created": 1741890726, "choices": [{"logprobs": null, "finish_reason": "stop", "native_finish_reason": "stop", "index": 0, "message": {"role": "assistant", "content": "ПОЛ: женский\n\n1. Футболка черного цвета с надписью\n2. Леггинсы черного цвета\n3. Шлепанцы черного цвета\n\nФутболка:\n- Цвет: черный\n- Пол: женский\n- Материал: неизвестно\n- Описание: черная футболка с надписью\n\nЛеггинсы:\n- Цвет: черный\n- Пол: женский\n- Материал: неизвестно\n- Описание: черные леггинсы\n\nШлепанцы:\n- Цвет: черный\n- Пол: женский\n- Материал: неизвестно\n- Описание: черные шлепанцы\n\nОБЩЕЕ:\nНа изображении видна девушка в темной одежде, сидящая на кровати и делающая селфи на мобильный телефон. Её волосы собраны в длинные заплетенные косички.", "refusal": null}}], "usage": {"prompt_tokens": 1933, "completion_tokens": 273, "total_tokens": 2206}}
+2025-03-13 21:32:08,229 - openrouter_image_client - INFO - Найдена информация о поле: женский
+2025-03-13 21:32:08,229 - assistant - INFO - Изображение static/uploads\221a53e2-e11d-4c02-8346-c4211ecdec3b.jpg успешно проанализировано
+2025-03-13 21:32:08,229 - api - INFO - Результат анализа: {'elements': [{'type': 'Футболка', 'color': None, 'description': 'Футболка черного цвета с надписью', 'material': None, 'pattern': None, 'gender': 'женский'}], 'analysis': 'ПОЛ: женский\n\n1. Футболка черного цвета с надписью\n2. Леггинсы черного цвета\n3. Шлепанцы черного цвета\n\nФутболка:\n- Цвет: черный\n- Пол: женский\n- Материал: неизвестно\n- Описание: черная футболка с надписью\n\nЛеггинсы:\n- Цвет: черный\n- Пол: женский\n- Материал: неизвестно\n- Описание: черные леггинсы\n\nШлепанцы:\n- Цвет: черный\n- Пол: женский\n- Материал: неизвестно\n- Описание: черные шлепанцы\n\nОБЩЕЕ:\nНа изображении видна девушка в темной одежде, сидящая на кровати и делающая селфи на мобильный телефон. Её волосы собраны в длинные заплетенные косички.'}
+2025-03-13 21:32:08,229 - wildberries - INFO - Создан новый кеш
+2025-03-13 21:32:08,237 - wildberries - INFO - Wildberries API клиент инициализирован
+2025-03-13 21:32:08,237 - wildberries_api - INFO - WildberriesService инициализирован
+2025-03-13 21:32:08,237 - wildberries - INFO - Поиск товаров по запросу 'None Футболка Футболка черного' с параметрами: limit=3, low_price=1, top_price=1000000, discount=None, gender=женский
+2025-03-13 21:32:08,237 - wildberries - INFO - Поиск товаров по URL: https://search.wb.ru/exactmatch/ru/common/v4/search?appType=1&curr=rub&dest=-1257786&locale=ru&page=1&priceU=100;100000000&query=None%20%D0%A4%D1%83%D1%82%D0%B1%D0%BE%D0%BB%D0%BA%D0%B0%20%D0%A4%D1%83%D1%82%D0%B1%D0%BE%D0%BB%D0%BA%D0%B0%20%D1%87%D0%B5%D1%80%D0%BD%D0%BE%D0%B3%D0%BE&resultset=catalog&sort=popular&spp=0&suppressSpellcheck=false
+2025-03-13 21:32:10,821 - wildberries - INFO - Всего найдено 27 товаров, обрабатываем максимум 3
+2025-03-13 21:32:10,827 - wildberries - INFO - Добавлен товар: Футболка оверсайз без принта (Цена: 2222 руб., Скидочная цена: 1244 руб., Скидка: 44%)
+2025-03-13 21:32:10,827 - wildberries - INFO - Добавлен товар: Футболка черная оверсайз хлопок базовая (Цена: 2222 руб., Скидочная цена: 1244 руб., Скидка: 44%)
+2025-03-13 21:32:10,827 - wildberries - INFO - Добавлен товар: Футболка BOXING Respect All Fear None (Цена: 3500 руб., Скидочная цена: 1715 руб., Скидка: 51%)
+2025-03-13 21:32:10,827 - wildberries - INFO - Успешно найдено 3 товаров
+2025-03-13 21:32:10,827 - wildberries_api - INFO - Добавлен товар: Футболка оверсайз без принта (Цена: 2222 руб., Скидочная цена: 1244 руб., Скидка: 44%)
+2025-03-13 21:32:10,827 - wildberries_api - INFO - Добавлен товар: Футболка черная оверсайз хлопок базовая (Цена: 2222 руб., Скидочная цена: 1244 руб., Скидка: 44%)
+2025-03-13 21:32:10,827 - wildberries_api - INFO - Добавлен товар: Футболка BOXING Respect All Fear None (Цена: 3500 руб., Скидочная цена: 1715 руб., Скидка: 51%)
+2025-03-13 21:32:10,835 - wildberries_api - INFO - Найдено 3 товаров по запросу 'None Футболка Футболка черного'
+2025-03-13 21:32:10,835 - api - INFO - Анализ изображения выполнен успешно: 1 предметов найдено

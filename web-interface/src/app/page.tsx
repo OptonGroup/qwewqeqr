@@ -11,9 +11,10 @@ import DesignerAssistant from '@/components/assistants/designer-assistant';
 import { Palette, Shirt, Salad, Sparkles } from 'lucide-react';
 import { ImageUploader } from '@/components/ImageUploader';
 import { ImageAnalysisResults } from '@/components/ImageAnalysisResults';
+import { useAppContext } from '@/context/app-context';
 
 export default function Home() {
-  const [selectedRole, setSelectedRole] = useState<string | null>(null);
+  const { selectedRole, setSelectedRole } = useAppContext();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>('');
   const [analysisResults, setAnalysisResults] = useState<any>(null);
@@ -21,6 +22,10 @@ export default function Home() {
 
   const handleRoleSelect = (role: string) => {
     setSelectedRole(role);
+  };
+
+  const resetRole = () => {
+    setSelectedRole(null);
   };
 
   const handleImageUpload = (file: File) => {
@@ -167,7 +172,10 @@ export default function Home() {
   // Показываем соответствующего ассистента в зависимости от выбранной роли
   return (
     <main className="min-h-screen bg-background">
-      <StylistAssistant />
+      {selectedRole === 'stylist' && <StylistAssistant />}
+      {selectedRole === 'cosmetologist' && <CosmetologistAssistant />}
+      {selectedRole === 'nutritionist' && <NutritionistAssistant />}
+      {selectedRole === 'designer' && <DesignerAssistant />}
     </main>
   );
 } 

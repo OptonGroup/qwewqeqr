@@ -5,7 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Upload, Search, RefreshCw, ShoppingBag, ArrowRight, Sofa, Bed, UtensilsCrossed, Briefcase, Gamepad2, Printer, UserSquare } from 'lucide-react';
+import { Upload, Search, RefreshCw, ShoppingBag, ArrowRight, Sofa, Bed, UtensilsCrossed, Briefcase, Gamepad2, Printer, UserSquare, Home } from 'lucide-react';
+import { useAppContext } from '@/context/app-context';
 
 interface FurnitureItem {
   id: string;
@@ -107,16 +108,22 @@ const styles = [
   { id: 'minimalist', name: 'Минимализм' }
 ];
 
-const DesignerAssistant: React.FC = () => {
+interface DesignerAssistantProps {
+  onReturnHome?: () => void;
+}
+
+const DesignerAssistant: React.FC<DesignerAssistantProps> = ({ onReturnHome }) => {
+  const { setSelectedRole } = useAppContext();
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
+  const [roomImage, setRoomImage] = useState<File | null>(null);
+  const [roomImageUrl, setRoomImageUrl] = useState<string | null>(null);
   const [roomInfo, setRoomInfo] = useState({
     area: '',
     budget: '',
-    hasWindows: 'yes'
+    hasChildren: false,
+    hasPets: false
   });
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [recommendations, setRecommendations] = useState<FurnitureItem[]>([]);
   const [currentStep, setCurrentStep] = useState(1);
@@ -139,9 +146,9 @@ const DesignerAssistant: React.FC = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setSelectedFile(file);
+      setRoomImage(file);
       const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
+      setRoomImageUrl(url);
     }
   };
   
@@ -176,8 +183,19 @@ const DesignerAssistant: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-3xl font-bold mb-8 text-foreground/90">Интерьерный дизайнер</h1>
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Ассистент дизайнера</h1>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => setSelectedRole(null)}
+          className="flex items-center gap-2"
+        >
+          <Home className="h-4 w-4" />
+          Вернуться на главную
+        </Button>
+      </div>
 
       <div className="mb-10">
         <div className="flex items-center mb-6">
@@ -376,10 +394,10 @@ const DesignerAssistant: React.FC = () => {
                     htmlFor="room-photo" 
                     className="cursor-pointer flex flex-col items-center justify-center"
                   >
-                    {previewUrl ? (
+                    {roomImageUrl ? (
                       <div className="w-full">
                         <img 
-                          src={previewUrl} 
+                          src={roomImageUrl} 
                           alt="Preview" 
                           className="max-h-60 mx-auto rounded-lg object-contain" 
                         />
@@ -577,7 +595,7 @@ const DesignerAssistant: React.FC = () => {
                               Для создания детального плана загрузите фото помещения или укажите точные размеры
                             </span>
                           </p>
-                          {!selectedFile && (
+                          {!roomImage && (
                             <Button variant="outline" className="mt-4" onClick={() => setCurrentStep(3)}>
                               Загрузить фото
                             </Button>

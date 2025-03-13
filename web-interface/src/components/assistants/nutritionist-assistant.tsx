@@ -5,7 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { RefreshCw, ShoppingBag, ArrowRight, Upload, Calculator } from 'lucide-react';
+import { RefreshCw, ShoppingBag, ArrowRight, Upload, Calculator, Home } from 'lucide-react';
+import { useAppContext } from '@/context/app-context';
 
 interface FoodProduct {
   id: string;
@@ -103,7 +104,12 @@ const restrictions = [
   { id: 'diabetes', name: 'Диабет' }
 ];
 
-const NutritionistAssistant: React.FC = () => {
+interface NutritionistAssistantProps {
+  onReturnHome?: () => void;
+}
+
+const NutritionistAssistant: React.FC<NutritionistAssistantProps> = ({ onReturnHome }) => {
+  const { setSelectedRole } = useAppContext();
   const [selectedGoal, setSelectedGoal] = useState<string | null>(null);
   const [selectedRestrictions, setSelectedRestrictions] = useState<string[]>([]);
   const [personalInfo, setPersonalInfo] = useState({
@@ -195,8 +201,19 @@ const NutritionistAssistant: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-3xl font-bold mb-8 text-foreground/90">Персональный нутрициолог</h1>
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Ассистент нутрициолога</h1>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => setSelectedRole(null)}
+          className="flex items-center gap-2"
+        >
+          <Home className="h-4 w-4" />
+          Вернуться на главную
+        </Button>
+      </div>
       
       <div className="mb-10">
         <div className="flex items-center mb-6">

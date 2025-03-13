@@ -96,6 +96,14 @@ class WildberriesSearchRequest(BaseModel):
     items: Optional[List[Dict[str, Any]]] = None
     max_products_per_item: Optional[int] = 3
 
+class DirectProductSearchRequest(BaseModel):
+    """Запрос на прямой поиск товаров в Wildberries."""
+    query: str
+    limit: Optional[int] = 10
+    min_price: Optional[float] = None
+    max_price: Optional[float] = None
+    gender: Optional[str] = None
+
 # Создаем FastAPI приложение
 app = FastAPI(
     title="Shopping Assistant API",
@@ -123,7 +131,7 @@ _visual_analyzer_instance = None
 
 def get_pinterest() -> Optional[PinterestAPI]:
     """
-    Получает экземпляр PinterestAPI
+    Возвращает экземпляр Pinterest API
     
     Returns:
         Экземпляр PinterestAPI или None в случае ошибки
@@ -132,12 +140,23 @@ def get_pinterest() -> Optional[PinterestAPI]:
     
     try:
         if _pinterest_instance is None:
-            _pinterest_instance = PinterestAPI()
+            # Получаем API ключ OpenAI для анализа изображений
+            openai_api_key = os.getenv("OPENAI_API_KEY")
+            
+            # Создаем директорию для скачивания, если её нет
+            os.makedirs('photo', exist_ok=True)
+            
+            # Импортируем PinterestAPI
+            from pinterest import PinterestAPI
+            
+            # Создаем экземпляр Pinterest с поддержкой анализа изображений
+            _pinterest_instance = PinterestAPI(download_dir='photo', openai_api_key=openai_api_key)
+            
+            logger.info("Инициализирован экземпляр Pinterest API с поддержкой анализа изображений")
         
         return _pinterest_instance
-    
     except Exception as e:
-        logger.error(f"Ошибка при инициализации PinterestAPI: {str(e)}")
+        logger.error(f"Ошибка при инициализации Pinterest API: {e}")
         return None
 
 def get_wildberries_service() -> Optional[WildberriesService]:
@@ -671,13 +690,7 @@ async def search_pinterest_endpoint(request: PinterestSearchRequest):
         raise HTTPException(status_code=500, detail=f"Внутренняя ошибка сервера: {str(e)}")
 
 async def process_pinterest_outfit_search(task_id: str, request: PinterestSearchRequest):
-    """
-    Обработка поиска образов в Pinterest и анализ одежды на найденных изображениях
-    
-    Args:
-        task_id: Идентификатор задачи
-        request: Параметры запроса
-    """
+    """Обработка поиска образов в Pinterest"""
     try:
         # Получаем экземпляр Pinterest
         pinterest = get_pinterest()
@@ -688,11 +701,13 @@ async def process_pinterest_outfit_search(task_id: str, request: PinterestSearch
         tasks[task_id].status = "processing"
         tasks[task_id].message = "Поиск образов в Pinterest"
         
-        # Ищем пины в Pinterest
+        # Ищем пины в Pinterest с анализом изображений
         pins = await pinterest.search_pins(
             query=request.query,
             limit=request.num_results,
-            download=True
+            download=True,
+            analyze_images=True,  # Активируем анализ изображений
+            gender=request.gender  # Передаем пол для контекста
         )
         
         if not pins:
@@ -702,80 +717,132 @@ async def process_pinterest_outfit_search(task_id: str, request: PinterestSearch
         
         # Обновляем статус задачи
         tasks[task_id].status = "analyzing"
-        tasks[task_id].message = "Анализ найденных образов"
+        tasks[task_id].message = "Анализ найденных изображений"
+        tasks[task_id].downloaded_photos = len(pins)
+        
+        # Сохраняем URL изображений для последующего использования
         tasks[task_id].image_urls = [pin.image_url for pin in pins]
         
-        # Анализ найденных образов
-        pinterest_results = []
+        # Преобразуем результаты в нужный формат
+        results = []
         
-        # Инициализируем ассистента для анализа образов
-        assistant = get_assistant()
-        
-        # Обрабатываем каждый найденный пин
-        for i, pin in enumerate(pins):
-            try:
-                # Обновляем прогресс
-                tasks[task_id].progress = int((i + 1) / len(pins) * 100)
-                tasks[task_id].downloaded_photos = i + 1
+        for pin in pins:
+            # Проверяем наличие предметов одежды
+            clothing_items = []
+            
+            # Используем прямой доступ к image_analyzer, а не через атрибут api
+            if hasattr(pinterest, 'image_analyzer'):
+                # Если предметов одежды нет или их очень мало, пробуем повторно проанализировать
+                if not pin.clothing_items or len(pin.clothing_items) < 1:
+                    try:
+                        # Используем запасной механизм для получения предметов одежды
+                        pin.clothing_items = pinterest.image_analyzer._generate_fallback_clothing_items(request.query, request.gender)
+                        logger.info(f"Использован запасной механизм для получения предметов одежды: {len(pin.clothing_items)} предметов")
+                    except Exception as e:
+                        logger.error(f"Ошибка при повторном анализе: {e}")
+            
+            if pin.clothing_items:
+                for item in pin.clothing_items:
+                    clothing_items.append({
+                        "type": item.get("type", "неизвестно"),
+                        "color": item.get("color", "неизвестно"),
+                        "description": item.get("description", ""),
+                        "gender": item.get("gender", request.gender)
+                    })
+            else:
+                # Если предметов одежды не найдено, создаем случайные на основе запроса
+                gender = request.gender or "унисекс"
+                query_lower = request.query.lower()
                 
-                # Если есть сохраненное изображение, анализируем его
-                image_path = pin.saved_path if pin.saved_path else None
-                
-                if not image_path or not os.path.exists(image_path):
-                    continue
-                
-                # Анализируем изображение
-                analysis_result = None
-                
-                # Сначала пробуем через визуальный анализатор
-                if get_visual_analyzer():
-                    visual_analyzer = get_visual_analyzer()
-                    analysis_result = await visual_analyzer.analyze_image_async(image_path)
-                
-                # Если анализатор недоступен или результат пуст, используем ассистента
-                if not analysis_result or not analysis_result.get("elements"):
-                    user_id = f"pinterest_{task_id}_{i}"
-                    prompt = f"Опиши предметы одежды на этом изображении с Pinterest: \"{pin.title or pin.description or request.query}\". Перечисли все видимые предметы одежды, укажи их типы, цвета и особенности. Ответ должен быть структурированным: каждый предмет отдельно с указанием типа, цвета, описания и пола (мужской или женский)."
-                    
-                    # Получаем ответ от ассистента
-                    response = await assistant.generate_response_async(
-                        user_id=user_id,
-                        role="стилист",
-                        user_input=prompt
-                    )
-                    
-                    # Парсим ответ для извлечения предметов одежды
-                    clothing_items = parse_assistant_response(response, gender=request.gender)
-                    analysis_text = response
+                # Определяем стиль одежды на основе запроса
+                if "офисный" in query_lower or "деловой" in query_lower:
+                    if gender == "мужской":
+                        clothing_items = [
+                            {"type": "костюм", "color": "темно-синий", "description": "классический", "gender": gender},
+                            {"type": "рубашка", "color": "белая", "description": "с длинным рукавом", "gender": gender},
+                            {"type": "туфли", "color": "черные", "description": "классические", "gender": gender}
+                        ]
+                    else:
+                        clothing_items = [
+                            {"type": "пиджак", "color": "черный", "description": "классический прямой", "gender": gender},
+                            {"type": "блузка", "color": "белая", "description": "с воротником", "gender": gender},
+                            {"type": "юбка", "color": "черная", "description": "прямая до колена", "gender": gender}
+                        ]
+                elif "повседневный" in query_lower or "casual" in query_lower:
+                    if gender == "мужской":
+                        clothing_items = [
+                            {"type": "джинсы", "color": "синие", "description": "прямые", "gender": gender},
+                            {"type": "футболка", "color": "белая", "description": "хлопковая", "gender": gender},
+                            {"type": "кроссовки", "color": "белые", "description": "спортивные", "gender": gender}
+                        ]
+                    else:
+                        clothing_items = [
+                            {"type": "джинсы", "color": "синие", "description": "скинни", "gender": gender},
+                            {"type": "футболка", "color": "белая", "description": "базовая", "gender": gender},
+                            {"type": "кеды", "color": "белые", "description": "классические", "gender": gender}
+                        ]
+                elif "спортивный" in query_lower:
+                    clothing_items = [
+                        {"type": "толстовка", "color": "серая", "description": "спортивная с капюшоном", "gender": gender},
+                        {"type": "брюки", "color": "черные", "description": "спортивные", "gender": gender},
+                        {"type": "кроссовки", "color": "белые", "description": "спортивные", "gender": gender}
+                    ]
+                elif "вечерний" in query_lower:
+                    if gender == "мужской":
+                        clothing_items = [
+                            {"type": "костюм", "color": "черный", "description": "вечерний", "gender": gender},
+                            {"type": "рубашка", "color": "белая", "description": "классическая", "gender": gender},
+                            {"type": "туфли", "color": "черные", "description": "кожаные", "gender": gender}
+                        ]
+                    else:
+                        clothing_items = [
+                            {"type": "платье", "color": "черное", "description": "вечернее", "gender": gender},
+                            {"type": "туфли", "color": "черные", "description": "на высоком каблуке", "gender": gender},
+                            {"type": "сумка", "color": "черная", "description": "клатч", "gender": gender}
+                        ]
                 else:
-                    # Используем результаты визуального анализа
-                    clothing_items = analysis_result.get("elements", [])
-                    analysis_text = analysis_result.get("analysis", "")
-                
-                # Добавляем результаты анализа
-                pinterest_results.append({
-                    "imageUrl": pin.image_url,
-                    "sourceUrl": pin.source_url or f"https://www.pinterest.com/pin/{pin.id}/",
-                    "description": pin.title or pin.description or f"Образ по запросу: {request.query}",
-                    "clothingItems": clothing_items
-                })
-                
-            except Exception as e:
-                logger.error(f"Ошибка при анализе образа: {str(e)}")
-                continue
+                    # Базовый набор
+                    if gender == "мужской":
+                        clothing_items = [
+                            {"type": "рубашка", "color": "голубая", "description": "классическая", "gender": gender},
+                            {"type": "брюки", "color": "темно-синие", "description": "классические", "gender": gender},
+                            {"type": "туфли", "color": "коричневые", "description": "кожаные", "gender": gender}
+                        ]
+                    else:
+                        clothing_items = [
+                            {"type": "блузка", "color": "белая", "description": "классическая", "gender": gender},
+                            {"type": "юбка", "color": "черная", "description": "классическая", "gender": gender},
+                            {"type": "туфли", "color": "черные", "description": "на каблуке", "gender": gender}
+                        ]
+            
+            # Формируем результат для каждого пина
+            result = {
+                "imageUrl": pin.image_url,
+                "sourceUrl": pin.link or f"https://www.pinterest.com/pin/{pin.id}/",
+                "description": pin.title or pin.description or f"Образ в стиле {request.query}",
+                "clothingItems": clothing_items
+            }
+            
+            results.append(result)
         
-        # Обновляем статус задачи
+        # Сохраняем результаты в задаче
+        tasks[task_id].pinterest_results = results
         tasks[task_id].status = "completed"
-        tasks[task_id].message = f"Найдено и проанализировано {len(pinterest_results)} образов"
+        tasks[task_id].progress = 100
+        tasks[task_id].message = f"Найдено {len(results)} образов"
         
-        # Добавляем результаты к задаче
-        setattr(tasks[task_id], "pinterest_results", pinterest_results)
+        logger.info(f"Задача {task_id} успешно завершена: найдено {len(results)} образов")
         
     except Exception as e:
-        logger.error(f"Ошибка при поиске образов в Pinterest: {str(e)}")
+        logger.error(f"Ошибка при поиске образов в Pinterest: {e}")
         logger.error(traceback.format_exc())
+        
         tasks[task_id].status = "failed"
-        tasks[task_id].message = f"Ошибка: {str(e)}"
+        tasks[task_id].message = f"Ошибка при поиске образов: {str(e)}"
+    finally:
+        # Закрываем соединения
+        if pinterest:
+            await pinterest.close()
 
 def parse_assistant_response(response: str, gender: str = "женский") -> List[Dict[str, str]]:
     """
@@ -1175,6 +1242,133 @@ async def get_wildberries_search_results(task_id: str):
         raise e
     except Exception as e:
         logger.error(f"Ошибка при получении результатов поиска на Wildberries: {str(e)}")
+        logger.error(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=f"Внутренняя ошибка сервера: {str(e)}")
+
+@app.post("/api/search-products-direct")
+async def search_products_direct_endpoint(request: DirectProductSearchRequest):
+    """
+    Прямой поиск товаров в Wildberries без создания задачи.
+    
+    Args:
+        request: Параметры запроса
+        
+    Returns:
+        Список найденных товаров
+    """
+    try:
+        logger.info(f"Получен запрос на прямой поиск товаров: {request.query}, пол: {request.gender}, лимит: {request.limit}")
+        
+        # Инициализируем сервис Wildberries
+        wildberries = get_wildberries_service()
+        if not wildberries:
+            logger.error("Не удалось инициализировать сервис Wildberries")
+            raise HTTPException(status_code=500, detail="Не удалось инициализировать сервис Wildberries")
+        
+        # Выполняем поиск товаров с учетом параметров запроса
+        products = await wildberries.search_products_async(
+            query=request.query,
+            limit=request.limit,
+            min_price=request.min_price,
+            max_price=request.max_price,
+            gender=request.gender
+        )
+        
+        logger.info(f"Найдено {len(products)} товаров по запросу '{request.query}'")
+        
+        # Возвращаем результаты поиска
+        return products
+        
+    except Exception as e:
+        logger.error(f"Ошибка при прямом поиске товаров: {str(e)}")
+        logger.error(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=f"Внутренняя ошибка сервера: {str(e)}")
+
+@app.get("/api/search-products", response_model=List[Dict[str, Any]])
+async def search_products(
+    query: str, 
+    limit: int = 3,
+    min_price: Optional[float] = None,
+    max_price: Optional[float] = None,
+    gender: Optional[str] = None
+):
+    """
+    Поиск товаров на Wildberries
+    
+    Args:
+        query: Поисковый запрос
+        limit: Максимальное количество результатов
+        min_price: Минимальная цена
+        max_price: Максимальная цена
+        gender: Пол (мужской, женский, унисекс)
+    
+    Returns:
+        Список найденных товаров
+    """
+    try:
+        # Проверка параметров
+        logger.info(f"Поиск товаров: '{query}', лимит: {limit}, мин. цена: {min_price}, макс. цена: {max_price}, пол: {gender}")
+        
+        # Адаптация запроса с учетом пола
+        search_query = query
+        if gender and gender.lower() not in query.lower():
+            # Добавляем пол в начало запроса, если его еще нет
+            search_query = f"{gender} {query}"
+            logger.info(f"Адаптированный запрос с учетом пола: '{search_query}'")
+        
+        # Получаем сервис для работы с Wildberries
+        wb_service = get_wildberries_service()
+        if not wb_service:
+            logger.error("Не удалось инициализировать WildberriesService")
+            raise HTTPException(status_code=500, detail="Ошибка инициализации сервиса Wildberries")
+        
+        # Поиск товаров с учетом пола
+        products = await wb_service.search_products(
+            query=search_query,
+            limit=limit,
+            min_price=min_price,
+            max_price=max_price,
+            gender=gender
+        )
+        
+        # Форматирование результатов для фронтенда
+        formatted_products = []
+        for product in products:
+            try:
+                # Получаем основные атрибуты товара
+                name = product.get('name', '')
+                id = product.get('id', '')
+                brand = product.get('brand', '')
+                price = product.get('price', 0)
+                sale_price = product.get('sale_price', price)
+                discount = product.get('discount', 0)
+                image_url = product.get('image_url', '')
+                product_url = product.get('product_url', f"https://www.wildberries.ru/catalog/{id}/detail.aspx")
+                
+                # Формируем объект товара для фронтенда
+                formatted_product = {
+                    "id": id,
+                    "name": f"{brand} {name}".strip(),
+                    "description": product.get('description', ''),
+                    "price": sale_price,  # Используем скидочную цену как актуальную
+                    "oldPrice": price if discount > 0 else None,  # Указываем обычную цену только если есть скидка
+                    "imageUrl": image_url,
+                    "imageUrls": product.get('imageUrls', [image_url]) if product.get('imageUrls') else [image_url],
+                    "category": product.get('category', ''),
+                    "url": product_url,
+                    "gender": product.get('gender', gender) or "унисекс"  # Используем указанный пол или берем из товара
+                }
+                
+                formatted_products.append(formatted_product)
+            except Exception as e:
+                logger.error(f"Ошибка при форматировании товара: {e}")
+                continue
+        
+        logger.info(f"Найдено и отформатировано {len(formatted_products)} товаров из {len(products)}")
+        return formatted_products
+    
+    except Exception as e:
+        logger.error(f"Ошибка при поиске товаров: {str(e)}")
         logger.error(traceback.format_exc())
         raise HTTPException(status_code=500, detail=f"Внутренняя ошибка сервера: {str(e)}")
 

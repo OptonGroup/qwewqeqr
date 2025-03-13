@@ -1,5 +1,4 @@
 {
   "/page": "app/page.js",
-  "/api/analyze-image/route": "app/api/analyze-image/route.js",
-  "/api/search-pinterest/route": "app/api/search-pinterest/route.js"
+  "/api/analyze-image/route": "app/api/analyze-image/route.js"
 }

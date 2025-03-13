@@ -5,11 +5,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, ShoppingBag, Plus, Pencil } from 'lucide-react';
+import { Search, ShoppingBag, Plus, Pencil, ChevronDown, ChevronUp, Home } from 'lucide-react';
 import { ProductCard } from './product-card';
 import type { GarmentItem } from './product-card';
 import PinterestOutfitSection from './pinterest-outfit-section';
 import { Badge } from '@/components/ui/badge';
+import { useAppContext } from '@/context/app-context';
 
 // Базовые заглушки изображений в формате base64 для различных категорий
 const BASE64_IMAGES = {
@@ -131,7 +132,12 @@ interface PinterestOutfit {
   clothingItems: ClothingItem[];
 }
 
-export default function StylistAssistant() {
+interface StylistAssistantProps {
+  onReturnHome?: () => void;
+}
+
+export default function StylistAssistant({ onReturnHome }: StylistAssistantProps) {
+  const { setSelectedRole } = useAppContext();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<GarmentItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -142,6 +148,7 @@ export default function StylistAssistant() {
   const [isOutfitSearchMode, setIsOutfitSearchMode] = useState(false);
   const [gender, setGender] = useState<'женский' | 'мужской'>('женский');
   const [imageAnalysis, setImageAnalysis] = useState<string | null>(null);
+  const [showFullAnalysis, setShowFullAnalysis] = useState<boolean>(true);
   
   // Новые состояния для Pinterest
   const [pinterestQuery, setPinterestQuery] = useState('');
@@ -264,34 +271,39 @@ export default function StylistAssistant() {
   };
 
   // Функция для поиска образов в Pinterest
-  const handlePinterestSearch = async () => {
-    if (!pinterestQuery.trim()) return;
+  const searchPinterestOutfits = async () => {
+    if (!pinterestQuery) {
+      setApiError("Пожалуйста, укажите поисковый запрос");
+      return;
+    }
     
     setIsPinterestLoading(true);
+    setApiError(null);
     setPinterestResults([]);
     
     try {
-      const response = await fetch('/api/search-pinterest', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: pinterestQuery,
-          gender: gender
-        }),
-      });
+      console.log(`Поиск образов: ${pinterestQuery}, пол: ${gender}`);
+      
+      // Отправляем GET запрос к нашему API
+      const response = await fetch(`/api/search-pinterest?query=${encodeURIComponent(pinterestQuery)}&gender=${encodeURIComponent(gender)}&limit=3`);
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`Ошибка при поиске (${response.status}): ${errorText}`);
       }
       
-      const data = await response.json();
-      setPinterestResults(data);
+      const results = await response.json();
       
-      console.log('Результаты поиска Pinterest:', data);
+      if (Array.isArray(results) && results.length > 0) {
+        console.log(`Получено ${results.length} образов из Pinterest`);
+        setPinterestResults(results);
+      } else {
+        setApiError("Не найдено подходящих образов. Попробуйте изменить запрос.");
+        console.warn("Не найдено образов или получен некорректный формат данных:", results);
+      }
     } catch (error) {
-      console.error('Error searching Pinterest:', error);
+      console.error("Ошибка при поиске образов:", error);
+      setApiError(`Ошибка при поиске образов: ${error.message || 'Неизвестная ошибка'}`);
     } finally {
       setIsPinterestLoading(false);
     }
@@ -316,6 +328,16 @@ export default function StylistAssistant() {
     // Сбрасываем результаты при переключении режима
     setSearchResults([]);
     setPinterestResults([]);
+  };
+
+  const formatResultsCount = (count: number): string => {
+    if (count === 1) {
+      return "Найден 1 образ";
+    } else if (count >= 2 && count <= 4) {
+      return `Найдено ${count} образа`;
+    } else {
+      return `Найдено ${count} образов`;
+    }
   };
 
   // Компонент ProductCard с обработкой ошибок загрузки изображений
@@ -449,8 +471,19 @@ export default function StylistAssistant() {
   };
 
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-3xl font-bold mb-8 text-foreground/90">Персональный стилист</h1>
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Ассистент стилиста</h1>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => setSelectedRole(null)}
+          className="flex items-center gap-2"
+        >
+          <Home className="h-4 w-4" />
+          Вернуться на главную
+        </Button>
+      </div>
       
       <Tabs defaultValue="photo-search" className="w-full">
         <TabsList className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground mb-6 w-full md:w-auto">
@@ -589,10 +622,23 @@ export default function StylistAssistant() {
                               </div>
                             </div>
                           </div>
-                          <div className="text-muted-foreground text-sm whitespace-pre-line border-t border-border/40 pt-3">
-                            <p className="font-medium text-foreground mb-1">Полный анализ:</p>
-                            {imageAnalysis}
-                          </div>
+                          
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="w-full text-xs flex items-center justify-center gap-1 mb-3"
+                            onClick={() => setShowFullAnalysis(!showFullAnalysis)}
+                          >
+                            {showFullAnalysis ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                            {showFullAnalysis ? "Скрыть полный анализ" : "Показать полный анализ"}
+                          </Button>
+                          
+                          {showFullAnalysis && (
+                            <div className="text-muted-foreground text-sm whitespace-pre-line border-t border-border/40 pt-3">
+                              <p className="font-medium text-foreground mb-1">Полный анализ:</p>
+                              {imageAnalysis}
+                            </div>
+                          )}
                         </div>
                       )}
                       <h2 className="text-xl font-semibold">Найдено {searchResults.length} товаров</h2>
@@ -705,10 +751,10 @@ export default function StylistAssistant() {
                           placeholder="Опишите желаемый образ, например: Повседневный образ на осень"
                           value={pinterestQuery}
                           onChange={(e) => setPinterestQuery(e.target.value)}
-                          onKeyDown={(e) => e.key === 'Enter' && handlePinterestSearch()}
+                          onKeyDown={(e) => e.key === 'Enter' && searchPinterestOutfits()}
                         />
                         <Button 
-                          onClick={handlePinterestSearch} 
+                          onClick={searchPinterestOutfits} 
                           disabled={isPinterestLoading}
                           className="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 active:scale-[0.98] h-10 px-4 py-2"
                         >
@@ -760,15 +806,24 @@ export default function StylistAssistant() {
                           <p className="text-muted-foreground">Ищем стильные образы и подбираем похожие товары...</p>
                         </div>
                       ) : pinterestResults.length > 0 ? (
-                        <div className="space-y-8">
-                          <h2 className="text-2xl font-semibold mt-8 mb-4">Найдено {pinterestResults.length} образов</h2>
-                          {pinterestResults.map((outfit, index) => (
-                            <PinterestOutfitSection 
-                              key={index} 
-                              outfit={outfit} 
-                              isLoading={false} 
-                            />
-                          ))}
+                        <div className="space-y-4 mt-8">
+                          <div className="flex items-center justify-between">
+                            <h2 className="text-2xl font-semibold text-foreground">
+                              {formatResultsCount(pinterestResults.length)}
+                            </h2>
+                            {/* Если нужны дополнительные кнопки, можно добавить здесь */}
+                          </div>
+                          
+                          {/* Список результатов */}
+                          <div className="space-y-8">
+                            {pinterestResults.map((outfit, index) => (
+                              <PinterestOutfitSection 
+                                key={`${outfit.imageUrl}-${index}`}
+                                outfit={outfit}
+                                isLoading={false}
+                              />
+                            ))}
+                          </div>
                         </div>
                       ) : null}
                     </div>
