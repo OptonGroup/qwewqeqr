@@ -29,17 +29,25 @@ const BASE64_IMAGES = {
   shoes: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTVlN2ViIi8+PHBhdGggZD0iTTEwMCAzMDAgTDIwMCAyNTAgTDMwMCAzMDAgTDMwMCAzNTAgTDEwMCAzNTAgWiIgZmlsbD0iIzAzMTgyYyIgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utd2lkdGg9IjMiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0cHgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IiNmZmZmZmYiPtCe0LHRg9Cy0Yw8L3RleHQ+PC9zdmc+',
   // Общая одежда
   fashion: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTVlN2ViIi8+PHBhdGggZD0iTTEzMCAyMDAgTDIwMCAxMDAgTDI3MCAyMDAgTDMwMCAyMDAgTDMwMCA0MDAgTDEwMCA0MDAgTDEwMCAyMDAgWiIgZmlsbD0iIzk0YTNiOCIgc3Ryb2tlPSIjNjQ3NDhiIiBzdHJva2Utd2lkdGg9IjMiLz48dGV4dCB4PSI1MCUiIHk9IjQ1JSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0cHgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IiM0NzU1NjkiPtCe0LTQtdC20LTQsDwvdGV4dD48L3N2Zz4=',
+  // Улучшенная заглушка для пиджаков
+  blazer: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTVlN2ViIi8+PHBhdGggZD0iTTEyMCAxNTAgTDIwMCAxMDAgTDI4MCAxNTAgTDMwMCAyMDAgTDMwMCA0NTAgTDIzMCA0NTAgTDIwMCAzMDAgTDE3MCA0NTAgTDEwMCA0NTAgTDEwMCAyMDAgWiIgZmlsbD0iIzMzMzMzMyIgc3Ryb2tlPSIjMjIyMjIyIiBzdHJva2Utd2lkdGg9IjMiLz48cGF0aCBkPSJNMTcwIDIwMCBMMjMwIDIwMCBMMjMwIDI1MCBMMTcwIDI1MCBaIiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiNjY2NjY2MiIHN0cm9rZS13aWR0aD0iMSIvPjxwYXRoIGQ9Ik0xNTAgMTUwIEwxNTAgNDUwIiBzdHJva2U9IiM1NTU1NTUiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0yNTAgMTUwIEwyNTAgNDUwIiBzdHJva2U9IiM1NTU1NTUiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjE3MCIgY3k9IjI4MCIgcj0iNSIgZmlsbD0iIzg4ODg4OCIvPjxjaXJjbGUgY3g9IjE3MCIgY3k9IjMxMCIgcj0iNSIgZmlsbD0iIzg4ODg4OCIvPjxjaXJjbGUgY3g9IjE3MCIgY3k9IjM0MCIgcj0iNSIgZmlsbD0iIzg4ODg4OCIvPjx0ZXh0IHg9IjUwJSIgeT0iMzUlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjRweCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZmlsbD0iI2ZmZmZmZiI+0JrQu9Cw0YHRgdC40YfQtdGB0LrQuNC5INC/0LjQtNC20LDQujwvdGV4dD48L3N2Zz4=',
+  // Новая заглушка для брюк
+  pants: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTVlN2ViIi8+PHBhdGggZD0iTTE1MCAxMDAgTDI1MCAxMDAgTDI2MCA0NTAgTDIyMCA1MDAgTDIwMCA0NTAgTDE4MCA1MDAgTDE0MCA0NTAgWiIgZmlsbD0iIzRiNWM2YiIgc3Ryb2tlPSIjMzY0MzRmIiBzdHJva2Utd2lkdGg9IjMiLz48dGV4dCB4PSI1MCUiIHk9IjI1JSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0cHgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IiNmZmZmZmYiPtCR0YDRjtC60Lg8L3RleHQ+PC9zdmc+',
+  // Новая заглушка для шапок
+  hat: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTVlN2ViIi8+PGVsbGlwc2UgY3g9IjIwMCIgY3k9IjIwMCIgcng9IjEwMCIgcnk9IjUwIiBmaWxsPSIjODg4ODg4IiBzdHJva2U9IiM2NjY2NjYiIHN0cm9rZS13aWR0aD0iMyIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjRweCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZmlsbD0iI2ZmZmZmZiI+0KjQsNC/0LrQsDwvdGV4dD48L3N2Zz4=',
 };
 
 // Функция для получения base64 изображения по категории
 const getBase64ImageByCategory = (category: string): string => {
   const lowerCategory = category.toLowerCase();
   if (lowerCategory.includes('футболка') || lowerCategory.includes('рубашка')) return BASE64_IMAGES.tshirt;
-  if (lowerCategory.includes('джинс') || lowerCategory.includes('брюк')) return BASE64_IMAGES.jeans;
-  if (lowerCategory.includes('куртка') || lowerCategory.includes('пальто') || lowerCategory.includes('плащ')) return BASE64_IMAGES.jacket;
+  if (lowerCategory.includes('джинс') || lowerCategory.includes('брюк')) return BASE64_IMAGES.pants;
+  if (lowerCategory.includes('куртка') || lowerCategory.includes('пальто') || lowerCategory.includes('пиджак')) return BASE64_IMAGES.jacket;
   if (lowerCategory.includes('платье')) return BASE64_IMAGES.dress;
   if (lowerCategory.includes('свитер') || lowerCategory.includes('худи') || lowerCategory.includes('толстовка')) return BASE64_IMAGES.sweater;
   if (lowerCategory.includes('обувь') || lowerCategory.includes('кед') || lowerCategory.includes('ботин') || lowerCategory.includes('кроссов')) return BASE64_IMAGES.shoes;
+  if (lowerCategory.includes('пиджак') || lowerCategory.includes('блейзер')) return BASE64_IMAGES.blazer;
+  if (lowerCategory.includes('шапка') || lowerCategory.includes('кепка') || lowerCategory.includes('берет')) return BASE64_IMAGES.hat;
   if (lowerCategory.includes('одежда')) return BASE64_IMAGES.fashion;
   return BASE64_IMAGES.default;
 };
@@ -327,11 +335,13 @@ export default function StylistAssistant() {
     const getCategoryFromName = (name: string): string => {
       const lowerName = name.toLowerCase();
       if (lowerName.includes('футболка') || lowerName.includes('рубашка')) return 'tshirt';
-      if (lowerName.includes('джинс') || lowerName.includes('брюк')) return 'jeans';
+      if (lowerName.includes('джинс') || lowerName.includes('брюк')) return 'pants';
       if (lowerName.includes('куртка') || lowerName.includes('пальто') || lowerName.includes('пиджак')) return 'jacket';
+      if (lowerName.includes('пиджак') || lowerName.includes('блейзер')) return 'blazer';
       if (lowerName.includes('платье')) return 'dress';
       if (lowerName.includes('свитер') || lowerName.includes('худи') || lowerName.includes('толстовка')) return 'sweater';
       if (lowerName.includes('обувь') || lowerName.includes('кед') || lowerName.includes('ботин') || lowerName.includes('кроссов')) return 'shoes';
+      if (lowerName.includes('шапка') || lowerName.includes('кепка') || lowerName.includes('берет')) return 'hat';
       return 'fashion';
     };
 
@@ -340,7 +350,8 @@ export default function StylistAssistant() {
       console.log(`Ошибка загрузки изображения: ${imgSrc} (попытка ${loadAttempts + 1})`);
       setLoadAttempts(prev => prev + 1);
       
-      if (loadAttempts >= 5) {
+      // Если превышено количество попыток или это уже заглушка, используем base64 изображение
+      if (loadAttempts >= 2 || imgSrc.startsWith('data:')) {
         console.log('Превышено количество попыток загрузки, используем base64 изображение');
         setImgError(true);
         
@@ -356,21 +367,40 @@ export default function StylistAssistant() {
       if (!imgError && product.id) {
         const productId = product.id;
         
-        // Определяем части URL на основе ID товара
-        const volDigits = productId.length >= 4 ? 4 : (productId.length >= 3 ? 3 : 1);
-        const vol = productId.slice(0, volDigits);
-        
-        const partDigits = productId.length >= 6 ? 6 : (productId.length >= 5 ? 5 : productId.length);
-        const part = productId.slice(0, partDigits);
-        
-        const lastTwoDigits = productId.slice(-2);
-        const bucketNum = (parseInt(lastTwoDigits) % 20) + 1;
-        const bucketStr = bucketNum.toString().padStart(2, '0');
-        
-        const newImageUrl = `https://basket-${bucketStr}.wbbasket.ru/vol${vol}/part${part}/${productId}/images/c516x688/1.webp`;
-        console.log(`Генерируем URL изображения: ${newImageUrl}`);
-        
-        setImgSrc(newImageUrl);
+        // Пробуем разные форматы URL в зависимости от попытки
+        if (loadAttempts === 0) {
+          // Первая попытка - стандартный формат Wildberries
+          const volDigits = productId.length >= 4 ? 4 : (productId.length >= 3 ? 3 : 1);
+          const vol = productId.slice(0, volDigits);
+          
+          const partDigits = productId.length >= 6 ? 6 : (productId.length >= 5 ? 5 : productId.length);
+          const part = productId.slice(0, partDigits);
+          
+          const lastTwoDigits = productId.slice(-2);
+          const bucketNum = (parseInt(lastTwoDigits) % 20) + 1;
+          const bucketStr = bucketNum.toString().padStart(2, '0');
+          
+          const newImageUrl = `https://basket-${bucketStr}.wbbasket.ru/vol${vol}/part${part}/${productId}/images/c516x688/1.webp`;
+          console.log(`Генерируем URL изображения (попытка 1): ${newImageUrl}`);
+          
+          setImgSrc(newImageUrl);
+        } else if (loadAttempts === 1) {
+          // Вторая попытка - альтернативный формат Wildberries
+          const newImageUrl = `https://images.wbstatic.net/c516x688/new/${productId.slice(0, 4)}/${productId}-1.jpg`;
+          console.log(`Генерируем URL изображения (попытка 2): ${newImageUrl}`);
+          
+          setImgSrc(newImageUrl);
+        } else {
+          // Если все попытки не удались, используем заглушку
+          setImgError(true);
+          
+          // Получаем категорию для base64 изображения
+          const category = getCategoryFromName(product.name || product.category || '');
+          const base64Image = getBase64ImageByCategory(category);
+          
+          console.log(`Используем base64 изображение для категории: ${category}`);
+          setImgSrc(base64Image);
+        }
       } else {
         setImgError(true);
         
@@ -406,21 +436,7 @@ export default function StylistAssistant() {
           <p className="text-sm text-muted-foreground mb-4">{product.description}</p>
           <div className="flex justify-between items-center">
             <div className="space-y-1">
-              {product.oldPrice ? (
-                <>
-                  <span className="text-sm text-muted-foreground line-through block">
-                    {product.oldPrice} ₽
-                  </span>
-                  <span className="font-bold text-base text-red-500">
-                    {product.price} ₽
-                  </span>
-                  <span className="text-xs text-red-500 font-medium block">
-                    Скидка {Math.round(100 - (product.price / product.oldPrice * 100))}%
-                  </span>
-                </>
-              ) : (
-                <span className="font-bold">{product.price} ₽</span>
-              )}
+              <span className="font-bold">{product.price} ₽</span>
             </div>
             <Button size="sm" onClick={() => { if (product.url) window.open(product.url, '_blank'); }}>
               <ShoppingBag className="h-4 w-4 mr-2" />

@@ -74,10 +74,36 @@ class WildberriesService:
             gender=gender
         )
         
+        # Логируем структуру первого элемента для отладки
+        if raw_products and len(raw_products) > 0:
+            logger.debug(f"Пример структуры данных товара: {json.dumps(raw_products[0], ensure_ascii=False, default=str)}")
+        
         # Преобразуем данные в нужный формат
         products = []
         for product in raw_products:
             try:
+                # Получаем и преобразуем цены
+                price_raw = product.get('priceU') or product.get('price') or 0
+                sale_price_raw = product.get('salePriceU') or product.get('sale_price') or 0
+                
+                # Преобразуем цены в числа
+                if isinstance(price_raw, str):
+                    price_raw = price_raw.replace(' ', '')
+                # Без деления на 100, так как значения уже в рублях
+                price = int(price_raw) if price_raw else 0
+                
+                if isinstance(sale_price_raw, str):
+                    sale_price_raw = sale_price_raw.replace(' ', '')
+                # Без деления на 100, так как значения уже в рублях
+                sale_price = int(sale_price_raw) if sale_price_raw else 0
+                
+                # Если скидочная цена равна 0 или больше основной, используем основную цену
+                if sale_price == 0 or sale_price >= price:
+                    sale_price = price
+                
+                # Рассчитываем скидку, если есть разница между ценами
+                discount = round((1 - sale_price / price) * 100) if price > 0 and sale_price < price else 0
+                
                 # Построение URL изображения на основе ID продукта
                 vol = product["id"] // 100000
                 part = product["id"] // 1000
@@ -94,24 +120,27 @@ class WildberriesService:
                     "id": str(product["id"]),
                     "name": product["name"],
                     "brand": product["brand"],
-                    "price": product["price"],
-                    "sale_price": product.get("sale_price"),
-                    "category": product["category"],
+                    "price": price,
+                    "sale_price": sale_price,
+                    "discount": discount,
+                    "category": product.get("category", ""),
                     "colors": product.get("colors", []),
                     "sizes": product.get("sizes", []),
                     "rating": product.get("rating"),
                     "reviews_count": product.get("reviews_count"),
                     "imageUrl": image_urls[0] if image_urls else None,
                     "imageUrls": image_urls,
-                    "url": product["url"],
+                    "url": product.get("url", f"https://www.wildberries.ru/catalog/{product['id']}/detail.aspx"),
                     "description": product.get("description", ""),
                     "gender": gender or "унисекс",
                     "available": product.get("available", True)
                 }
                 
+                logger.debug(f"Обработан товар: {processed_product['name']} - Цена: {price}, Скидка: {sale_price}, Процент: {discount}%")
                 products.append(processed_product)
             except Exception as e:
                 logger.error(f"Ошибка при обработке товара {product.get('id')}: {str(e)}")
+                logger.debug(f"Данные товара с ошибкой: {json.dumps(product, ensure_ascii=False, default=str)}")
                 continue
         
         logger.info(f"Найдено {len(products)} товаров по запросу '{query}'")
@@ -138,19 +167,34 @@ class WildberriesService:
                 gender=gender
             )
             
+            # Логируем структуру первого элемента для отладки
+            if raw_products and len(raw_products) > 0:
+                logger.debug(f"Структура данных товара: {json.dumps(raw_products[0], ensure_ascii=False, default=str)}")
+            
             # Обрабатываем результаты
             products = []
             for product in raw_products:
                 try:
-                    # Преобразуем цены в числа
-                    price = int(str(product.get('priceU', '0')).replace(' ', '')) // 100
-                    sale_price = int(str(product.get('salePriceU', '0')).replace(' ', '')) // 100
+                    # Получаем поля с ценами, проверяя разные возможные имена полей
+                    price_raw = product.get('priceU') or product.get('price') or 0
+                    sale_price_raw = product.get('salePriceU') or product.get('sale_price') or 0
                     
-                    # Обновляем: Если sale_price равен 0, используем price
-                    if sale_price == 0:
+                    # Преобразуем цены в числа
+                    if isinstance(price_raw, str):
+                        price_raw = price_raw.replace(' ', '')
+                    # Без деления на 100, так как значения уже в рублях
+                    price = int(price_raw) if price_raw else 0
+                    
+                    if isinstance(sale_price_raw, str):
+                        sale_price_raw = sale_price_raw.replace(' ', '')
+                    # Без деления на 100, так как значения уже в рублях
+                    sale_price = int(sale_price_raw) if sale_price_raw else 0
+                    
+                    # Если скидочная цена равна 0 или больше основной, используем основную цену
+                    if sale_price == 0 or sale_price >= price:
                         sale_price = price
                     
-                    # Рассчитываем скидку
+                    # Рассчитываем скидку только если основная цена больше 0 и скидочная меньше основной
                     discount = round((1 - sale_price / price) * 100) if price > 0 and sale_price < price else 0
                     
                     processed_product = {
@@ -171,6 +215,7 @@ class WildberriesService:
                     
                 except Exception as e:
                     logger.error(f"Ошибка при обработке товара {product.get('id')}: {str(e)}")
+                    logger.debug(f"Данные товара с ошибкой: {json.dumps(product, ensure_ascii=False, default=str)}")
                     continue
                 
             logger.info(f"Найдено {len(products)} товаров по запросу '{query}'")
