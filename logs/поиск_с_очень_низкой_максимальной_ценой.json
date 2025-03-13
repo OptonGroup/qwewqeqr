@@ -1,0 +1,35 @@
+[
+  {
+    "id": "186541081",
+    "name": "Пиджак оверсайз укороченный в офис и школу",
+    "brand": "ARCHIVES MEMORY",
+    "price": 9767,
+    "sale_price": 890,
+    "discount": 91,
+    "rating": 5,
+    "url": "https://www.wildberries.ru/catalog/186541081/detail.aspx",
+    "image_url": "https://images.wbstatic.net/c516x688/new/1865/186541081/images/big/1.jpg"
+  },
+  {
+    "id": "323800072",
+    "name": "пиджак",
+    "brand": "",
+    "price": 5000,
+    "sale_price": 570,
+    "discount": 89,
+    "rating": 5,
+    "url": "https://www.wildberries.ru/catalog/323800072/detail.aspx",
+    "image_url": "https://images.wbstatic.net/c516x688/new/3238/323800072/images/big/1.jpg"
+  },
+  {
+    "id": "245672084",
+    "name": "Пиджак укороченный женский с необработанными краями y2k",
+    "brand": "",
+    "price": 8000,
+    "sale_price": 912,
+    "discount": 89,
+    "rating": 5,
+    "url": "https://www.wildberries.ru/catalog/245672084/detail.aspx",
+    "image_url": "https://images.wbstatic.net/c516x688/new/2456/245672084/images/big/1.jpg"
+  }
+]

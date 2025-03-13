@@ -1,0 +1,709 @@
+
+    <!DOCTYPE html>
+    <html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Отчет о тестировании фильтрации по цене в Wildberries API</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                margin: 0;
+                padding: 20px;
+                color: #333;
+            }
+            h1, h2, h3 {
+                color: #2c3e50;
+            }
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            .test-section {
+                margin-bottom: 30px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 20px;
+                background-color: #f9f9f9;
+            }
+            .test-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #eee;
+            }
+            .test-params {
+                font-weight: bold;
+                color: #3498db;
+            }
+            .test-summary {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+                margin-bottom: 20px;
+            }
+            .summary-card {
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 15px;
+            }
+            .summary-title {
+                font-weight: bold;
+                margin-bottom: 10px;
+                color: #2c3e50;
+            }
+            .products-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            .products-table th, .products-table td {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: left;
+            }
+            .products-table th {
+                background-color: #f2f2f2;
+            }
+            .products-table tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+            .success {
+                color: #27ae60;
+            }
+            .warning {
+                color: #e67e22;
+            }
+            .error {
+                color: #e74c3c;
+            }
+            .discount {
+                font-weight: bold;
+                color: #e74c3c;
+            }
+            .conclusion {
+                margin-top: 30px;
+                padding: 20px;
+                background-color: #2c3e50;
+                color: #fff;
+                border-radius: 5px;
+            }
+            .conclusion h2 {
+                color: #fff;
+                margin-top: 0;
+            }
+            .conclusion ul {
+                margin-bottom: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Отчет о тестировании фильтрации по цене в Wildberries API</h1>
+            <p>Дата тестирования: 12.03.2025 18:55:55</p>
+    
+            <div class="test-section">
+                <div class="test-header">
+                    <h2>Базовый поиск</h2>
+                    <div class="test-params">
+        
+                    </div>
+                </div>
+                
+                <div class="test-summary">
+                    <div class="summary-card">
+                        <div class="summary-title">Общая информация</div>
+                        <p>Найдено товаров: 3</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Основные цены</div>
+                        <p>Минимальная: 7000 руб.</p>
+                        <p>Максимальная: 19300 руб.</p>
+                        <p>Средняя: 11430.00 руб.</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Скидочные цены</div>
+                        <p>Минимальная: 2447 руб.</p>
+                        <p>Максимальная: 3582 руб.</p>
+                        <p>Средняя: 3036.33 руб.</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Скидки</div>
+                        <p>Максимальная: 84%</p>
+                        <p>Средняя: 68.00%</p>
+                    </div>
+                </div>
+                
+                <div class="test-results">
+        
+                </div>
+                
+                <h3>Найденные товары</h3>
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Название</th>
+                            <th>Бренд</th>
+                            <th>Основная цена</th>
+                            <th>Скидочная цена</th>
+                            <th>Скидка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        
+                        <tr>
+                            <td>1</td>
+                            <td>Пиджак оверсайз жакет</td>
+                            <td>CHU.CHU</td>
+                            <td>19300 руб.</td>
+                            <td>3080 руб.</td>
+                            <td class="discount">84%</td>
+                        </tr>
+            
+                        <tr>
+                            <td>2</td>
+                            <td>Пиджак оверсайз серый удлиненный</td>
+                            <td>Leswan for you</td>
+                            <td>7990 руб.</td>
+                            <td>3582 руб.</td>
+                            <td class="discount">55%</td>
+                        </tr>
+            
+                        <tr>
+                            <td>3</td>
+                            <td>Пиджак оверсайз блейзер жакет</td>
+                            <td></td>
+                            <td>7000 руб.</td>
+                            <td>2447 руб.</td>
+                            <td class="discount">65%</td>
+                        </tr>
+            
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="test-section">
+                <div class="test-header">
+                    <h2>Поиск с максимальной ценой</h2>
+                    <div class="test-params">
+        max_price: 5000 руб.
+                    </div>
+                </div>
+                
+                <div class="test-summary">
+                    <div class="summary-card">
+                        <div class="summary-title">Общая информация</div>
+                        <p>Найдено товаров: 3</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Основные цены</div>
+                        <p>Минимальная: 7000 руб.</p>
+                        <p>Максимальная: 19300 руб.</p>
+                        <p>Средняя: 11430.00 руб.</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Скидочные цены</div>
+                        <p>Минимальная: 2447 руб.</p>
+                        <p>Максимальная: 3582 руб.</p>
+                        <p>Средняя: 3036.33 руб.</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Скидки</div>
+                        <p>Максимальная: 84%</p>
+                        <p>Средняя: 68.00%</p>
+                    </div>
+                </div>
+                
+                <div class="test-results">
+        <p class="success">✓ Все товары имеют скидочную цену ≤ 5000 руб.</p>
+                </div>
+                
+                <h3>Найденные товары</h3>
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Название</th>
+                            <th>Бренд</th>
+                            <th>Основная цена</th>
+                            <th>Скидочная цена</th>
+                            <th>Скидка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        
+                        <tr>
+                            <td>1</td>
+                            <td>Пиджак оверсайз жакет</td>
+                            <td>CHU.CHU</td>
+                            <td>19300 руб.</td>
+                            <td>3080 руб.</td>
+                            <td class="discount">84%</td>
+                        </tr>
+            
+                        <tr>
+                            <td>2</td>
+                            <td>Пиджак оверсайз серый удлиненный</td>
+                            <td>Leswan for you</td>
+                            <td>7990 руб.</td>
+                            <td>3582 руб.</td>
+                            <td class="discount">55%</td>
+                        </tr>
+            
+                        <tr>
+                            <td>3</td>
+                            <td>Пиджак оверсайз блейзер жакет</td>
+                            <td></td>
+                            <td>7000 руб.</td>
+                            <td>2447 руб.</td>
+                            <td class="discount">65%</td>
+                        </tr>
+            
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="test-section">
+                <div class="test-header">
+                    <h2>Поиск с минимальной ценой</h2>
+                    <div class="test-params">
+        min_price: 10000 руб., 
+                    </div>
+                </div>
+                
+                <div class="test-summary">
+                    <div class="summary-card">
+                        <div class="summary-title">Общая информация</div>
+                        <p>Найдено товаров: 3</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Основные цены</div>
+                        <p>Минимальная: 24434 руб.</p>
+                        <p>Максимальная: 50000 руб.</p>
+                        <p>Средняя: 33096.00 руб.</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Скидочные цены</div>
+                        <p>Минимальная: 10399 руб.</p>
+                        <p>Максимальная: 22500 руб.</p>
+                        <p>Средняя: 14933.00 руб.</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Скидки</div>
+                        <p>Максимальная: 57%</p>
+                        <p>Средняя: 54.67%</p>
+                    </div>
+                </div>
+                
+                <div class="test-results">
+        <p class="success">✓ Все товары имеют основную цену ≥ 10000 руб.</p>
+                </div>
+                
+                <h3>Найденные товары</h3>
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Название</th>
+                            <th>Бренд</th>
+                            <th>Основная цена</th>
+                            <th>Скидочная цена</th>
+                            <th>Скидка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        
+                        <tr>
+                            <td>1</td>
+                            <td>Удлиненный пиджак оверсайз</td>
+                            <td>Sasha'z</td>
+                            <td>50000 руб.</td>
+                            <td>22500 руб.</td>
+                            <td class="discount">55%</td>
+                        </tr>
+            
+                        <tr>
+                            <td>2</td>
+                            <td>Пиджак оверсайз серый в полоску CHANCE</td>
+                            <td>Вначале любовь</td>
+                            <td>24434 руб.</td>
+                            <td>10399 руб.</td>
+                            <td class="discount">57%</td>
+                        </tr>
+            
+                        <tr>
+                            <td>3</td>
+                            <td>Пиджак серый оверсайз</td>
+                            <td>Вначале любовь</td>
+                            <td>24854 руб.</td>
+                            <td>11900 руб.</td>
+                            <td class="discount">52%</td>
+                        </tr>
+            
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="test-section">
+                <div class="test-header">
+                    <h2>Поиск с диапазоном цен</h2>
+                    <div class="test-params">
+        min_price: 5000 руб., max_price: 20000 руб.
+                    </div>
+                </div>
+                
+                <div class="test-summary">
+                    <div class="summary-card">
+                        <div class="summary-title">Общая информация</div>
+                        <p>Найдено товаров: 3</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Основные цены</div>
+                        <p>Минимальная: 6600 руб.</p>
+                        <p>Максимальная: 17500 руб.</p>
+                        <p>Средняя: 11050.00 руб.</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Скидочные цены</div>
+                        <p>Минимальная: 5016 руб.</p>
+                        <p>Максимальная: 6650 руб.</p>
+                        <p>Средняя: 5722.67 руб.</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Скидки</div>
+                        <p>Максимальная: 62%</p>
+                        <p>Средняя: 41.67%</p>
+                    </div>
+                </div>
+                
+                <div class="test-results">
+        <p class="success">✓ Все товары имеют основную цену ≥ 5000 руб.</p><p class="success">✓ Все товары имеют скидочную цену ≤ 20000 руб.</p>
+                </div>
+                
+                <h3>Найденные товары</h3>
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Название</th>
+                            <th>Бренд</th>
+                            <th>Основная цена</th>
+                            <th>Скидочная цена</th>
+                            <th>Скидка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        
+                        <tr>
+                            <td>1</td>
+                            <td>Пиджак оверсайз удлиненный 2025</td>
+                            <td>YèsDarling</td>
+                            <td>6600 руб.</td>
+                            <td>5016 руб.</td>
+                            <td class="discount">24%</td>
+                        </tr>
+            
+                        <tr>
+                            <td>2</td>
+                            <td>Пиджак приталенный короткий</td>
+                            <td>Sabаy</td>
+                            <td>17500 руб.</td>
+                            <td>6650 руб.</td>
+                            <td class="discount">62%</td>
+                        </tr>
+            
+                        <tr>
+                            <td>3</td>
+                            <td>Пиджак серый оверсайз</td>
+                            <td>Six Reasons</td>
+                            <td>9050 руб.</td>
+                            <td>5502 руб.</td>
+                            <td class="discount">39%</td>
+                        </tr>
+            
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="test-section">
+                <div class="test-header">
+                    <h2>Поиск с противоречивыми параметрами</h2>
+                    <div class="test-params">
+        min_price: 30000 руб., max_price: 10000 руб.
+                    </div>
+                </div>
+                
+                <div class="test-summary">
+                    <div class="summary-card">
+                        <div class="summary-title">Общая информация</div>
+                        <p>Найдено товаров: 3</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Основные цены</div>
+                        <p>Минимальная: 40600 руб.</p>
+                        <p>Максимальная: 500000 руб.</p>
+                        <p>Средняя: 203209.00 руб.</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Скидочные цены</div>
+                        <p>Минимальная: 32442 руб.</p>
+                        <p>Максимальная: 380000 руб.</p>
+                        <p>Средняя: 149931.33 руб.</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Скидки</div>
+                        <p>Максимальная: 53%</p>
+                        <p>Средняя: 28.33%</p>
+                    </div>
+                </div>
+                
+                <div class="test-results">
+        <p class="success">✓ Все товары имеют основную цену ≥ 30000 руб.</p><p class="error">✗ Найдено 3 товаров со скидочной ценой > 10000 руб.</p><p class="warning">⚠ Противоречивые параметры: min_price (30000) > max_price (10000)</p><p class="success">✓ Приоритет отдается параметру min_price</p>
+                </div>
+                
+                <h3>Найденные товары</h3>
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Название</th>
+                            <th>Бренд</th>
+                            <th>Основная цена</th>
+                            <th>Скидочная цена</th>
+                            <th>Скидка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        
+                        <tr>
+                            <td>1</td>
+                            <td>Пиджак</td>
+                            <td>HUGO</td>
+                            <td>40600 руб.</td>
+                            <td>37352 руб.</td>
+                            <td class="discount">8%</td>
+                        </tr>
+            
+                        <tr>
+                            <td>2</td>
+                            <td>Пиджак фактурный приталенного кроя</td>
+                            <td>Venti</td>
+                            <td>69027 руб.</td>
+                            <td>32442 руб.</td>
+                            <td class="discount">53%</td>
+                        </tr>
+            
+                        <tr>
+                            <td>3</td>
+                            <td>Жакет Пиджак приталенный</td>
+                            <td></td>
+                            <td>500000 руб.</td>
+                            <td>380000 руб.</td>
+                            <td class="discount">24%</td>
+                        </tr>
+            
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="test-section">
+                <div class="test-header">
+                    <h2>Поиск с очень низкой максимальной ценой</h2>
+                    <div class="test-params">
+        max_price: 1000 руб.
+                    </div>
+                </div>
+                
+                <div class="test-summary">
+                    <div class="summary-card">
+                        <div class="summary-title">Общая информация</div>
+                        <p>Найдено товаров: 3</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Основные цены</div>
+                        <p>Минимальная: 5000 руб.</p>
+                        <p>Максимальная: 9767 руб.</p>
+                        <p>Средняя: 6989.00 руб.</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Скидочные цены</div>
+                        <p>Минимальная: 570 руб.</p>
+                        <p>Максимальная: 942 руб.</p>
+                        <p>Средняя: 800.67 руб.</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Скидки</div>
+                        <p>Максимальная: 91%</p>
+                        <p>Средняя: 88.33%</p>
+                    </div>
+                </div>
+                
+                <div class="test-results">
+        <p class="success">✓ Все товары имеют скидочную цену ≤ 1000 руб.</p>
+                </div>
+                
+                <h3>Найденные товары</h3>
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Название</th>
+                            <th>Бренд</th>
+                            <th>Основная цена</th>
+                            <th>Скидочная цена</th>
+                            <th>Скидка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        
+                        <tr>
+                            <td>1</td>
+                            <td>Пиджак оверсайз укороченный в офис и школу</td>
+                            <td>ARCHIVES MEMORY</td>
+                            <td>9767 руб.</td>
+                            <td>890 руб.</td>
+                            <td class="discount">91%</td>
+                        </tr>
+            
+                        <tr>
+                            <td>2</td>
+                            <td>пиджак</td>
+                            <td></td>
+                            <td>5000 руб.</td>
+                            <td>570 руб.</td>
+                            <td class="discount">89%</td>
+                        </tr>
+            
+                        <tr>
+                            <td>3</td>
+                            <td>Пиджак укороченный двубортный</td>
+                            <td>IMBRAVE</td>
+                            <td>6200 руб.</td>
+                            <td>942 руб.</td>
+                            <td class="discount">85%</td>
+                        </tr>
+            
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="test-section">
+                <div class="test-header">
+                    <h2>Поиск с очень высокой минимальной ценой</h2>
+                    <div class="test-params">
+        min_price: 50000 руб., 
+                    </div>
+                </div>
+                
+                <div class="test-summary">
+                    <div class="summary-card">
+                        <div class="summary-title">Общая информация</div>
+                        <p>Найдено товаров: 3</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Основные цены</div>
+                        <p>Минимальная: 95802 руб.</p>
+                        <p>Максимальная: 500000 руб.</p>
+                        <p>Средняя: 235693.67 руб.</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Скидочные цены</div>
+                        <p>Минимальная: 50075 руб.</p>
+                        <p>Максимальная: 380000 руб.</p>
+                        <p>Средняя: 162518.67 руб.</p>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">Скидки</div>
+                        <p>Максимальная: 55%</p>
+                        <p>Средняя: 39.67%</p>
+                    </div>
+                </div>
+                
+                <div class="test-results">
+        <p class="success">✓ Все товары имеют основную цену ≥ 50000 руб.</p>
+                </div>
+                
+                <h3>Найденные товары</h3>
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Название</th>
+                            <th>Бренд</th>
+                            <th>Основная цена</th>
+                            <th>Скидочная цена</th>
+                            <th>Скидка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        
+                        <tr>
+                            <td>1</td>
+                            <td>Жакет Пиджак приталенный</td>
+                            <td></td>
+                            <td>500000 руб.</td>
+                            <td>380000 руб.</td>
+                            <td class="discount">24%</td>
+                        </tr>
+            
+                        <tr>
+                            <td>2</td>
+                            <td>Пиджак однобортный приталенного кроя</td>
+                            <td>bugatti</td>
+                            <td>111279 руб.</td>
+                            <td>50075 руб.</td>
+                            <td class="discount">55%</td>
+                        </tr>
+            
+                        <tr>
+                            <td>3</td>
+                            <td>Пиджак серого цвета из смесового льна</td>
+                            <td>Roy Roy</td>
+                            <td>95802 руб.</td>
+                            <td>57481 руб.</td>
+                            <td class="discount">40%</td>
+                        </tr>
+            
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="conclusion">
+                <h2>Выводы по результатам тестирования</h2>
+                <ul>
+                    <li>Параметр min_price фильтрует товары по основной цене (price)</li>
+                    <li>Параметр max_price фильтрует товары по скидочной цене (sale_price)</li>
+                    <li>При установке обоих параметров применяются оба фильтра последовательно</li>
+                    <li>При противоречивых параметрах приоритет отдается min_price</li>
+                </ul>
+            </div>
+        </div>
+    </body>
+    </html>
+    

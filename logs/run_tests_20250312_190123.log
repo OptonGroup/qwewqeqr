@@ -1,0 +1,74 @@
+2025-03-12 19:01:23,133 - __main__ - INFO - Запуск тестов с разными параметрами фильтрации по цене
+2025-03-12 19:01:23,133 - __main__ - INFO - Запуск тестов с разными параметрами фильтрации по цене
+2025-03-12 19:01:23,134 - __main__ - INFO - Запуск скрипта: temp_базовый_тест.py
+2025-03-12 19:01:26,426 - __main__ - INFO - Временный скрипт удален: temp_базовый_тест.py
+2025-03-12 19:01:26,427 - __main__ - INFO - Запуск скрипта: temp_тест_с_низкой_максимальной_ценой.py
+2025-03-12 19:01:28,190 - __main__ - INFO - Временный скрипт удален: temp_тест_с_низкой_максимальной_ценой.py
+2025-03-12 19:01:28,190 - __main__ - INFO - Запуск скрипта: temp_тест_с_высокой_минимальной_ценой.py
+2025-03-12 19:01:29,778 - __main__ - INFO - Временный скрипт удален: temp_тест_с_высокой_минимальной_ценой.py
+2025-03-12 19:01:29,779 - __main__ - INFO - Запуск скрипта: temp_тест_с_диапазоном_цен.py
+2025-03-12 19:01:31,314 - __main__ - INFO - Временный скрипт удален: temp_тест_с_диапазоном_цен.py
+2025-03-12 19:01:31,314 - __main__ - INFO - Запуск скрипта: temp_тест_с_противоречивыми_параметрами.py
+2025-03-12 19:01:35,795 - __main__ - INFO - Временный скрипт удален: temp_тест_с_противоречивыми_параметрами.py
+2025-03-12 19:01:35,796 - __main__ - INFO - Запуск скрипта: temp_тест_с_очень_низкой_максимальной_ценой.py
+2025-03-12 19:01:37,935 - __main__ - INFO - Временный скрипт удален: temp_тест_с_очень_низкой_максимальной_ценой.py
+2025-03-12 19:01:37,935 - __main__ - INFO - Запуск скрипта: temp_тест_с_очень_высокой_минимальной_ценой.py
+2025-03-12 19:01:40,780 - __main__ - INFO - Временный скрипт удален: temp_тест_с_очень_высокой_минимальной_ценой.py
+2025-03-12 19:01:40,780 - __main__ - ERROR - Ошибка при анализе результатов теста: stat: path should be string, bytes, os.PathLike or integer, not dict
+2025-03-12 19:01:40,784 - __main__ - ERROR - Traceback (most recent call last):
+  File "C:\Users\opton\Downloads\pinterest_parser-main\run_price_filter_tests.py", line 231, in analyze_results
+    if not os.path.exists(result_file):
+  File "C:\Users\opton\AppData\Local\Programs\Python\Python310\lib\genericpath.py", line 19, in exists
+    os.stat(path)
+TypeError: stat: path should be string, bytes, os.PathLike or integer, not dict
+
+2025-03-12 19:01:40,784 - __main__ - ERROR - Ошибка при анализе результатов теста: stat: path should be string, bytes, os.PathLike or integer, not dict
+2025-03-12 19:01:40,790 - __main__ - ERROR - Traceback (most recent call last):
+  File "C:\Users\opton\Downloads\pinterest_parser-main\run_price_filter_tests.py", line 231, in analyze_results
+    if not os.path.exists(result_file):
+  File "C:\Users\opton\AppData\Local\Programs\Python\Python310\lib\genericpath.py", line 19, in exists
+    os.stat(path)
+TypeError: stat: path should be string, bytes, os.PathLike or integer, not dict
+
+2025-03-12 19:01:40,790 - __main__ - ERROR - Ошибка при анализе результатов теста: stat: path should be string, bytes, os.PathLike or integer, not dict
+2025-03-12 19:01:40,790 - __main__ - ERROR - Traceback (most recent call last):
+  File "C:\Users\opton\Downloads\pinterest_parser-main\run_price_filter_tests.py", line 231, in analyze_results
+    if not os.path.exists(result_file):
+  File "C:\Users\opton\AppData\Local\Programs\Python\Python310\lib\genericpath.py", line 19, in exists
+    os.stat(path)
+TypeError: stat: path should be string, bytes, os.PathLike or integer, not dict
+
+2025-03-12 19:01:40,791 - __main__ - ERROR - Ошибка при анализе результатов теста: stat: path should be string, bytes, os.PathLike or integer, not dict
+2025-03-12 19:01:40,791 - __main__ - ERROR - Traceback (most recent call last):
+  File "C:\Users\opton\Downloads\pinterest_parser-main\run_price_filter_tests.py", line 231, in analyze_results
+    if not os.path.exists(result_file):
+  File "C:\Users\opton\AppData\Local\Programs\Python\Python310\lib\genericpath.py", line 19, in exists
+    os.stat(path)
+TypeError: stat: path should be string, bytes, os.PathLike or integer, not dict
+
+2025-03-12 19:01:40,791 - __main__ - ERROR - Ошибка при анализе результатов теста: stat: path should be string, bytes, os.PathLike or integer, not dict
+2025-03-12 19:01:40,792 - __main__ - ERROR - Traceback (most recent call last):
+  File "C:\Users\opton\Downloads\pinterest_parser-main\run_price_filter_tests.py", line 231, in analyze_results
+    if not os.path.exists(result_file):
+  File "C:\Users\opton\AppData\Local\Programs\Python\Python310\lib\genericpath.py", line 19, in exists
+    os.stat(path)
+TypeError: stat: path should be string, bytes, os.PathLike or integer, not dict
+
+2025-03-12 19:01:40,792 - __main__ - ERROR - Ошибка при анализе результатов теста: stat: path should be string, bytes, os.PathLike or integer, not dict
+2025-03-12 19:01:40,792 - __main__ - ERROR - Traceback (most recent call last):
+  File "C:\Users\opton\Downloads\pinterest_parser-main\run_price_filter_tests.py", line 231, in analyze_results
+    if not os.path.exists(result_file):
+  File "C:\Users\opton\AppData\Local\Programs\Python\Python310\lib\genericpath.py", line 19, in exists
+    os.stat(path)
+TypeError: stat: path should be string, bytes, os.PathLike or integer, not dict
+
+2025-03-12 19:01:40,793 - __main__ - ERROR - Ошибка при анализе результатов теста: stat: path should be string, bytes, os.PathLike or integer, not dict
+2025-03-12 19:01:40,793 - __main__ - ERROR - Traceback (most recent call last):
+  File "C:\Users\opton\Downloads\pinterest_parser-main\run_price_filter_tests.py", line 231, in analyze_results
+    if not os.path.exists(result_file):
+  File "C:\Users\opton\AppData\Local\Programs\Python\Python310\lib\genericpath.py", line 19, in exists
+    os.stat(path)
+TypeError: stat: path should be string, bytes, os.PathLike or integer, not dict
+
+2025-03-12 19:01:40,793 - __main__ - WARNING - Нет результатов для генерации отчета
+2025-03-12 19:01:40,793 - __main__ - ERROR - Ошибка при открытии отчета в браузере: _getfullpathname: path should be string, bytes or os.PathLike, not NoneType

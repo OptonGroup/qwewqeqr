@@ -1,0 +1,40 @@
+{
+  "success": true,
+  "identified_needs": {
+    "budget": null,
+    "style_preferences": {
+      "formal": true
+    },
+    "size": "M",
+    "color_preferences": [
+      "темные"
+    ],
+    "season": "осень",
+    "garment_types": [
+      "верхняя одежда"
+    ],
+    "occasions": [
+      "работа"
+    ]
+  },
+  "clarifying_questions": [
+    "Какой бюджет вы установили для покупки одежды?",
+    "Необходимо ли уточнить какие именно темные цвета вы предпочитаете?",
+    "Нужна ли помимо верхней одежды подобрать и другие типы одежды для осеннего гардероба?"
+  ],
+  "preferences_updated": true,
+  "preferences": {
+    "budget": null,
+    "color_preferences": [
+      "темные"
+    ],
+    "size": "M",
+    "season": "осень",
+    "garment_types": [
+      "верхняя одежда"
+    ],
+    "occasions": [
+      "работа"
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "config": {
+    "name": "Сумка женская",
+    "query": "сумка женская",
+    "limit": 3,
+    "min_price": null,
+    "max_price": null
+  },
+  "products": [
+    {
+      "id": "263088603",
+      "name": "Сумка классическая формат А5",
+      "brand": "FLY MILLON",
+      "price": 3500,
+      "sale_price": 1888,
+      "discount": 0,
+      "rating": 5,
+      "url": ""
+    },
+    {
+      "id": "245095806",
+      "name": "сумка женская весенняя",
+      "brand": "Saint Desar",
+      "price": 9800,
+      "sale_price": 1713,
+      "discount": 0,
+      "rating": 5,
+      "url": ""
+    },
+    {
+      "id": "220204130",
+      "name": "Сумка через плечо маленькая кросс-боди",
+      "brand": "Mikkey",
+      "price": 3000,
+      "sale_price": 1140,
+      "discount": 0,
+      "rating": 5,
+      "url": ""
+    }
+  ]
+}

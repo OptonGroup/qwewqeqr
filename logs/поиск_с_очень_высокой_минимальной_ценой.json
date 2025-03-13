@@ -1,0 +1,35 @@
+[
+  {
+    "id": "265138187",
+    "name": "Жакет Пиджак приталенный",
+    "brand": "",
+    "price": 500000,
+    "sale_price": 380000,
+    "discount": 24,
+    "rating": 5,
+    "url": "https://www.wildberries.ru/catalog/265138187/detail.aspx",
+    "image_url": "https://images.wbstatic.net/c516x688/new/2651/265138187/images/big/1.jpg"
+  },
+  {
+    "id": "183007742",
+    "name": "Пиджак однобортный приталенного кроя",
+    "brand": "bugatti",
+    "price": 111279,
+    "sale_price": 50075,
+    "discount": 55,
+    "rating": 5,
+    "url": "https://www.wildberries.ru/catalog/183007742/detail.aspx",
+    "image_url": "https://images.wbstatic.net/c516x688/new/1830/183007742/images/big/1.jpg"
+  },
+  {
+    "id": "298024408",
+    "name": "Пиджак серого цвета из смесового льна",
+    "brand": "Roy Roy",
+    "price": 95802,
+    "sale_price": 57481,
+    "discount": 40,
+    "rating": 0,
+    "url": "https://www.wildberries.ru/catalog/298024408/detail.aspx",
+    "image_url": "https://images.wbstatic.net/c516x688/new/2980/298024408/images/big/1.jpg"
+  }
+]

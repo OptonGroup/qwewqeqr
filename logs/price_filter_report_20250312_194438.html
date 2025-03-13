@@ -1,0 +1,1574 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Отчет о тестировании фильтрации по цене в Wildberries API</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                background-color: #f5f5f5;
+            }
+            h1, h2, h3 {
+                color: #333;
+            }
+            .test-case {
+                background-color: white;
+                border-radius: 5px;
+                padding: 15px;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .test-header {
+                background-color: #4a76a8;
+                color: white;
+                padding: 10px;
+                border-radius: 5px 5px 0 0;
+                margin: -15px -15px 15px -15px;
+            }
+            .stats-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                margin-bottom: 20px;
+            }
+            .stats-box {
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 10px;
+                flex: 1;
+                min-width: 200px;
+            }
+            .stats-box h4 {
+                margin-top: 0;
+                color: #4a76a8;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 5px;
+            }
+            .products-list {
+                margin-top: 20px;
+            }
+            .product-item {
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+            .product-name {
+                font-weight: bold;
+                color: #333;
+            }
+            .price-info {
+                color: #666;
+                margin: 5px 0;
+            }
+            .discount {
+                color: #e53935;
+                font-weight: bold;
+            }
+            .summary {
+                background-color: #e8f5e9;
+                border-radius: 5px;
+                padding: 15px;
+                margin-top: 20px;
+            }
+            .warning {
+                color: #e53935;
+                font-weight: bold;
+            }
+            .success {
+                color: #43a047;
+                font-weight: bold;
+            }
+            .price-distribution {
+                margin-top: 15px;
+            }
+            .price-bar {
+                height: 20px;
+                background-color: #4a76a8;
+                margin-bottom: 5px;
+                border-radius: 3px;
+            }
+            .price-label {
+                display: flex;
+                justify-content: space-between;
+                font-size: 12px;
+                color: #666;
+            }
+            .ratio-chart {
+                width: 100%;
+                height: 30px;
+                background-color: #f0f0f0;
+                position: relative;
+                border-radius: 3px;
+                overflow: hidden;
+                margin-top: 10px;
+            }
+            .ratio-bar {
+                height: 100%;
+                background-color: #4caf50;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+            .ratio-marker {
+                position: absolute;
+                top: -5px;
+                width: 2px;
+                height: 40px;
+                background-color: #e53935;
+            }
+            .ratio-label {
+                display: flex;
+                justify-content: space-between;
+                font-size: 12px;
+                color: #666;
+                margin-top: 5px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 15px;
+            }
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Отчет о тестировании фильтрации по цене в Wildberries API</h1>
+        <p>Дата тестирования: 12.03.2025 19:44:38</p>
+        
+        <div class="summary">
+            <h2>Выводы по результатам тестирования:</h2>
+            <ol>
+                <li>Параметр <code>min_price</code> фильтрует товары по основной цене (<code>price</code>)</li>
+                <li>Параметр <code>max_price</code> фильтрует товары по скидочной цене (<code>sale_price</code>)</li>
+                <li>При установке обоих параметров применяются оба фильтра последовательно</li>
+                <li>При противоречивых параметрах приоритет отдается <code>min_price</code></li>
+            </ol>
+        </div>
+        
+        <h2>Результаты тестов:</h2>
+    
+        <div class="test-case">
+            <div class="test-header">
+                <h3>Базовый поиск</h3>
+                <p>Параметры: min_price=None, max_price=None</p>
+                <p>Найдено товаров: 3</p>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stats-box">
+                    <h4>Основные цены</h4>
+                    <p>Минимальная: 7000 руб.</p>
+                    <p>Максимальная: 19300 руб.</p>
+                    <p>Средняя: 11430.00 руб.</p>
+                    <p>Медиана: 7990 руб.</p>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Скидочные цены</h4>
+                    <p>Минимальная: 2447 руб.</p>
+                    <p>Максимальная: 3582 руб.</p>
+                    <p>Средняя: 3036.33 руб.</p>
+                    <p>Медиана: 3080 руб.</p>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Скидки</h4>
+                    <p>Минимальная: 55%</p>
+                    <p>Максимальная: 84%</p>
+                    <p>Средняя: 68.00%</p>
+                    <p>Медиана: 65%</p>
+                </div>
+            </div>
+            
+            <!-- Распределение цен -->
+            <div class="stats-container">
+                <div class="stats-box">
+                    <h4>Распределение основных цен</h4>
+                    <div class="price-distribution">
+        
+                        <div class="price-label">
+                            <span>0-1000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>1000-2000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>2000-5000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>5000-10000 руб.</span>
+                            <span>2 (66.7%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 100.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>10000-20000 руб.</span>
+                            <span>1 (33.3%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 50.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>20000-50000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>50000-+ руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                    </div>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Распределение скидочных цен</h4>
+                    <div class="price-distribution">
+        
+                        <div class="price-label">
+                            <span>0-1000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>1000-2000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>2000-5000 руб.</span>
+                            <span>3 (100.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 100.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>5000-10000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>10000-20000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>20000-50000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>50000-+ руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Соотношение цен -->
+        
+            <div class="stats-box">
+                <h4>Соотношение скидочной цены к основной</h4>
+                <p>Минимальное: 0.16 (скидка 84%)</p>
+                <p>Максимальное: 0.45 (скидка 55%)</p>
+                <p>Среднее: 0.32 (скидка 68%)</p>
+                <p>Медиана: 0.35 (скидка 65%)</p>
+                
+                <div class="ratio-chart">
+                    <div class="ratio-bar" style="width: 32%"></div>
+                    <div class="ratio-marker" style="left: 16%"></div>
+                    <div class="ratio-marker" style="left: 45%"></div>
+                </div>
+                <div class="ratio-label">
+                    <span>0% от основной цены</span>
+                    <span>50%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+            
+            <div class="stats-box">
+                <h4>Соответствие фильтрам</h4>
+        
+            </div>
+            
+            <h4>Список товаров (3):</h4>
+            <div class="products-list">
+        
+                <table>
+                    <tr>
+                        <th>Название</th>
+                        <th>Основная цена</th>
+                        <th>Скидочная цена</th>
+                        <th>Скидка</th>
+                        <th>ID</th>
+                    </tr>
+            
+                    <tr>
+                        <td>Пиджак оверсайз жакет</td>
+                        <td>19300 руб.</td>
+                        <td>3080 руб.</td>
+                        <td class="discount">84%</td>
+                        <td>239487204</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Пиджак оверсайз серый удлиненный</td>
+                        <td>7990 руб.</td>
+                        <td>3582 руб.</td>
+                        <td class="discount">55%</td>
+                        <td>215069085</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Пиджак оверсайз блейзер жакет</td>
+                        <td>7000 руб.</td>
+                        <td>2447 руб.</td>
+                        <td class="discount">65%</td>
+                        <td>246602970</td>
+                    </tr>
+                
+                </table>
+            
+            </div>
+        </div>
+        
+        <div class="test-case">
+            <div class="test-header">
+                <h3>Поиск с максимальной ценой</h3>
+                <p>Параметры: min_price=None, max_price=5000</p>
+                <p>Найдено товаров: 3</p>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stats-box">
+                    <h4>Основные цены</h4>
+                    <p>Минимальная: 7000 руб.</p>
+                    <p>Максимальная: 19300 руб.</p>
+                    <p>Средняя: 11430.00 руб.</p>
+                    <p>Медиана: 7990 руб.</p>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Скидочные цены</h4>
+                    <p>Минимальная: 2447 руб.</p>
+                    <p>Максимальная: 3582 руб.</p>
+                    <p>Средняя: 3036.33 руб.</p>
+                    <p>Медиана: 3080 руб.</p>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Скидки</h4>
+                    <p>Минимальная: 55%</p>
+                    <p>Максимальная: 84%</p>
+                    <p>Средняя: 68.00%</p>
+                    <p>Медиана: 65%</p>
+                </div>
+            </div>
+            
+            <!-- Распределение цен -->
+            <div class="stats-container">
+                <div class="stats-box">
+                    <h4>Распределение основных цен</h4>
+                    <div class="price-distribution">
+        
+                        <div class="price-label">
+                            <span>0-1000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>1000-2000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>2000-5000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>5000-10000 руб.</span>
+                            <span>2 (66.7%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 100.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>10000-20000 руб.</span>
+                            <span>1 (33.3%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 50.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>20000-50000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>50000-+ руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                    </div>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Распределение скидочных цен</h4>
+                    <div class="price-distribution">
+        
+                        <div class="price-label">
+                            <span>0-1000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>1000-2000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>2000-5000 руб.</span>
+                            <span>3 (100.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 100.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>5000-10000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>10000-20000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>20000-50000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>50000-+ руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Соотношение цен -->
+        
+            <div class="stats-box">
+                <h4>Соотношение скидочной цены к основной</h4>
+                <p>Минимальное: 0.16 (скидка 84%)</p>
+                <p>Максимальное: 0.45 (скидка 55%)</p>
+                <p>Среднее: 0.32 (скидка 68%)</p>
+                <p>Медиана: 0.35 (скидка 65%)</p>
+                
+                <div class="ratio-chart">
+                    <div class="ratio-bar" style="width: 32%"></div>
+                    <div class="ratio-marker" style="left: 16%"></div>
+                    <div class="ratio-marker" style="left: 45%"></div>
+                </div>
+                <div class="ratio-label">
+                    <span>0% от основной цены</span>
+                    <span>50%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+            
+            <div class="stats-box">
+                <h4>Соответствие фильтрам</h4>
+        <p class="success">✓ Все товары имеют скидочную цену <= 5000 руб.</p>
+            </div>
+            
+            <h4>Список товаров (3):</h4>
+            <div class="products-list">
+        
+                <table>
+                    <tr>
+                        <th>Название</th>
+                        <th>Основная цена</th>
+                        <th>Скидочная цена</th>
+                        <th>Скидка</th>
+                        <th>ID</th>
+                    </tr>
+            
+                    <tr>
+                        <td>Пиджак оверсайз жакет</td>
+                        <td>19300 руб.</td>
+                        <td>3080 руб.</td>
+                        <td class="discount">84%</td>
+                        <td>239487204</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Пиджак оверсайз серый удлиненный</td>
+                        <td>7990 руб.</td>
+                        <td>3582 руб.</td>
+                        <td class="discount">55%</td>
+                        <td>215069085</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Пиджак оверсайз блейзер жакет</td>
+                        <td>7000 руб.</td>
+                        <td>2447 руб.</td>
+                        <td class="discount">65%</td>
+                        <td>246602970</td>
+                    </tr>
+                
+                </table>
+            
+            </div>
+        </div>
+        
+        <div class="test-case">
+            <div class="test-header">
+                <h3>Поиск с минимальной ценой</h3>
+                <p>Параметры: min_price=10000, max_price=None</p>
+                <p>Найдено товаров: 3</p>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stats-box">
+                    <h4>Основные цены</h4>
+                    <p>Минимальная: 24434 руб.</p>
+                    <p>Максимальная: 50000 руб.</p>
+                    <p>Средняя: 33096.00 руб.</p>
+                    <p>Медиана: 24854 руб.</p>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Скидочные цены</h4>
+                    <p>Минимальная: 10399 руб.</p>
+                    <p>Максимальная: 22500 руб.</p>
+                    <p>Средняя: 14933.00 руб.</p>
+                    <p>Медиана: 11900 руб.</p>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Скидки</h4>
+                    <p>Минимальная: 52%</p>
+                    <p>Максимальная: 57%</p>
+                    <p>Средняя: 54.67%</p>
+                    <p>Медиана: 55%</p>
+                </div>
+            </div>
+            
+            <!-- Распределение цен -->
+            <div class="stats-container">
+                <div class="stats-box">
+                    <h4>Распределение основных цен</h4>
+                    <div class="price-distribution">
+        
+                        <div class="price-label">
+                            <span>0-1000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>1000-2000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>2000-5000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>5000-10000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>10000-20000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>20000-50000 руб.</span>
+                            <span>2 (66.7%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 100.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>50000-+ руб.</span>
+                            <span>1 (33.3%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 50.0%;"></div>
+            
+                    </div>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Распределение скидочных цен</h4>
+                    <div class="price-distribution">
+        
+                        <div class="price-label">
+                            <span>0-1000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>1000-2000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>2000-5000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>5000-10000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>10000-20000 руб.</span>
+                            <span>2 (66.7%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 100.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>20000-50000 руб.</span>
+                            <span>1 (33.3%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 50.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>50000-+ руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Соотношение цен -->
+        
+            <div class="stats-box">
+                <h4>Соотношение скидочной цены к основной</h4>
+                <p>Минимальное: 0.43 (скидка 57%)</p>
+                <p>Максимальное: 0.48 (скидка 52%)</p>
+                <p>Среднее: 0.45 (скидка 55%)</p>
+                <p>Медиана: 0.45 (скидка 55%)</p>
+                
+                <div class="ratio-chart">
+                    <div class="ratio-bar" style="width: 45%"></div>
+                    <div class="ratio-marker" style="left: 43%"></div>
+                    <div class="ratio-marker" style="left: 48%"></div>
+                </div>
+                <div class="ratio-label">
+                    <span>0% от основной цены</span>
+                    <span>50%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+            
+            <div class="stats-box">
+                <h4>Соответствие фильтрам</h4>
+        <p class="success">✓ Все товары имеют основную цену >= 10000 руб.</p>
+            </div>
+            
+            <h4>Список товаров (3):</h4>
+            <div class="products-list">
+        
+                <table>
+                    <tr>
+                        <th>Название</th>
+                        <th>Основная цена</th>
+                        <th>Скидочная цена</th>
+                        <th>Скидка</th>
+                        <th>ID</th>
+                    </tr>
+            
+                    <tr>
+                        <td>Удлиненный пиджак оверсайз</td>
+                        <td>50000 руб.</td>
+                        <td>22500 руб.</td>
+                        <td class="discount">55%</td>
+                        <td>195811744</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Пиджак оверсайз серый в полоску CHANCE</td>
+                        <td>24434 руб.</td>
+                        <td>10399 руб.</td>
+                        <td class="discount">57%</td>
+                        <td>185671997</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Пиджак серый оверсайз</td>
+                        <td>24854 руб.</td>
+                        <td>11900 руб.</td>
+                        <td class="discount">52%</td>
+                        <td>245355444</td>
+                    </tr>
+                
+                </table>
+            
+            </div>
+        </div>
+        
+        <div class="test-case">
+            <div class="test-header">
+                <h3>Поиск с диапазоном цен</h3>
+                <p>Параметры: min_price=5000, max_price=20000</p>
+                <p>Найдено товаров: 3</p>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stats-box">
+                    <h4>Основные цены</h4>
+                    <p>Минимальная: 6600 руб.</p>
+                    <p>Максимальная: 17500 руб.</p>
+                    <p>Средняя: 11050.00 руб.</p>
+                    <p>Медиана: 9050 руб.</p>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Скидочные цены</h4>
+                    <p>Минимальная: 5016 руб.</p>
+                    <p>Максимальная: 6650 руб.</p>
+                    <p>Средняя: 5722.67 руб.</p>
+                    <p>Медиана: 5502 руб.</p>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Скидки</h4>
+                    <p>Минимальная: 24%</p>
+                    <p>Максимальная: 62%</p>
+                    <p>Средняя: 41.67%</p>
+                    <p>Медиана: 39%</p>
+                </div>
+            </div>
+            
+            <!-- Распределение цен -->
+            <div class="stats-container">
+                <div class="stats-box">
+                    <h4>Распределение основных цен</h4>
+                    <div class="price-distribution">
+        
+                        <div class="price-label">
+                            <span>0-1000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>1000-2000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>2000-5000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>5000-10000 руб.</span>
+                            <span>2 (66.7%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 100.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>10000-20000 руб.</span>
+                            <span>1 (33.3%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 50.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>20000-50000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>50000-+ руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                    </div>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Распределение скидочных цен</h4>
+                    <div class="price-distribution">
+        
+                        <div class="price-label">
+                            <span>0-1000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>1000-2000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>2000-5000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>5000-10000 руб.</span>
+                            <span>3 (100.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 100.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>10000-20000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>20000-50000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>50000-+ руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Соотношение цен -->
+        
+            <div class="stats-box">
+                <h4>Соотношение скидочной цены к основной</h4>
+                <p>Минимальное: 0.38 (скидка 62%)</p>
+                <p>Максимальное: 0.76 (скидка 24%)</p>
+                <p>Среднее: 0.58 (скидка 42%)</p>
+                <p>Медиана: 0.61 (скидка 39%)</p>
+                
+                <div class="ratio-chart">
+                    <div class="ratio-bar" style="width: 58%"></div>
+                    <div class="ratio-marker" style="left: 38%"></div>
+                    <div class="ratio-marker" style="left: 76%"></div>
+                </div>
+                <div class="ratio-label">
+                    <span>0% от основной цены</span>
+                    <span>50%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+            
+            <div class="stats-box">
+                <h4>Соответствие фильтрам</h4>
+        <p class="success">✓ Все товары имеют основную цену >= 5000 руб.</p><p class="success">✓ Все товары имеют скидочную цену <= 20000 руб.</p>
+            </div>
+            
+            <h4>Список товаров (3):</h4>
+            <div class="products-list">
+        
+                <table>
+                    <tr>
+                        <th>Название</th>
+                        <th>Основная цена</th>
+                        <th>Скидочная цена</th>
+                        <th>Скидка</th>
+                        <th>ID</th>
+                    </tr>
+            
+                    <tr>
+                        <td>Пиджак оверсайз удлиненный 2025</td>
+                        <td>6600 руб.</td>
+                        <td>5016 руб.</td>
+                        <td class="discount">24%</td>
+                        <td>234311642</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Пиджак приталенный короткий</td>
+                        <td>17500 руб.</td>
+                        <td>6650 руб.</td>
+                        <td class="discount">62%</td>
+                        <td>258317193</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Пиджак серый оверсайз</td>
+                        <td>9050 руб.</td>
+                        <td>5502 руб.</td>
+                        <td class="discount">39%</td>
+                        <td>230310530</td>
+                    </tr>
+                
+                </table>
+            
+            </div>
+        </div>
+        
+        <div class="test-case">
+            <div class="test-header">
+                <h3>Поиск с противоречивыми параметрами</h3>
+                <p>Параметры: min_price=30000, max_price=10000</p>
+                <p>Найдено товаров: 3</p>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stats-box">
+                    <h4>Основные цены</h4>
+                    <p>Минимальная: 7800 руб.</p>
+                    <p>Максимальная: 13590 руб.</p>
+                    <p>Средняя: 10230.00 руб.</p>
+                    <p>Медиана: 9300 руб.</p>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Скидочные цены</h4>
+                    <p>Минимальная: 1674 руб.</p>
+                    <p>Максимальная: 4564 руб.</p>
+                    <p>Средняя: 3058.00 руб.</p>
+                    <p>Медиана: 2936 руб.</p>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Скидки</h4>
+                    <p>Минимальная: 41%</p>
+                    <p>Максимальная: 88%</p>
+                    <p>Средняя: 65.67%</p>
+                    <p>Медиана: 68%</p>
+                </div>
+            </div>
+            
+            <!-- Распределение цен -->
+            <div class="stats-container">
+                <div class="stats-box">
+                    <h4>Распределение основных цен</h4>
+                    <div class="price-distribution">
+        
+                        <div class="price-label">
+                            <span>0-1000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>1000-2000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>2000-5000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>5000-10000 руб.</span>
+                            <span>2 (66.7%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 100.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>10000-20000 руб.</span>
+                            <span>1 (33.3%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 50.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>20000-50000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>50000-+ руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                    </div>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Распределение скидочных цен</h4>
+                    <div class="price-distribution">
+        
+                        <div class="price-label">
+                            <span>0-1000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>1000-2000 руб.</span>
+                            <span>1 (33.3%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 50.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>2000-5000 руб.</span>
+                            <span>2 (66.7%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 100.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>5000-10000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>10000-20000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>20000-50000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>50000-+ руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Соотношение цен -->
+        
+            <div class="stats-box">
+                <h4>Соотношение скидочной цены к основной</h4>
+                <p>Минимальное: 0.12 (скидка 88%)</p>
+                <p>Максимальное: 0.59 (скидка 41%)</p>
+                <p>Среднее: 0.34 (скидка 66%)</p>
+                <p>Медиана: 0.32 (скидка 68%)</p>
+                
+                <div class="ratio-chart">
+                    <div class="ratio-bar" style="width: 34%"></div>
+                    <div class="ratio-marker" style="left: 12%"></div>
+                    <div class="ratio-marker" style="left: 59%"></div>
+                </div>
+                <div class="ratio-label">
+                    <span>0% от основной цены</span>
+                    <span>50%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+            
+            <div class="stats-box">
+                <h4>Соответствие фильтрам</h4>
+        <p class="warning">✗ Найдены товары с основной ценой < 30000 руб. (3 шт.)</p><p class="success">✓ Все товары имеют скидочную цену <= 10000 руб.</p><p class="warning">⚠️ Противоречивые параметры: min_price (30000) > max_price (10000)</p><p>Приоритет отдается параметру max_price</p>
+            </div>
+            
+            <h4>Список товаров (3):</h4>
+            <div class="products-list">
+        
+                <table>
+                    <tr>
+                        <th>Название</th>
+                        <th>Основная цена</th>
+                        <th>Скидочная цена</th>
+                        <th>Скидка</th>
+                        <th>ID</th>
+                    </tr>
+            
+                    <tr>
+                        <td>Пиджак оверсайз удлиненный</td>
+                        <td>7800 руб.</td>
+                        <td>4564 руб.</td>
+                        <td class="discount">41%</td>
+                        <td>228705265</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Удлиненный пиджак классический</td>
+                        <td>13590 руб.</td>
+                        <td>1674 руб.</td>
+                        <td class="discount">88%</td>
+                        <td>197847627</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Пиджак оверсайз классический удлиненный жакет</td>
+                        <td>9300 руб.</td>
+                        <td>2936 руб.</td>
+                        <td class="discount">68%</td>
+                        <td>197245649</td>
+                    </tr>
+                
+                </table>
+            
+            </div>
+        </div>
+        
+        <div class="test-case">
+            <div class="test-header">
+                <h3>Поиск с очень низкой максимальной ценой</h3>
+                <p>Параметры: min_price=None, max_price=1000</p>
+                <p>Найдено товаров: 3</p>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stats-box">
+                    <h4>Основные цены</h4>
+                    <p>Минимальная: 5000 руб.</p>
+                    <p>Максимальная: 9767 руб.</p>
+                    <p>Средняя: 7589.00 руб.</p>
+                    <p>Медиана: 8000 руб.</p>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Скидочные цены</h4>
+                    <p>Минимальная: 570 руб.</p>
+                    <p>Максимальная: 912 руб.</p>
+                    <p>Средняя: 790.67 руб.</p>
+                    <p>Медиана: 890 руб.</p>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Скидки</h4>
+                    <p>Минимальная: 89%</p>
+                    <p>Максимальная: 91%</p>
+                    <p>Средняя: 89.67%</p>
+                    <p>Медиана: 89%</p>
+                </div>
+            </div>
+            
+            <!-- Распределение цен -->
+            <div class="stats-container">
+                <div class="stats-box">
+                    <h4>Распределение основных цен</h4>
+                    <div class="price-distribution">
+        
+                        <div class="price-label">
+                            <span>0-1000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>1000-2000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>2000-5000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>5000-10000 руб.</span>
+                            <span>3 (100.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 100.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>10000-20000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>20000-50000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>50000-+ руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                    </div>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Распределение скидочных цен</h4>
+                    <div class="price-distribution">
+        
+                        <div class="price-label">
+                            <span>0-1000 руб.</span>
+                            <span>3 (100.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 100.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>1000-2000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>2000-5000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>5000-10000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>10000-20000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>20000-50000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>50000-+ руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Соотношение цен -->
+        
+            <div class="stats-box">
+                <h4>Соотношение скидочной цены к основной</h4>
+                <p>Минимальное: 0.09 (скидка 91%)</p>
+                <p>Максимальное: 0.11 (скидка 89%)</p>
+                <p>Среднее: 0.11 (скидка 89%)</p>
+                <p>Медиана: 0.11 (скидка 89%)</p>
+                
+                <div class="ratio-chart">
+                    <div class="ratio-bar" style="width: 11%"></div>
+                    <div class="ratio-marker" style="left: 9%"></div>
+                    <div class="ratio-marker" style="left: 11%"></div>
+                </div>
+                <div class="ratio-label">
+                    <span>0% от основной цены</span>
+                    <span>50%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+            
+            <div class="stats-box">
+                <h4>Соответствие фильтрам</h4>
+        <p class="success">✓ Все товары имеют скидочную цену <= 1000 руб.</p>
+            </div>
+            
+            <h4>Список товаров (3):</h4>
+            <div class="products-list">
+        
+                <table>
+                    <tr>
+                        <th>Название</th>
+                        <th>Основная цена</th>
+                        <th>Скидочная цена</th>
+                        <th>Скидка</th>
+                        <th>ID</th>
+                    </tr>
+            
+                    <tr>
+                        <td>Пиджак оверсайз укороченный в офис и школу</td>
+                        <td>9767 руб.</td>
+                        <td>890 руб.</td>
+                        <td class="discount">91%</td>
+                        <td>186541081</td>
+                    </tr>
+                
+                    <tr>
+                        <td>пиджак</td>
+                        <td>5000 руб.</td>
+                        <td>570 руб.</td>
+                        <td class="discount">89%</td>
+                        <td>323800072</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Пиджак укороченный женский с необработанными краями y2k</td>
+                        <td>8000 руб.</td>
+                        <td>912 руб.</td>
+                        <td class="discount">89%</td>
+                        <td>245672084</td>
+                    </tr>
+                
+                </table>
+            
+            </div>
+        </div>
+        
+        <div class="test-case">
+            <div class="test-header">
+                <h3>Поиск с очень высокой минимальной ценой</h3>
+                <p>Параметры: min_price=50000, max_price=None</p>
+                <p>Найдено товаров: 3</p>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stats-box">
+                    <h4>Основные цены</h4>
+                    <p>Минимальная: 95802 руб.</p>
+                    <p>Максимальная: 500000 руб.</p>
+                    <p>Средняя: 235693.67 руб.</p>
+                    <p>Медиана: 111279 руб.</p>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Скидочные цены</h4>
+                    <p>Минимальная: 50075 руб.</p>
+                    <p>Максимальная: 380000 руб.</p>
+                    <p>Средняя: 162518.67 руб.</p>
+                    <p>Медиана: 57481 руб.</p>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Скидки</h4>
+                    <p>Минимальная: 24%</p>
+                    <p>Максимальная: 55%</p>
+                    <p>Средняя: 39.67%</p>
+                    <p>Медиана: 40%</p>
+                </div>
+            </div>
+            
+            <!-- Распределение цен -->
+            <div class="stats-container">
+                <div class="stats-box">
+                    <h4>Распределение основных цен</h4>
+                    <div class="price-distribution">
+        
+                        <div class="price-label">
+                            <span>0-1000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>1000-2000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>2000-5000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>5000-10000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>10000-20000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>20000-50000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>50000-+ руб.</span>
+                            <span>3 (100.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 100.0%;"></div>
+            
+                    </div>
+                </div>
+                
+                <div class="stats-box">
+                    <h4>Распределение скидочных цен</h4>
+                    <div class="price-distribution">
+        
+                        <div class="price-label">
+                            <span>0-1000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>1000-2000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>2000-5000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>5000-10000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>10000-20000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>20000-50000 руб.</span>
+                            <span>0 (0.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 0.0%;"></div>
+            
+                        <div class="price-label">
+                            <span>50000-+ руб.</span>
+                            <span>3 (100.0%)</span>
+                        </div>
+                        <div class="price-bar" style="width: 100.0%;"></div>
+            
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Соотношение цен -->
+        
+            <div class="stats-box">
+                <h4>Соотношение скидочной цены к основной</h4>
+                <p>Минимальное: 0.45 (скидка 55%)</p>
+                <p>Максимальное: 0.76 (скидка 24%)</p>
+                <p>Среднее: 0.60 (скидка 40%)</p>
+                <p>Медиана: 0.60 (скидка 40%)</p>
+                
+                <div class="ratio-chart">
+                    <div class="ratio-bar" style="width: 60%"></div>
+                    <div class="ratio-marker" style="left: 45%"></div>
+                    <div class="ratio-marker" style="left: 76%"></div>
+                </div>
+                <div class="ratio-label">
+                    <span>0% от основной цены</span>
+                    <span>50%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+            
+            <div class="stats-box">
+                <h4>Соответствие фильтрам</h4>
+        <p class="success">✓ Все товары имеют основную цену >= 50000 руб.</p>
+            </div>
+            
+            <h4>Список товаров (3):</h4>
+            <div class="products-list">
+        
+                <table>
+                    <tr>
+                        <th>Название</th>
+                        <th>Основная цена</th>
+                        <th>Скидочная цена</th>
+                        <th>Скидка</th>
+                        <th>ID</th>
+                    </tr>
+            
+                    <tr>
+                        <td>Жакет Пиджак приталенный</td>
+                        <td>500000 руб.</td>
+                        <td>380000 руб.</td>
+                        <td class="discount">24%</td>
+                        <td>265138187</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Пиджак однобортный приталенного кроя</td>
+                        <td>111279 руб.</td>
+                        <td>50075 руб.</td>
+                        <td class="discount">55%</td>
+                        <td>183007742</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Пиджак серого цвета из смесового льна</td>
+                        <td>95802 руб.</td>
+                        <td>57481 руб.</td>
+                        <td class="discount">40%</td>
+                        <td>298024408</td>
+                    </tr>
+                
+                </table>
+            
+            </div>
+        </div>
+        
+    </body>
+    </html>
+    

@@ -1,0 +1,41 @@
+{
+  "config": {
+    "name": "Тест с низкой максимальной ценой",
+    "query": "пиджак серый",
+    "limit": 3,
+    "min_price": null,
+    "max_price": 5000
+  },
+  "products": [
+    {
+      "id": "239487204",
+      "name": "Пиджак оверсайз жакет",
+      "brand": "CHU.CHU",
+      "price": 19300,
+      "sale_price": 3080,
+      "discount": 0,
+      "rating": 5,
+      "url": ""
+    },
+    {
+      "id": "215069085",
+      "name": "Пиджак оверсайз серый удлиненный",
+      "brand": "Leswan for you",
+      "price": 7990,
+      "sale_price": 3582,
+      "discount": 0,
+      "rating": 5,
+      "url": ""
+    },
+    {
+      "id": "246602970",
+      "name": "Пиджак оверсайз блейзер жакет",
+      "brand": "",
+      "price": 7000,
+      "sale_price": 2447,
+      "discount": 0,
+      "rating": 5,
+      "url": ""
+    }
+  ]
+}

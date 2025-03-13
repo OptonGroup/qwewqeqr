@@ -1,0 +1,41 @@
+{
+  "config": {
+    "name": "Тест с очень низкой максимальной ценой",
+    "query": "пиджак серый",
+    "limit": 3,
+    "min_price": null,
+    "max_price": 1000
+  },
+  "products": [
+    {
+      "id": "186541081",
+      "name": "Пиджак оверсайз укороченный в офис и школу",
+      "brand": "ARCHIVES MEMORY",
+      "price": 9767,
+      "sale_price": 890,
+      "discount": 0,
+      "rating": 5,
+      "url": ""
+    },
+    {
+      "id": "323800072",
+      "name": "пиджак",
+      "brand": "",
+      "price": 5000,
+      "sale_price": 570,
+      "discount": 0,
+      "rating": 5,
+      "url": ""
+    },
+    {
+      "id": "303790971",
+      "name": "Пиджак укороченный двубортный",
+      "brand": "IMBRAVE",
+      "price": 6200,
+      "sale_price": 942,
+      "discount": 0,
+      "rating": 5,
+      "url": ""
+    }
+  ]
+}

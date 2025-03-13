@@ -1,0 +1,41 @@
+{
+  "config": {
+    "name": "Кроссовки спортивные",
+    "query": "кроссовки спортивные",
+    "limit": 3,
+    "min_price": null,
+    "max_price": null
+  },
+  "products": [
+    {
+      "id": "210048733",
+      "name": "Кроссовки спортивные легкие",
+      "brand": "SZ",
+      "price": 4500,
+      "sale_price": 2907,
+      "discount": 0,
+      "rating": 4,
+      "url": ""
+    },
+    {
+      "id": "152540730",
+      "name": "Кроссовки спортивные на платформе",
+      "brand": "JOYCITY",
+      "price": 2000,
+      "sale_price": 988,
+      "discount": 0,
+      "rating": 5,
+      "url": ""
+    },
+    {
+      "id": "315406536",
+      "name": "Легкие кроссовки спортивные дышащие для фитнеса и бега",
+      "brand": "adidas",
+      "price": 9000,
+      "sale_price": 1915,
+      "discount": 0,
+      "rating": 4,
+      "url": ""
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "config": {
+    "name": "Часы мужские",
+    "query": "часы мужские",
+    "limit": 3,
+    "min_price": null,
+    "max_price": null
+  },
+  "products": [
+    {
+      "id": "179755542",
+      "name": "Смарт часы круглые",
+      "brand": "Smart Watch",
+      "price": 7999,
+      "sale_price": 2303,
+      "discount": 0,
+      "rating": 5,
+      "url": ""
+    },
+    {
+      "id": "255962770",
+      "name": "Часы мужские наручные кварцевые",
+      "brand": "DT Time",
+      "price": 2580,
+      "sale_price": 784,
+      "discount": 0,
+      "rating": 5,
+      "url": ""
+    },
+    {
+      "id": "297183002",
+      "name": "Часы наручные кварцевые",
+      "brand": "WatchHub",
+      "price": 10337,
+      "sale_price": 2356,
+      "discount": 0,
+      "rating": 5,
+      "url": ""
+    }
+  ]
+}
