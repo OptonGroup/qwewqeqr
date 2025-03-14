@@ -7,15 +7,35 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RefreshCw, ShoppingBag, ArrowRight, Home } from 'lucide-react';
 import { useAppContext } from '@/context/app-context';
+import { cosmetologistApi } from '@/lib/api';
 
 interface CosmeticProduct {
   id: string;
   name: string;
   description: string;
   price: number;
+  salePrice?: number;  // Цена со скидкой
+  discount?: number;   // Процент скидки
   imageUrl: string;
   category: string;
   benefits: string[];
+  url?: string;
+}
+
+interface SkinAnalysis {
+  description: string;
+  daily: {
+    morning: { steps: Array<{ name: string; product: string }> };
+    evening: { steps: Array<{ name: string; product: string }> };
+  };
+  weekly: {
+    procedures: Array<{ name: string; product: string; frequency: string }>;
+    additional: Array<{ name: string; description: string }>;
+  };
+  recommendations: {
+    lifestyle: Array<{ text: string }>;
+    ingredients: Array<{ name: string; purpose: string }>;
+  };
 }
 
 const mockProducts: CosmeticProduct[] = [
@@ -24,36 +44,48 @@ const mockProducts: CosmeticProduct[] = [
     name: 'Увлажняющий крем для лица',
     description: 'Интенсивное увлажнение для сухой и чувствительной кожи',
     price: 1290,
+    salePrice: 990,
+    discount: 23,
     imageUrl: 'https://images.unsplash.com/photo-1570194065650-d99fb4ee2063?w=500&auto=format',
     category: 'Уход за лицом',
-    benefits: ['Увлажнение', 'Питание', 'Защита']
+    benefits: ['Увлажнение', 'Питание', 'Защита'],
+    url: 'https://www.wildberries.ru/catalog/1/detail.aspx'
   },
   {
     id: '2',
     name: 'Сыворотка с гиалуроновой кислотой',
     description: 'Интенсивное увлажнение и разглаживание мелких морщин',
     price: 1890,
+    salePrice: 1299,
+    discount: 31,
     imageUrl: 'https://images.unsplash.com/photo-1556229174-5e42a09e36c5?w=500&auto=format',
     category: 'Уход за лицом',
-    benefits: ['Увлажнение', 'Антивозрастной эффект', 'Выравнивание тона']
+    benefits: ['Увлажнение', 'Антивозрастной эффект', 'Выравнивание тона'],
+    url: 'https://www.wildberries.ru/catalog/2/detail.aspx'
   },
   {
     id: '3',
     name: 'Очищающий гель для умывания',
     description: 'Бережное очищение для всех типов кожи',
     price: 790,
+    salePrice: 590,
+    discount: 25,
     imageUrl: 'https://images.unsplash.com/photo-1610705267928-1b9f2fa7f1c5?w=500&auto=format',
     category: 'Очищение',
-    benefits: ['Очищение', 'Тонизирование', 'Мягкое воздействие']
+    benefits: ['Очищение', 'Тонизирование', 'Мягкое воздействие'],
+    url: 'https://www.wildberries.ru/catalog/3/detail.aspx'
   },
   {
     id: '4',
     name: 'Ночная восстанавливающая маска',
     description: 'Интенсивное восстановление кожи во время сна',
     price: 1490,
+    salePrice: 1190,
+    discount: 20,
     imageUrl: 'https://images.unsplash.com/photo-1599305090598-fe179d501227?w=500&auto=format',
     category: 'Маски',
-    benefits: ['Восстановление', 'Питание', 'Регенерация']
+    benefits: ['Восстановление', 'Питание', 'Регенерация'],
+    url: 'https://www.wildberries.ru/catalog/4/detail.aspx'
   }
 ];
 
@@ -83,9 +115,13 @@ const CosmetologistAssistant: React.FC<CosmetologistAssistantProps> = ({ onRetur
   const [selectedSkinType, setSelectedSkinType] = useState<string | null>(null);
   const [selectedConcerns, setSelectedConcerns] = useState<string[]>([]);
   const [age, setAge] = useState<string>('');
+  const [selectedLifestyles, setSelectedLifestyles] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [recommendations, setRecommendations] = useState<CosmeticProduct[]>([]);
   const [currentStep, setCurrentStep] = useState(1);
+  const [currentProducts, setCurrentProducts] = useState<string>('');
+  const [allergies, setAllergies] = useState<string>('');
+  const [skinAnalysis, setSkinAnalysis] = useState<SkinAnalysis | null>(null);
   
   const handleSkinTypeSelect = (type: string) => {
     setSelectedSkinType(type);
@@ -103,6 +139,22 @@ const CosmetologistAssistant: React.FC<CosmetologistAssistantProps> = ({ onRetur
     setAge(e.target.value);
   };
   
+  const handleLifestyleToggle = (lifestyle: string) => {
+    if (selectedLifestyles.includes(lifestyle)) {
+      setSelectedLifestyles(selectedLifestyles.filter(l => l !== lifestyle));
+    } else {
+      setSelectedLifestyles([...selectedLifestyles, lifestyle]);
+    }
+  };
+  
+  const handleCurrentProductsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentProducts(e.target.value);
+  };
+  
+  const handleAllergiesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAllergies(e.target.value);
+  };
+  
   const handleNextStep = () => {
     setCurrentStep(currentStep + 1);
   };
@@ -111,16 +163,164 @@ const CosmetologistAssistant: React.FC<CosmetologistAssistantProps> = ({ onRetur
     setCurrentStep(currentStep - 1);
   };
   
+  const generateSkinAnalysisFromAI = async (userData: any): Promise<SkinAnalysis> => {
+    try {
+      // В реальном приложении здесь будет запрос к API нейронной сети
+      // Возвращаем заглушку для демонстрации
+      
+      console.log("Sending to neural network:", userData);
+      
+      // Имитация задержки ответа от сервера
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      let analysisDescription = '';
+      if (userData.skinType === 'sensitive') {
+        analysisDescription = 'У вас чувствительная кожа, которой необходим бережный уход без агрессивных компонентов.';
+      } else if (userData.skinType === 'dry') {
+        analysisDescription = 'У вас сухая кожа, которая нуждается в интенсивном увлажнении и питании.';
+      } else if (userData.skinType === 'oily') {
+        analysisDescription = 'У вас жирная кожа, которой нужно бережное очищение и контроль себорегуляции.';
+      } else if (userData.skinType === 'combination') {
+        analysisDescription = 'У вас комбинированная кожа, требующая балансирующего ухода.';
+      } else {
+        analysisDescription = 'У вас нормальная кожа, которой нужно поддерживающий уход и защита.';
+      }
+      
+      if (userData.concerns.includes('acne')) {
+        analysisDescription += ' Высыпания указывают на необходимость противовоспалительных компонентов.';
+      }
+      
+      if (userData.concerns.includes('pigmentation')) {
+        analysisDescription += ' Пигментация требует средств, выравнивающих тон кожи.';
+      }
+      
+      return {
+        description: analysisDescription,
+        daily: {
+          morning: {
+            steps: [
+              { name: 'Очищение', product: 'Очищающий гель для умывания' },
+              { name: 'Тонизирование', product: 'Увлажняющий тоник без спирта' },
+              { name: 'Сыворотка', product: 'Сыворотка с гиалуроновой кислотой' },
+              { name: 'Увлажнение', product: 'Увлажняющий крем для лица' },
+              { name: 'Защита', product: 'Солнцезащитный крем SPF 30+' }
+            ]
+          },
+          evening: {
+            steps: [
+              { name: 'Очищение', product: 'Очищающий гель для умывания' },
+              { name: 'Тонизирование', product: 'Увлажняющий тоник без спирта' },
+              { name: 'Сыворотка', product: 'Ночная восстанавливающая сыворотка' },
+              { name: 'Увлажнение', product: 'Ночной питательный крем' },
+              { name: 'Крем для глаз', product: 'Увлажняющий крем для области вокруг глаз' }
+            ]
+          }
+        },
+        weekly: {
+          procedures: [
+            { name: 'Эксфолиация', product: 'Мягкий пилинг с AHA-кислотами', frequency: '1-2 раза в неделю' },
+            { name: 'Маска', product: 'Увлажняющая тканевая маска', frequency: '1-2 раза в неделю' },
+            { name: 'Глубокое очищение', product: 'Очищающая маска с глиной', frequency: '1 раз в неделю' }
+          ],
+          additional: [
+            { name: 'Уход за губами', description: 'Увлажняющий бальзам для губ' },
+            { name: 'Уход за руками', description: 'Питательный крем для рук' },
+            { name: 'Массаж лица', description: 'Использование нефритового роллера для улучшения микроциркуляции' }
+          ]
+        },
+        recommendations: {
+          lifestyle: [
+            { text: 'Пить не менее 1,5-2 литров воды в день' },
+            { text: 'Защищать кожу от солнца круглый год' },
+            { text: 'Избегать горячей воды при умывании' },
+            { text: 'Регулярно менять наволочки (минимум раз в неделю)' },
+            { text: 'Ограничить потребление сахара и быстрых углеводов' }
+          ],
+          ingredients: [
+            { name: 'Гиалуроновая кислота', purpose: 'для глубокого увлажнения' },
+            { name: 'Ниацинамид', purpose: 'для укрепления барьерной функции кожи' },
+            { name: 'Пептиды', purpose: 'для стимуляции выработки коллагена' },
+            { name: 'Церамиды', purpose: 'для восстановления защитного барьера' },
+            { name: 'Антиоксиданты', purpose: 'для защиты от свободных радикалов' }
+          ]
+        }
+      };
+    } catch (error) {
+      console.error("Error generating skin analysis:", error);
+      throw error;
+    }
+  };
+  
   const handleGetRecommendations = async () => {
     setIsLoading(true);
     
-    // В реальном приложении здесь был бы запрос к API
-    // Для примера используем моковые данные
-    setTimeout(() => {
-      setRecommendations(mockProducts);
+    try {
+      // Собираем данные пользователя
+      const userData = {
+        skinType: selectedSkinType,
+        concerns: selectedConcerns,
+        age: age,
+        lifestyles: selectedLifestyles,
+        currentProducts: currentProducts,
+        allergies: allergies
+      };
+      
+      console.log("Отправляем данные пользователя на сервер:", userData);
+      
+      // Отправляем запрос к API для получения рекомендаций
+      const data = await cosmetologistApi.analyze(userData);
+      
+      // Устанавливаем полученный анализ кожи
+      if (data.skinAnalysis) {
+        setSkinAnalysis(data.skinAnalysis);
+      } else {
+        // Если сервер не вернул анализ кожи, создаем заглушку на основе типа кожи
+        const analysis = await generateSkinAnalysisFromAI(userData);
+        setSkinAnalysis(analysis);
+      }
+      
+      // Получаем рекомендуемые продукты из ответа API
+      if (data.recommendedProducts && data.recommendedProducts.length > 0) {
+        // Форматируем данные продуктов, полученных от API
+        const formattedProducts = data.recommendedProducts.map(product => ({
+          ...product,
+          // Добавляем пустой массив benefits, если его нет в данных от API
+          benefits: product.benefits || [],
+          // Используем поле sale_price или salePrice как скидочную цену, если оно есть
+          salePrice: product.salePrice || product.sale_price || null,
+          // Убеждаемся, что цена всегда существует
+          price: product.price || (product.salePrice || product.sale_price || 0) * (100 / (100 - (product.discount || 0)))
+        }));
+        setRecommendations(formattedProducts);
+      } else {
+        // Если сервер не вернул рекомендации, используем моковые данные
+        setRecommendations(mockProducts);
+      }
+      
       setCurrentStep(4);
+    } catch (error) {
+      console.error("Ошибка при получении рекомендаций:", error);
+      alert("Произошла ошибка при получении рекомендаций. Пожалуйста, попробуйте еще раз.");
+      
+      // В случае ошибки используем локальный метод генерации анализа
+      try {
+        const analysis = await generateSkinAnalysisFromAI({
+          skinType: selectedSkinType,
+          concerns: selectedConcerns,
+          age: age,
+          lifestyles: selectedLifestyles,
+          currentProducts: currentProducts,
+          allergies: allergies
+        });
+        setSkinAnalysis(analysis);
+        setRecommendations(mockProducts);
+        setCurrentStep(4);
+      } catch (fallbackError) {
+        console.error("Ошибка при локальной генерации анализа:", fallbackError);
+      }
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -279,10 +479,38 @@ const CosmetologistAssistant: React.FC<CosmetologistAssistantProps> = ({ onRetur
                     Образ жизни
                   </label>
                   <div className="flex flex-wrap gap-3">
-                    <Button variant="outline" size="sm" className="rounded-full">Активный</Button>
-                    <Button variant="outline" size="sm" className="rounded-full">Офис</Button>
-                    <Button variant="outline" size="sm" className="rounded-full">Спорт</Button>
-                    <Button variant="outline" size="sm" className="rounded-full">Путешествия</Button>
+                    <Button 
+                      variant={selectedLifestyles.includes('active') ? "default" : "outline"} 
+                      size="sm" 
+                      className="rounded-full"
+                      onClick={() => handleLifestyleToggle('active')}
+                    >
+                      Активный
+                    </Button>
+                    <Button 
+                      variant={selectedLifestyles.includes('office') ? "default" : "outline"} 
+                      size="sm" 
+                      className="rounded-full"
+                      onClick={() => handleLifestyleToggle('office')}
+                    >
+                      Офис
+                    </Button>
+                    <Button 
+                      variant={selectedLifestyles.includes('sport') ? "default" : "outline"} 
+                      size="sm" 
+                      className="rounded-full"
+                      onClick={() => handleLifestyleToggle('sport')}
+                    >
+                      Спорт
+                    </Button>
+                    <Button 
+                      variant={selectedLifestyles.includes('travel') ? "default" : "outline"} 
+                      size="sm" 
+                      className="rounded-full"
+                      onClick={() => handleLifestyleToggle('travel')}
+                    >
+                      Путешествия
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -294,6 +522,8 @@ const CosmetologistAssistant: React.FC<CosmetologistAssistantProps> = ({ onRetur
                 <Input
                   placeholder="Перечислите средства, которыми вы пользуетесь сейчас"
                   className="h-11"
+                  value={currentProducts}
+                  onChange={handleCurrentProductsChange}
                 />
               </div>
               
@@ -304,6 +534,8 @@ const CosmetologistAssistant: React.FC<CosmetologistAssistantProps> = ({ onRetur
                 <Input
                   placeholder="Например: аллергия на эфирные масла"
                   className="h-11"
+                  value={allergies}
+                  onChange={handleAllergiesChange}
                 />
               </div>
             </div>
@@ -346,15 +578,27 @@ const CosmetologistAssistant: React.FC<CosmetologistAssistantProps> = ({ onRetur
                 <div className="p-6 bg-primary/5 rounded-xl">
                   <h3 className="font-semibold text-lg mb-3">Анализ вашей кожи</h3>
                   <p className="text-sm">
-                    {selectedSkinType === 'dry' && 'У вас сухая кожа, которая нуждается в интенсивном увлажнении и питании.'}
-                    {selectedSkinType === 'oily' && 'У вас жирная кожа, которой нужно бережное очищение и контроль себорегуляции.'}
-                    {selectedSkinType === 'combination' && 'У вас комбинированная кожа, требующая балансирующего ухода.'}
-                    {selectedSkinType === 'sensitive' && 'У вас чувствительная кожа, которой необходим бережный уход без агрессивных компонентов.'}
-                    {selectedSkinType === 'normal' && 'У вас нормальная кожа, которой нужно поддерживающий уход и защита.'}
-                    {selectedConcerns.includes('aging') && ' Также заметны признаки возрастных изменений, требующие средств с антивозрастным эффектом.'}
-                    {selectedConcerns.includes('acne') && ' Высыпания указывают на необходимость противовоспалительных компонентов.'}
-                    {selectedConcerns.includes('pigmentation') && ' Пигментация требует средств, выравнивающих тон кожи.'}
+                    {skinAnalysis?.description || 'Анализ не доступен. Пожалуйста, попробуйте еще раз.'}
                   </p>
+                  {selectedLifestyles.length > 0 && (
+                    <div className="mt-3">
+                      <h4 className="font-semibold text-sm mb-1">Ваш образ жизни:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedLifestyles.includes('active') && (
+                          <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">Активный</span>
+                        )}
+                        {selectedLifestyles.includes('office') && (
+                          <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">Офис</span>
+                        )}
+                        {selectedLifestyles.includes('sport') && (
+                          <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">Спорт</span>
+                        )}
+                        {selectedLifestyles.includes('travel') && (
+                          <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">Путешествия</span>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
                 
                 <Tabs defaultValue="daily" className="w-full">
@@ -369,22 +613,18 @@ const CosmetologistAssistant: React.FC<CosmetologistAssistantProps> = ({ onRetur
                       <div className="border rounded-xl p-5">
                         <h3 className="font-semibold text-lg mb-4">Утренний уход</h3>
                         <ol className="space-y-3 text-sm ml-5 list-decimal">
-                          <li>Очищение: <span className="text-primary font-medium">Очищающий гель для умывания</span></li>
-                          <li>Тонизирование: <span className="text-primary font-medium">Увлажняющий тоник без спирта</span></li>
-                          <li>Сыворотка: <span className="text-primary font-medium">Сыворотка с гиалуроновой кислотой</span></li>
-                          <li>Увлажнение: <span className="text-primary font-medium">Увлажняющий крем для лица</span></li>
-                          <li>Защита: <span className="text-primary font-medium">Солнцезащитный крем SPF 30+</span></li>
+                          {skinAnalysis?.daily.morning.steps.map((step, idx) => (
+                            <li key={idx}>{step.name}: <span className="text-primary font-medium">{step.product}</span></li>
+                          ))}
                         </ol>
                       </div>
                       
                       <div className="border rounded-xl p-5">
                         <h3 className="font-semibold text-lg mb-4">Вечерний уход</h3>
                         <ol className="space-y-3 text-sm ml-5 list-decimal">
-                          <li>Очищение: <span className="text-primary font-medium">Очищающий гель для умывания</span></li>
-                          <li>Тонизирование: <span className="text-primary font-medium">Увлажняющий тоник без спирта</span></li>
-                          <li>Сыворотка: <span className="text-primary font-medium">Ночная восстанавливающая сыворотка</span></li>
-                          <li>Увлажнение: <span className="text-primary font-medium">Ночная восстанавливающая маска</span> (2-3 раза в неделю)</li>
-                          <li>Крем для глаз: <span className="text-primary font-medium">Увлажняющий крем для области вокруг глаз</span></li>
+                          {skinAnalysis?.daily.evening.steps.map((step, idx) => (
+                            <li key={idx}>{step.name}: <span className="text-primary font-medium">{step.product}</span></li>
+                          ))}
                         </ol>
                       </div>
                     </div>
@@ -395,18 +635,18 @@ const CosmetologistAssistant: React.FC<CosmetologistAssistantProps> = ({ onRetur
                       <div className="border rounded-xl p-5">
                         <h3 className="font-semibold text-lg mb-4">Еженедельный уход</h3>
                         <ol className="space-y-3 text-sm ml-5 list-decimal">
-                          <li>Эксфолиация: <span className="text-primary font-medium">Мягкий пилинг с AHA-кислотами</span> (1-2 раза в неделю)</li>
-                          <li>Маска: <span className="text-primary font-medium">Увлажняющая тканевая маска</span> (1-2 раза в неделю)</li>
-                          <li>Глубокое очищение: <span className="text-primary font-medium">Очищающая маска с глиной</span> (1 раз в неделю)</li>
+                          {skinAnalysis?.weekly.procedures.map((procedure, idx) => (
+                            <li key={idx}>{procedure.name}: <span className="text-primary font-medium">{procedure.product}</span> ({procedure.frequency})</li>
+                          ))}
                         </ol>
                       </div>
                       
                       <div className="border rounded-xl p-5">
                         <h3 className="font-semibold text-lg mb-4">Дополнительный уход</h3>
                         <ul className="space-y-3 text-sm ml-5 list-disc">
-                          <li>Уход за губами: <span className="text-primary font-medium">Увлажняющий бальзам для губ</span></li>
-                          <li>Уход за руками: <span className="text-primary font-medium">Питательный крем для рук</span></li>
-                          <li>Массаж лица: использование нефритового роллера для улучшения микроциркуляции</li>
+                          {skinAnalysis?.weekly.additional.map((item, idx) => (
+                            <li key={idx}>{item.name}: <span className="text-primary font-medium">{item.description}</span></li>
+                          ))}
                         </ul>
                       </div>
                     </div>
@@ -417,22 +657,30 @@ const CosmetologistAssistant: React.FC<CosmetologistAssistantProps> = ({ onRetur
                       <div className="border rounded-xl p-5">
                         <h3 className="font-semibold text-lg mb-4">Рекомендации по образу жизни</h3>
                         <ul className="space-y-3 text-sm ml-5 list-disc">
-                          <li>Пить не менее 1,5-2 литров воды в день</li>
-                          <li>Защищать кожу от солнца круглый год</li>
-                          <li>Избегать горячей воды при умывании</li>
-                          <li>Регулярно менять наволочки (минимум раз в неделю)</li>
-                          <li>Ограничить потребление сахара и быстрых углеводов</li>
+                          {skinAnalysis?.recommendations.lifestyle.map((item, idx) => (
+                            <li key={idx}>{item.text}</li>
+                          ))}
+                          {selectedLifestyles.includes('active') && (
+                            <li><span className="font-medium">Для активного образа жизни:</span> Используйте легкие некомедогенные средства, которые не будут забивать поры во время активности</li>
+                          )}
+                          {selectedLifestyles.includes('office') && (
+                            <li><span className="font-medium">Для офисного образа жизни:</span> Учитывая длительное пребывание в помещении с кондиционером, используйте увлажняющий спрей в течение дня</li>
+                          )}
+                          {selectedLifestyles.includes('sport') && (
+                            <li><span className="font-medium">Для занятий спортом:</span> Очищайте кожу сразу после тренировки, используйте легкие текстуры средств</li>
+                          )}
+                          {selectedLifestyles.includes('travel') && (
+                            <li><span className="font-medium">Для путешествий:</span> Имейте компактный набор средств, удобный для поездок. Усиливайте защиту SPF при смене климата</li>
+                          )}
                         </ul>
                       </div>
                       
                       <div className="border rounded-xl p-5">
                         <h3 className="font-semibold text-lg mb-4">Полезные ингредиенты для вашей кожи</h3>
                         <ul className="space-y-3 text-sm ml-5 list-disc">
-                          <li><span className="font-medium">Гиалуроновая кислота</span> - для глубокого увлажнения</li>
-                          <li><span className="font-medium">Ниацинамид</span> - для укрепления барьерной функции кожи</li>
-                          <li><span className="font-medium">Пептиды</span> - для стимуляции выработки коллагена</li>
-                          <li><span className="font-medium">Церамиды</span> - для восстановления защитного барьера</li>
-                          <li><span className="font-medium">Антиоксиданты</span> - для защиты от свободных радикалов</li>
+                          {skinAnalysis?.recommendations.ingredients.map((item, idx) => (
+                            <li key={idx}><span className="font-medium">{item.name}</span> - {item.purpose}</li>
+                          ))}
                         </ul>
                       </div>
                     </div>
@@ -459,17 +707,30 @@ const CosmetologistAssistant: React.FC<CosmetologistAssistantProps> = ({ onRetur
                     <h3 className="font-semibold text-base mb-1">{product.name}</h3>
                     <p className="text-sm text-muted-foreground mb-3">{product.description}</p>
                     <div className="flex flex-wrap gap-1 mb-4">
-                      {product.benefits.map((benefit, index) => (
+                      {product.benefits?.map((benefit, index) => (
                         <span key={index} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
                           {benefit}
                         </span>
                       ))}
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="font-bold">{product.price} ₽</span>
-                      <Button size="sm" variant="outline">
+                      <div className="flex flex-col">
+                        <span className="font-bold text-primary">
+                          {product.salePrice || product.price} ₽
+                        </span>
+                        {product.salePrice && product.discount && (
+                          <span className="text-xs text-muted-foreground line-through">
+                            {product.price} ₽
+                          </span>
+                        )}
+                      </div>
+                      <Button 
+                        size="sm" 
+                        variant="default" 
+                        onClick={() => window.open(product.url || `https://www.wildberries.ru/catalog/${product.id}/detail.aspx`, '_blank')}
+                      >
                         <ShoppingBag className="h-4 w-4 mr-2" />
-                        В корзину
+                        Купить
                       </Button>
                     </div>
                   </CardContent>

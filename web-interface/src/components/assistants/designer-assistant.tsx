@@ -5,9 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Upload, Search, RefreshCw, ShoppingBag, ArrowRight, Sofa, Bed, UtensilsCrossed, Briefcase, Gamepad2, Printer, UserSquare, Home } from 'lucide-react';
+import { Upload, Search, RefreshCw, ShoppingBag, ArrowRight, Sofa, Bed, UtensilsCrossed, Briefcase, Gamepad2, Printer, UserSquare, Home, ExternalLink, AlertCircle } from 'lucide-react';
 import { useAppContext } from '@/context/app-context';
+import { designerApi } from '@/lib/api';
 
+// Интерфейс для элемента мебели
 interface FurnitureItem {
   id: string;
   name: string;
@@ -15,82 +17,86 @@ interface FurnitureItem {
   price: number;
   imageUrl: string;
   category: string;
-  dimensions: {
+  dimensions?: {
     width: number;
     height: number;
     depth: number;
   };
-  style: string;
-  colors: string[];
-  materials: string[];
+  style?: string;
+  colors?: string[];
+  materials?: string[];
+  productUrl?: string;
+  brand?: string;
 }
 
-const mockItems: FurnitureItem[] = [
-  {
-    id: '1',
-    name: 'Диван модульный',
-    description: 'Современный модульный диван с возможностью трансформации',
-    price: 89990,
-    imageUrl: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&auto=format',
-    category: 'Диваны',
-    dimensions: {
-      width: 280,
-      height: 85,
-      depth: 95
-    },
-    style: 'Современный',
-    colors: ['Серый', 'Бежевый'],
-    materials: ['Ткань', 'Дерево']
-  },
-  {
-    id: '2',
-    name: 'Кресло акцентное',
-    description: 'Стильное кресло с высокой спинкой',
-    price: 34990,
-    imageUrl: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=500&auto=format',
-    category: 'Кресла',
-    dimensions: {
-      width: 75,
-      height: 100,
-      depth: 85
-    },
-    style: 'Скандинавский',
-    colors: ['Зеленый', 'Синий'],
-    materials: ['Велюр', 'Металл']
-  },
-  {
-    id: '3',
-    name: 'Стол обеденный',
-    description: 'Обеденный стол из массива дуба',
-    price: 45990,
-    imageUrl: 'https://images.unsplash.com/photo-1577140917170-285929fb55b7?w=500&auto=format',
-    category: 'Столы',
-    dimensions: {
-      width: 160,
-      height: 75,
-      depth: 90
-    },
-    style: 'Лофт',
-    colors: ['Натуральный'],
-    materials: ['Дуб', 'Металл']
-  },
-  {
-    id: '4',
-    name: 'Светильник подвесной',
-    description: 'Дизайнерский подвесной светильник',
-    price: 12990,
-    imageUrl: 'https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=500&auto=format',
-    category: 'Освещение',
-    dimensions: {
-      width: 40,
-      height: 120,
-      depth: 40
-    },
-    style: 'Современный',
-    colors: ['Черный', 'Золотой'],
-    materials: ['Металл', 'Стекло']
-  }
-];
+// Интерфейс для анализа дизайна
+interface DesignAnalysis {
+  roomType: string;
+  style: string;
+  colorPalette: string[];
+  recommendedMaterials: string[];
+  designPrinciples: {
+    title: string;
+    description: string;
+  }[];
+  area: number;
+  identifiedNeeds: any;
+}
+
+// Интерфейс для текстовой рекомендации
+interface TextRecommendation {
+  title: string;
+  description: string;
+}
+
+// Интерфейс для дизайн-концепции
+interface DesignConcept {
+  mainIdea: string;
+  styleDescription: string;
+  moodBoard: string[];
+  keyElements: {
+    name: string;
+    description: string;
+  }[];
+}
+
+// Интерфейс для планировки помещения
+interface FloorPlan {
+  dimensions: {
+    width: number;
+    length: number;
+    area: number;
+  };
+  zoning: {
+    name: string;
+    area: number;
+    position: string;
+  }[];
+  furnitureLayout: {
+    name: string;
+    position: string;
+    dimensions: string;
+  }[];
+  recommendations: string[];
+}
+
+// Интерфейс для данных API
+interface DesignerApiResponse {
+  success: boolean;
+  designAnalysis?: DesignAnalysis;
+  textRecommendations?: TextRecommendation[];
+  designConcept?: DesignConcept;
+  floorPlan?: FloorPlan;
+  error?: string;
+}
+
+// Интерфейс для цветовой палитры
+interface ColorPaletteResponse {
+  success: boolean;
+  style: string;
+  colorPalette: string[];
+  error?: string;
+}
 
 const roomTypes = [
   { id: 'living', name: 'Гостиная' },
@@ -121,11 +127,18 @@ const DesignerAssistant: React.FC<DesignerAssistantProps> = ({ onReturnHome }) =
   const [roomInfo, setRoomInfo] = useState({
     area: '',
     budget: '',
-    hasChildren: false,
-    hasPets: false
+    hasWindows: '',
+    hasImage: false
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [designAnalysis, setDesignAnalysis] = useState<DesignAnalysis | null>(null);
   const [recommendations, setRecommendations] = useState<FurnitureItem[]>([]);
+  const [categorizedProducts, setCategorizedProducts] = useState<Record<string, FurnitureItem[]>>({});
+  const [colorPalette, setColorPalette] = useState<string[]>([]);
+  const [textRecommendations, setTextRecommendations] = useState<TextRecommendation[]>([]);
+  const [designConcept, setDesignConcept] = useState<DesignConcept | null>(null);
+  const [floorPlan, setFloorPlan] = useState<FloorPlan | null>(null);
   const [currentStep, setCurrentStep] = useState(1);
   
   const handleRoomSelect = (room: string) => {
@@ -149,6 +162,7 @@ const DesignerAssistant: React.FC<DesignerAssistantProps> = ({ onReturnHome }) =
       setRoomImage(file);
       const url = URL.createObjectURL(file);
       setRoomImageUrl(url);
+      handleRoomInfoChange('hasImage', true);
     }
   };
   
@@ -161,12 +175,183 @@ const DesignerAssistant: React.FC<DesignerAssistantProps> = ({ onReturnHome }) =
   };
   
   const handleGetRecommendations = async () => {
-    setIsLoading(true);
+    if (!selectedRoom || !selectedStyle) return;
     
-    // В реальном приложении здесь был бы запрос к API
-    // Для примера используем моковые данные
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      // Получаем анализ дизайна и рекомендации
+      const analysisResponse: DesignerApiResponse = await designerApi.analyze({
+        roomType: selectedRoom,
+        style: selectedStyle,
+        roomInfo: {
+          area: roomInfo.area ? parseFloat(roomInfo.area) : undefined,
+          budget: roomInfo.budget ? parseFloat(roomInfo.budget) : undefined,
+          hasWindows: roomInfo.hasWindows,
+          hasImage: roomInfo.hasImage
+        }
+      });
+      
+      if (analysisResponse.success) {
+        if (analysisResponse.designAnalysis) {
+          setDesignAnalysis(analysisResponse.designAnalysis);
+          setColorPalette(analysisResponse.designAnalysis.colorPalette);
+        }
+        
+        if (analysisResponse.textRecommendations) {
+          setTextRecommendations(analysisResponse.textRecommendations);
+        }
+        
+        if (analysisResponse.designConcept) {
+          setDesignConcept(analysisResponse.designConcept);
+        }
+        
+        if (analysisResponse.floorPlan) {
+          setFloorPlan(analysisResponse.floorPlan);
+        }
+        
+        setCurrentStep(4);
+      } else {
+        setError(analysisResponse.error || 'Не удалось получить рекомендации. Пожалуйста, попробуйте еще раз.');
+      }
+    } catch (error) {
+      console.error('Ошибка при получении рекомендаций:', error);
+      setError('Произошла ошибка при получении рекомендаций. Пожалуйста, попробуйте еще раз.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Если API недоступно, используем моковые данные
+  const handleGetRecommendationsFallback = () => {
+    setIsLoading(true);
+    setError(null);
+    
     setTimeout(() => {
-      setRecommendations(mockItems);
+      // Моковые текстовые рекомендации
+      const mockTextRecommendations: TextRecommendation[] = [
+        {
+          title: "ПЕРЕДВИНУТЬ",
+          description: "• Расположите диван напротив фокусной точки комнаты (телевизор, камин или окно).\n• Создайте зону для общения, сгруппировав кресла и журнальный столик.\n• Разместите книжный шкаф у стены, не загораживая проход.\n• В стиле Современный желательно избегать загромождения центра комнаты."
+        },
+        {
+          title: "ДОКУПИТЬ",
+          description: "• Основная мебель (диван, кресла, журнальный столик): 30000 руб.\n• Системы хранения (шкафы, полки): 7500 руб.\n• Освещение (торшер, настольные лампы): 5000 руб.\n• Декор (ковер, подушки, картины): 7500 руб.\n\nРекомендуемые покупки для стиля Современный: \n• Диван с четкими линиями и хромированными ножками\n• Журнальный столик со стеклянной столешницей\n• Минималистичные светильники с металлическими элементами"
+        },
+        {
+          title: "ЗАМЕНИТЬ/УБРАТЬ",
+          description: "• Замените устаревшую мебель с резными элементами на модели с четкими линиями.\n• Уберите массивные тяжелые шторы в пользу легких роллет или жалюзи.\n• Избавьтесь от обилия мелких статуэток и сувениров.\n• Замените старые люстры на современные светильники с лаконичным дизайном."
+        },
+        {
+          title: "ОБЩЕЕ",
+          description: "• Для помещения площадью 18 м² выбирайте мебель соответствующих размеров, чтобы сохранить простор и функциональность.\n• В комнате с естественным освещением особенно важно не загораживать окна массивной мебелью и использовать светоотражающие поверхности.\n\n• Цветовая палитра для стиля Современный: нейтральные тона (белый, серый, бежевый) с яркими акцентами (синий, зеленый, красный).\n\n• Материалы для стиля Современный: стекло, металл, глянцевые поверхности, пластик."
+        }
+      ];
+      
+      setTextRecommendations(mockTextRecommendations);
+      
+      // Моковые данные для дизайн-анализа
+      setDesignAnalysis({
+        roomType: getRoomName(selectedRoom || ''),
+        style: getStyleName(selectedStyle || ''),
+        colorPalette: ['#E8E8E8', '#303030', '#6E7E85', '#A4C2A8', '#D3D5D7'],
+        recommendedMaterials: ['Натуральное дерево', 'Текстиль', 'Металл', 'Стекло'],
+        designPrinciples: [
+          {
+            title: 'Пропорции и масштаб',
+            description: `Для площади ${roomInfo.area}м² рекомендуем выбирать предметы с общей площадью основания не более ${Math.round(Number(roomInfo.area) * 0.4)}м².`
+          },
+          {
+            title: 'Акценты',
+            description: 'Создайте 1-2 ярких акцента, остальные элементы должны быть нейтральными.'
+          }
+        ],
+        area: parseFloat(roomInfo.area),
+        identifiedNeeds: {}
+      });
+      
+      // Моковые данные для дизайн-концепции
+      setDesignConcept({
+        mainIdea: `Светлое, функциональное пространство с акцентом на чистые линии и минимализм. ${getRoomName(selectedRoom || '')} площадью ${roomInfo.area} м² в ${getStyleName(selectedStyle || '')} стиле создает ощущение простора и свободы.`,
+        styleDescription: "Современный стиль характеризуется чистыми линиями, нейтральной цветовой гаммой и технологичными материалами. Ключевые элементы: геометрические формы, глянцевые поверхности, стекло, металл и открытые пространства. Акцент на функциональность и эргономику.",
+        moodBoard: ["хром", "стекло", "графитовый", "бежевый", "яркие акценты", "глянцевые поверхности"],
+        keyElements: [
+          {
+            name: "Зонирование",
+            description: `Разделение пространства ${roomInfo.area} м² на функциональные зоны: отдыха, общения и, возможно, рабочую.`
+          },
+          {
+            name: "Система освещения",
+            description: "Многоуровневое освещение: основной верхний свет, направленные светильники и декоративные источники света."
+          },
+          {
+            name: "Акцентная стена", 
+            description: `Выделение одной стены в стиле ${getStyleName(selectedStyle || '')} (цветом, текстурой, декором) для создания фокусной точки.`
+          }
+        ]
+      });
+      
+      // Моковые данные для планировки
+      const area = parseFloat(roomInfo.area || '20');
+      const width = Math.sqrt(area * 1.5);
+      const length = area / width;
+      
+      setFloorPlan({
+        dimensions: {
+          width: parseFloat(width.toFixed(1)),
+          length: parseFloat(length.toFixed(1)),
+          area: area
+        },
+        zoning: [
+          {
+            name: "Зона отдыха",
+            area: parseFloat((area * 0.6).toFixed(1)),
+            position: "центр"
+          },
+          {
+            name: "Зона для общения",
+            area: parseFloat((area * 0.3).toFixed(1)),
+            position: "у окна"
+          },
+          {
+            name: "Зона хранения",
+            area: parseFloat((area * 0.1).toFixed(1)),
+            position: "у стены"
+          }
+        ],
+        furnitureLayout: [
+          {
+            name: "Диван",
+            position: "у стены напротив окна",
+            dimensions: "2.5 x 0.9 м"
+          },
+          {
+            name: "Журнальный столик",
+            position: "перед диваном",
+            dimensions: "0.9 x 0.6 м"
+          },
+          {
+            name: "Тумба под ТВ",
+            position: "у стены напротив дивана",
+            dimensions: "1.5 x 0.5 м"
+          },
+          {
+            name: "Кресло",
+            position: "рядом с диваном",
+            dimensions: "0.8 x 0.8 м"
+          }
+        ],
+        recommendations: [
+          "Расположите диван так, чтобы было удобно смотреть телевизор",
+          `В комнате площадью ${area} м² оставляйте минимум 70-80 см для проходов`,
+          "Избегайте загромождения центра комнаты мебелью",
+          "Используйте многофункциональную мебель для экономии пространства"
+        ]
+      });
+      
+      setColorPalette(['#E8E8E8', '#303030', '#6E7E85', '#A4C2A8', '#D3D5D7']);
+      
       setCurrentStep(4);
       setIsLoading(false);
     }, 1500);
@@ -180,6 +365,17 @@ const DesignerAssistant: React.FC<DesignerAssistantProps> = ({ onReturnHome }) =
   const getStyleName = (styleId: string) => {
     const style = styles.find(s => s.id === styleId);
     return style ? style.name : '';
+  };
+  
+  const handleBuyProduct = (productUrl?: string) => {
+    if (productUrl) {
+      window.open(productUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, item: FurnitureItem) => {
+    // Заменяем на изображение-заглушку при ошибке загрузки
+    e.currentTarget.src = 'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=500&auto=format';
   };
 
   return (
@@ -222,6 +418,25 @@ const DesignerAssistant: React.FC<DesignerAssistantProps> = ({ onReturnHome }) =
           {currentStep === 4 && 'Шаг 4: Ваши рекомендации'}
         </div>
       </div>
+
+      {/* Отображение ошибки */}
+      {error && (
+        <div className="bg-destructive/15 text-destructive p-4 rounded-lg mb-6 flex items-start gap-3">
+          <AlertCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />
+          <div>
+            <h3 className="font-medium mb-1">Ошибка</h3>
+            <p className="text-sm">{error}</p>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => setError(null)} 
+              className="mt-2"
+            >
+              Закрыть
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Шаг 1: Тип комнаты */}
       {currentStep === 1 && (
@@ -456,125 +671,116 @@ const DesignerAssistant: React.FC<DesignerAssistantProps> = ({ onReturnHome }) =
               </CardDescription>
             </CardHeader>
             <CardContent className="p-0">
-              <Tabs defaultValue="furniture" className="w-full">
+              <Tabs defaultValue="recommendations" className="w-full">
                 <div className="px-6 pb-6">
                   <TabsList className="w-full mb-6">
-                    <TabsTrigger value="furniture">Мебель</TabsTrigger>
+                    <TabsTrigger value="recommendations">Рекомендации</TabsTrigger>
                     <TabsTrigger value="design">Дизайн-концепция</TabsTrigger>
                     <TabsTrigger value="layout">Планировка</TabsTrigger>
                   </TabsList>
                 </div>
                 
-                <TabsContent value="furniture" className="px-6 pb-6 pt-0">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {recommendations.map(item => (
-                      <Card key={item.id} className="overflow-hidden p-0">
-                        <div className="relative h-56">
-                          <img 
-                            src={item.imageUrl} 
-                            alt={item.name} 
-                            className="w-full h-full object-cover"
-                          />
-                          {item.style && (
-                            <div className="absolute top-3 right-3 bg-black/70 text-white px-2 py-1 rounded-full text-xs">
-                              {getStyleName(selectedStyle || '')}
-                            </div>
-                          )}
-                        </div>
-                        <CardContent className="p-5">
-                          <h3 className="font-semibold text-base mb-1">{item.name}</h3>
-                          <p className="text-sm text-muted-foreground mb-3">{item.description}</p>
-                          <div className="flex flex-wrap gap-2 mb-4">
-                            {item.materials.map((material, index) => (
-                              <span key={index} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                                {material}
-                              </span>
-                            ))}
-                          </div>
-                          <div className="grid grid-cols-2 gap-2 mb-4 text-xs">
-                            <div className="p-2 bg-primary/5 rounded">
-                              <span className="font-medium block">Размеры:</span> 
-                              {item.dimensions.width}×{item.dimensions.depth}×{item.dimensions.height} см
-                            </div>
-                            <div className="p-2 bg-primary/5 rounded">
-                              <span className="font-medium block">Цвета:</span> 
-                              {item.colors.join(', ')}
-                            </div>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="font-bold">{item.price} ₽</span>
-                            <Button size="sm" variant="outline">
-                              <ShoppingBag className="h-4 w-4 mr-2" />
-                              Добавить
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
+                <TabsContent value="recommendations" className="px-6 pb-6 pt-0">
+                  <div className="space-y-6">
+                    {textRecommendations.map((recommendation, index) => (
+                      <div key={index} className="border rounded-xl p-5 bg-card">
+                        <h3 className="font-semibold text-lg mb-2">{recommendation.title}</h3>
+                        <p className="text-muted-foreground">{recommendation.description}</p>
+                      </div>
                     ))}
+                    
+                    {textRecommendations.length === 0 && (
+                      <div className="text-center p-10 border rounded-xl">
+                        <p className="text-muted-foreground">Нет доступных рекомендаций. Попробуйте изменить параметры запроса.</p>
+                      </div>
+                    )}
                   </div>
                 </TabsContent>
                 
                 <TabsContent value="design" className="px-6 pb-6 pt-0">
                   <div className="space-y-6">
+                    <div className="border rounded-xl p-6">
+                      <h3 className="font-semibold text-lg mb-4">Основная идея</h3>
+                      <p className="text-muted-foreground">
+                        {designConcept?.mainIdea || 
+                          `Светлое, функциональное пространство для ${getRoomName(selectedRoom || '')} в стиле ${getStyleName(selectedStyle || '')}.`
+                        }
+                      </p>
+                      <div className="mt-4">
+                        <h4 className="text-base font-medium mb-2">Описание стиля</h4>
+                        <p className="text-sm text-muted-foreground">
+                          {designConcept?.styleDescription || 
+                            `${getStyleName(selectedStyle || '')} стиль характеризуется гармоничным сочетанием функциональности и эстетики.`
+                          }
+                        </p>
+                      </div>
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="p-6 border rounded-xl bg-primary/5">
                         <h3 className="font-semibold text-lg mb-4">Цветовая палитра</h3>
                         <div className="flex space-x-4 mb-5">
-                          <div className="color-sample bg-[#e8e4d9]"></div>
-                          <div className="color-sample bg-[#b6c8b2]"></div>
-                          <div className="color-sample bg-[#8a9b8e]"></div>
-                          <div className="color-sample bg-[#555a56]"></div>
-                          <div className="color-sample bg-[#91785c]"></div>
+                          {(designAnalysis?.colorPalette || colorPalette).map((color, index) => (
+                            <div key={index} className="color-sample" style={{backgroundColor: color}}></div>
+                          ))}
                         </div>
                         <p className="text-sm text-muted-foreground">
                           Палитра подобрана с учетом выбранного стиля и типа помещения. 
-                          Нейтральные тона создают спокойную атмосферу и расширяют пространство.
+                          {getStyleName(selectedStyle || '') === 'Скандинавский' && 
+                            ' Светлые тона создают ощущение пространства и света.'}
+                          {getStyleName(selectedStyle || '') === 'Лофт' && 
+                            ' Промышленные оттенки подчеркивают характерный для лофта индустриальный стиль.'}
+                          {getStyleName(selectedStyle || '') === 'Современный' && 
+                            ' Нейтральные тона создают спокойную атмосферу и расширяют пространство.'}
                         </p>
                       </div>
                       
                       <div className="p-6 border rounded-xl bg-primary/5">
                         <h3 className="font-semibold text-lg mb-4">Материалы и текстуры</h3>
-                        <div className="grid grid-cols-3 gap-4 mb-5">
-                          <div className="texture-sample bg-[url('https://images.unsplash.com/photo-1583248483201-e9d3e613c9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80')]"></div>
-                          <div className="texture-sample bg-[url('https://images.unsplash.com/photo-1606644403560-3c8c561035ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80')]"></div>
-                          <div className="texture-sample bg-[url('https://images.unsplash.com/photo-1604074130793-efb74419fde7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80')]"></div>
+                        <p className="text-sm mb-4">
+                          Mood Board:
+                        </p>
+                        <div className="flex flex-wrap gap-2 mb-5">
+                          {(designConcept?.moodBoard || []).map((item, index) => (
+                            <span key={index} className="inline-block px-3 py-1 bg-background rounded-full text-xs">
+                              {item}
+                            </span>
+                          ))}
                         </div>
                         <p className="text-sm text-muted-foreground">
-                          Сочетание различных текстур добавляет интерьеру глубину и характер.
-                          Рекомендуем использовать натуральное дерево, мрамор и текстиль.
+                          Рекомендуемые материалы:
+                          <span className="block mt-2">
+                            {designAnalysis?.recommendedMaterials?.map((material, index) => (
+                              <span key={index} className="inline-block mr-2 mb-2 px-2 py-1 bg-primary/10 rounded-full text-xs">
+                                {material}
+                              </span>
+                            ))}
+                          </span>
                         </p>
                       </div>
                     </div>
                     
                     <div className="border rounded-xl p-6">
-                      <h3 className="font-semibold text-lg mb-4">Основные принципы дизайна</h3>
+                      <h3 className="font-semibold text-lg mb-4">Ключевые элементы дизайна</h3>
                       <div className="space-y-5">
-                        <div>
-                          <h4 className="text-base font-medium mb-2">Освещение</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Используйте многоуровневое освещение: основной свет (люстра), рабочее освещение 
-                            (настольные лампы) и акцентное освещение (споты, бра). Рекомендуем теплый 
-                            свет (2700-3000К) для создания уютной атмосферы.
-                          </p>
-                        </div>
-                        
-                        <div>
-                          <h4 className="text-base font-medium mb-2">Пропорции и масштаб</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Учитывайте размер помещения при выборе мебели. Для площади {roomInfo.area}м² 
-                            рекомендуем выбирать предметы с общей площадью основания не более {Math.round(Number(roomInfo.area) * 0.4)}м², 
-                            чтобы сохранить свободное пространство и проходы.
-                          </p>
-                        </div>
-                        
-                        <div>
-                          <h4 className="text-base font-medium mb-2">Акценты и фокусные точки</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Создайте 1-2 ярких акцента в интерьере: это может быть выразительный предмет мебели, 
-                            произведение искусства или декоративный элемент. Остальные предметы должны поддерживать
-                            общую композицию, не конкурируя за внимание.
-                          </p>
-                        </div>
+                        {designConcept?.keyElements?.map((element, index) => (
+                          <div key={index}>
+                            <h4 className="text-base font-medium mb-2">{element.name}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {element.description}
+                            </p>
+                          </div>
+                        ))}
+                        {(!designConcept?.keyElements || designConcept.keyElements.length === 0) && 
+                          designAnalysis?.designPrinciples?.map((principle, index) => (
+                            <div key={index}>
+                              <h4 className="text-base font-medium mb-2">{principle.title}</h4>
+                              <p className="text-sm text-muted-foreground">
+                                {principle.description}
+                              </p>
+                            </div>
+                          ))
+                        }
                       </div>
                     </div>
                   </div>
@@ -583,22 +789,79 @@ const DesignerAssistant: React.FC<DesignerAssistantProps> = ({ onReturnHome }) =
                 <TabsContent value="layout" className="px-6 pb-6 pt-0">
                   <div className="space-y-6">
                     <div className="border rounded-xl p-6">
-                      <h3 className="font-semibold text-lg mb-4">План размещения мебели</h3>
+                      <div className="flex flex-wrap items-center justify-between mb-4">
+                        <h3 className="font-semibold text-lg">План размещения мебели</h3>
+                        <div className="text-sm text-muted-foreground">
+                          Размеры: {floorPlan?.dimensions.width.toFixed(1) || "0.0"} x {floorPlan?.dimensions.length.toFixed(1) || "0.0"} м 
+                          (площадь: {floorPlan?.dimensions.area || roomInfo.area} м²)
+                        </div>
+                      </div>
                       
                       <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-6">
-                        <div className="text-center p-8">
-                          <UserSquare className="h-10 w-10 text-muted-foreground mx-auto mb-4" />
-                          <p className="text-muted-foreground">
-                            Здесь будет размещен план помещения с расстановкой мебели
-                            <br />
-                            <span className="text-sm">
-                              Для создания детального плана загрузите фото помещения или укажите точные размеры
-                            </span>
-                          </p>
-                          {!roomImage && (
-                            <Button variant="outline" className="mt-4" onClick={() => setCurrentStep(3)}>
-                              Загрузить фото
-                            </Button>
+                        {roomImageUrl ? (
+                          <img 
+                            src={roomImageUrl} 
+                            alt="Фото помещения" 
+                            className="max-h-full rounded-lg object-contain" 
+                          />
+                        ) : (
+                          <div className="text-center p-8">
+                            <UserSquare className="h-10 w-10 text-muted-foreground mx-auto mb-4" />
+                            <p className="text-muted-foreground">
+                              Здесь будет размещен план помещения с расстановкой мебели
+                              <br />
+                              <span className="text-sm">
+                                Для создания детального плана загрузите фото помещения или укажите точные размеры
+                              </span>
+                            </p>
+                            {!roomImage && (
+                              <Button variant="outline" className="mt-4" onClick={() => setCurrentStep(3)}>
+                                Загрузить фото
+                              </Button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div className="space-y-4">
+                          <h4 className="text-base font-medium mb-2">Зонирование помещения</h4>
+                          {floorPlan?.zoning && floorPlan.zoning.length > 0 ? (
+                            <div className="space-y-3">
+                              {floorPlan.zoning.map((zone, index) => (
+                                <div key={index} className="flex items-center justify-between border-b pb-2">
+                                  <div className="flex items-center gap-3">
+                                    <div className={`w-3 h-3 rounded-full bg-primary opacity-${100 - index * 20}`}></div>
+                                    <span>{zone.name}</span>
+                                  </div>
+                                  <div className="text-sm text-muted-foreground flex gap-3">
+                                    <span>{zone.area} м²</span>
+                                    <span>{zone.position}</span>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-sm text-muted-foreground">Зонирование будет доступно после указания точных размеров помещения.</p>
+                          )}
+                        </div>
+                        
+                        <div className="space-y-4">
+                          <h4 className="text-base font-medium mb-2">Размещение мебели</h4>
+                          {floorPlan?.furnitureLayout && floorPlan.furnitureLayout.length > 0 ? (
+                            <div className="space-y-3">
+                              {floorPlan.furnitureLayout.map((item, index) => (
+                                <div key={index} className="flex items-center justify-between border-b pb-2">
+                                  <span>{item.name}</span>
+                                  <div className="text-sm text-muted-foreground flex gap-3">
+                                    <span>{item.position}</span>
+                                    <span>{item.dimensions}</span>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-sm text-muted-foreground">Детальное размещение мебели будет доступно после уточнения параметров помещения.</p>
                           )}
                         </div>
                       </div>
@@ -606,31 +869,42 @@ const DesignerAssistant: React.FC<DesignerAssistantProps> = ({ onReturnHome }) =
                       <div className="space-y-4">
                         <h4 className="text-base font-medium mb-2">Рекомендации по расстановке</h4>
                         <div className="space-y-4 text-sm text-muted-foreground">
-                          <div className="flex gap-3 items-start">
-                            <ArrowRight className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                            <p>
-                              Расположите диван и кресла вокруг центральной точки (например, журнального столика или камина), 
-                              создавая зону для общения.
-                            </p>
-                          </div>
-                          <div className="flex gap-3 items-start">
-                            <ArrowRight className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                            <p>
-                              Оставьте проходы шириной не менее 70-80 см между предметами мебели для удобного передвижения по комнате.
-                            </p>
-                          </div>
-                          <div className="flex gap-3 items-start">
-                            <ArrowRight className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                            <p>
-                              Избегайте размещения мебели прямо у стен - небольшой отступ (10-15 см) создаст более изящную композицию.
-                            </p>
-                          </div>
-                          <div className="flex gap-3 items-start">
-                            <ArrowRight className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
-                            <p>
-                              Используйте принцип зонирования, разделив пространство на функциональные зоны: для отдыха, работы, хранения.
-                            </p>
-                          </div>
+                          {floorPlan?.recommendations && floorPlan.recommendations.length > 0 ? (
+                            floorPlan.recommendations.map((recommendation, index) => (
+                              <div key={index} className="flex gap-3 items-start">
+                                <ArrowRight className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                                <p>{recommendation}</p>
+                              </div>
+                            ))
+                          ) : (
+                            <>
+                              <div className="flex gap-3 items-start">
+                                <ArrowRight className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                                <p>
+                                  Расположите диван и кресла вокруг центральной точки (например, журнального столика или камина), 
+                                  создавая зону для общения.
+                                </p>
+                              </div>
+                              <div className="flex gap-3 items-start">
+                                <ArrowRight className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                                <p>
+                                  Оставьте проходы шириной не менее 70-80 см между предметами мебели для удобного передвижения по комнате.
+                                </p>
+                              </div>
+                              <div className="flex gap-3 items-start">
+                                <ArrowRight className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                                <p>
+                                  Избегайте размещения мебели прямо у стен - небольшой отступ (10-15 см) создаст более изящную композицию.
+                                </p>
+                              </div>
+                              <div className="flex gap-3 items-start">
+                                <ArrowRight className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                                <p>
+                                  Используйте принцип зонирования, разделив пространство на функциональные зоны: для отдыха, работы, хранения.
+                                </p>
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>

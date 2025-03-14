@@ -116,6 +116,20 @@ interface WildberriesProduct {
   category?: string;
 }
 
+// Интерфейс для товара одежды
+interface GarmentItem {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  oldPrice?: number;
+  imageUrl: string;
+  imageUrls?: string[]; // Добавляем массив альтернативных URL изображений
+  category: string;
+  gender?: string;
+  url?: string;
+}
+
 // Интерфейс для предмета одежды из Pinterest
 interface ClothingItem {
   type: string;    // Тип предмета (футболка, джинсы и т.д.)
@@ -135,6 +149,36 @@ interface PinterestOutfit {
 interface StylistAssistantProps {
   onReturnHome?: () => void;
 }
+
+// Функция для генерации URL изображений товаров Wildberries
+const generateImageUrls = (productId: string | number): string[] => {
+  // Преобразуем productId в строку, если он не строка
+  const productIdStr = typeof productId === 'string' ? productId : String(productId);
+  
+  // Генерируем URL изображений
+  const volDigits = productIdStr.length >= 4 ? 4 : (productIdStr.length >= 3 ? 3 : 1);
+  const vol = productIdStr.slice(0, volDigits);
+  
+  const partDigits = productIdStr.length >= 6 ? 6 : (productIdStr.length >= 5 ? 5 : productIdStr.length);
+  const part = productIdStr.slice(0, partDigits);
+  
+  const lastTwoDigits = productIdStr.slice(-2);
+  const bucketNum = (parseInt(lastTwoDigits) % 20) + 1;
+  const bucketStr = bucketNum.toString().padStart(2, '0');
+  
+  // Генерируем URL для нескольких изображений с разных корзин
+  const generatedUrls = [];
+  
+  // Стандартный формат - basket-XX.wbbasket.ru с изображениями webp (1-4)
+  for (let i = 1; i <= 4; i++) {
+    generatedUrls.push(`https://basket-${bucketStr}.wbbasket.ru/vol${vol}/part${part}/${productIdStr}/images/c516x688/${i}.webp`);
+  }
+  
+  // Альтернативный формат - images.wbstatic.net с jpg изображениями
+  generatedUrls.push(`https://images.wbstatic.net/c516x688/new/${productIdStr.slice(0, 4)}/${productIdStr}-1.jpg`);
+  
+  return generatedUrls;
+};
 
 export default function StylistAssistant({ onReturnHome }: StylistAssistantProps) {
   const { setSelectedRole } = useAppContext();
@@ -212,11 +256,28 @@ export default function StylistAssistant({ onReturnHome }: StylistAssistantProps
       
       // Обрабатываем результаты
       if (data.results && Array.isArray(data.results)) {
-        // Добавляем URL для каждого товара (если отсутствует)
-        const resultsWithUrl = data.results.map(item => ({
-          ...item,
-          url: item.url || `https://www.wildberries.ru/catalog/${item.id}/detail.aspx`
-        }));
+        // Добавляем URL для каждого товара и обрабатываем массив изображений
+        const resultsWithUrl = data.results.map(item => {
+          // Обрабатываем массив URL изображений
+          const imageUrls = item.imageUrls || [];
+          
+          // Если у товара есть id, но нет массива imageUrls, генерируем его
+          if (item.id && (!imageUrls || imageUrls.length === 0)) {
+            const productId = item.id;
+            
+            return {
+              ...item,
+              imageUrls: generateImageUrls(productId),
+              url: item.url || `https://www.wildberries.ru/catalog/${item.id}/detail.aspx`
+            };
+          }
+          
+          return {
+            ...item,
+            imageUrls: imageUrls,
+            url: item.url || `https://www.wildberries.ru/catalog/${item.id}/detail.aspx`
+          };
+        });
         
         setSearchResults(resultsWithUrl);
         console.log('Установлены результаты поиска:', resultsWithUrl.length);
@@ -255,15 +316,37 @@ export default function StylistAssistant({ onReturnHome }: StylistAssistantProps
     if (!searchQuery.trim()) return;
     
     setIsLoading(true);
+    setApiError(null);
     try {
-      const response = await fetch(`/api/search-products?query=${encodeURIComponent(searchQuery)}&limit=8`);
+      const response = await fetch(`/api/search-products?query=${encodeURIComponent(searchQuery)}&limit=8&gender=${encodeURIComponent(gender)}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setSearchResults(data);
+      
+      // Обрабатываем массив URL изображений для каждого товара
+      const processedResults = data.map(item => {
+        // Если у товара есть id, но нет массива imageUrls, генерируем его
+        if (item.id && (!item.imageUrls || item.imageUrls.length === 0)) {
+          const productId = item.id;
+          
+          return {
+            ...item,
+            imageUrls: generateImageUrls(productId),
+            url: item.url || `https://www.wildberries.ru/catalog/${item.id}/detail.aspx`
+          };
+        }
+        
+        return {
+          ...item,
+          url: item.url || `https://www.wildberries.ru/catalog/${item.id}/detail.aspx`
+        };
+      });
+      
+      setSearchResults(processedResults);
     } catch (error) {
-      console.error('Error searching products:', error);
+      console.error('Ошибка при поиске товаров:', error);
+      setApiError(error instanceof Error ? error.message : 'Произошла ошибка при поиске товаров');
       setSearchResults([]);
     } finally {
       setIsLoading(false);
@@ -344,16 +427,46 @@ export default function StylistAssistant({ onReturnHome }: StylistAssistantProps
   const ProductCard: React.FC<{ product: GarmentItem }> = ({ product }) => {
     const [imgSrc, setImgSrc] = useState(product.imageUrl);
     const [imgError, setImgError] = useState(false);
-    const [loadAttempts, setLoadAttempts] = useState(0); // Счетчик попыток загрузки
+    const [loadAttempts, setLoadAttempts] = useState(0);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0); // Индекс текущего изображения
+    const [isHovering, setIsHovering] = useState(false); // Состояние наведения на карточку
+
+    // Эффект для переключения изображений при наведении
+    useEffect(() => {
+      if (!product.imageUrls || product.imageUrls.length <= 1 || !isHovering) return;
+      
+      // Запускаем автоматическое переключение изображений при наведении
+      const interval = setInterval(() => {
+        setCurrentImageIndex(prevIndex => {
+          const nextIndex = (prevIndex + 1) % product.imageUrls!.length;
+          setImgSrc(product.imageUrls![nextIndex]);
+          return nextIndex;
+        });
+      }, 1500); // Меняем изображение каждые 1.5 секунды
+
+      return () => clearInterval(interval);
+    }, [isHovering, product.imageUrls]);
 
     // Вызываем useEffect для обновления источника изображения при изменении товара
     useEffect(() => {
       setImgSrc(product.imageUrl);
       setImgError(false);
       setLoadAttempts(0);
-    }, [product.imageUrl, product.id]);
+      setCurrentImageIndex(0);
+    }, [product]);
 
-    // Функция для определения категории товара
+    // Функция для переключения на следующее изображение при клике
+    const handleNextImage = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      
+      if (!product.imageUrls || product.imageUrls.length <= 1) return;
+      
+      const nextIndex = (currentImageIndex + 1) % product.imageUrls.length;
+      setCurrentImageIndex(nextIndex);
+      setImgSrc(product.imageUrls[nextIndex]);
+    };
+
+    // Функция определения категории из названия
     const getCategoryFromName = (name: string): string => {
       const lowerName = name.toLowerCase();
       if (lowerName.includes('футболка') || lowerName.includes('рубашка')) return 'tshirt';
@@ -372,6 +485,16 @@ export default function StylistAssistant({ onReturnHome }: StylistAssistantProps
       console.log(`Ошибка загрузки изображения: ${imgSrc} (попытка ${loadAttempts + 1})`);
       setLoadAttempts(prev => prev + 1);
       
+      // Если у товара есть массив изображений и мы не перебрали все
+      if (product.imageUrls && product.imageUrls.length > currentImageIndex + 1) {
+        // Переключаемся на следующее изображение из массива
+        const nextIndex = currentImageIndex + 1;
+        console.log(`Пробуем следующее изображение из массива: ${product.imageUrls[nextIndex]}`);
+        setCurrentImageIndex(nextIndex);
+        setImgSrc(product.imageUrls[nextIndex]);
+        return;
+      }
+      
       // Если превышено количество попыток или это уже заглушка, используем base64 изображение
       if (loadAttempts >= 2 || imgSrc.startsWith('data:')) {
         console.log('Превышено количество попыток загрузки, используем base64 изображение');
@@ -385,45 +508,20 @@ export default function StylistAssistant({ onReturnHome }: StylistAssistantProps
         return;
       }
       
-      // Если не удалось загрузить изображение, пробуем сгенерировать новый URL
+      // Если не удалось загрузить изображение и есть ID товара, пробуем сгенерировать новые URL
       if (!imgError && product.id) {
-        const productId = product.id;
+        // Генерируем URL изображений с помощью нашей функции
+        const generatedUrls = generateImageUrls(product.id);
         
-        // Пробуем разные форматы URL в зависимости от попытки
-        if (loadAttempts === 0) {
-          // Первая попытка - стандартный формат Wildberries
-          const volDigits = productId.length >= 4 ? 4 : (productId.length >= 3 ? 3 : 1);
-          const vol = productId.slice(0, volDigits);
-          
-          const partDigits = productId.length >= 6 ? 6 : (productId.length >= 5 ? 5 : productId.length);
-          const part = productId.slice(0, partDigits);
-          
-          const lastTwoDigits = productId.slice(-2);
-          const bucketNum = (parseInt(lastTwoDigits) % 20) + 1;
-          const bucketStr = bucketNum.toString().padStart(2, '0');
-          
-          const newImageUrl = `https://basket-${bucketStr}.wbbasket.ru/vol${vol}/part${part}/${productId}/images/c516x688/1.webp`;
-          console.log(`Генерируем URL изображения (попытка 1): ${newImageUrl}`);
-          
-          setImgSrc(newImageUrl);
-        } else if (loadAttempts === 1) {
-          // Вторая попытка - альтернативный формат Wildberries
-          const newImageUrl = `https://images.wbstatic.net/c516x688/new/${productId.slice(0, 4)}/${productId}-1.jpg`;
-          console.log(`Генерируем URL изображения (попытка 2): ${newImageUrl}`);
-          
-          setImgSrc(newImageUrl);
-        } else {
-          // Если все попытки не удались, используем заглушку
-          setImgError(true);
-          
-          // Получаем категорию для base64 изображения
-          const category = getCategoryFromName(product.name || product.category || '');
-          const base64Image = getBase64ImageByCategory(category);
-          
-          console.log(`Используем base64 изображение для категории: ${category}`);
-          setImgSrc(base64Image);
-        }
+        // Сохраняем сгенерированные URL в массив product.imageUrls
+        product.imageUrls = generatedUrls;
+        
+        console.log(`Генерируем URL изображений: `, generatedUrls);
+        
+        // Используем первое изображение
+        setImgSrc(generatedUrls[0]);
       } else {
+        // Если всё не удалось, используем заглушку
         setImgError(true);
         
         // Получаем категорию для base64 изображения
@@ -437,11 +535,16 @@ export default function StylistAssistant({ onReturnHome }: StylistAssistantProps
 
     return (
       <Card className="overflow-hidden p-0">
-        <div className="relative h-48">
+        <div 
+          className="relative h-48 cursor-pointer" 
+          onClick={handleNextImage}
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
           <img 
             src={imgSrc} 
             alt={product.name} 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
             onError={handleImageError}
           />
           <div className="absolute top-3 right-3 bg-black/70 text-white px-2 py-1 rounded-full text-xs">
@@ -450,6 +553,17 @@ export default function StylistAssistant({ onReturnHome }: StylistAssistantProps
           {product.gender && (
             <div className="absolute top-3 left-3 bg-primary/80 text-primary-foreground px-2 py-1 rounded-full text-xs">
               {product.gender === 'мужской' ? 'М' : product.gender === 'женский' ? 'Ж' : 'У'}
+            </div>
+          )}
+          {/* Добавляем индикаторы изображений, если есть несколько */}
+          {product.imageUrls && product.imageUrls.length > 1 && (
+            <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
+              {product.imageUrls.map((_, index) => (
+                <div 
+                  key={index} 
+                  className={`w-2 h-2 rounded-full ${index === currentImageIndex ? 'bg-white' : 'bg-white/50'}`}
+                />
+              ))}
             </div>
           )}
         </div>

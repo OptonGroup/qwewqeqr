@@ -461,5 +461,65 @@
       "description": "классические",
       "gender": "мужской"
     }
+  ],
+  "c4cc6bd4799efd0ece26834e55c20e9c": [
+    {
+      "type": "джинсы",
+      "color": "синие",
+      "description": "скинни",
+      "gender": "женский"
+    },
+    {
+      "type": "футболка",
+      "color": "белая",
+      "description": "базовая",
+      "gender": "женский"
+    },
+    {
+      "type": "кеды",
+      "color": "белые",
+      "description": "классические",
+      "gender": "женский"
+    }
+  ],
+  "ad16c7f44e9d1ca63967dbfe357fc546": [
+    {
+      "type": "джинсы",
+      "color": "синие",
+      "description": "скинни",
+      "gender": "женский"
+    },
+    {
+      "type": "футболка",
+      "color": "белая",
+      "description": "базовая",
+      "gender": "женский"
+    },
+    {
+      "type": "кеды",
+      "color": "белые",
+      "description": "классические",
+      "gender": "женский"
+    }
+  ],
+  "8c068e63eefca4882ec45138d3e74e07": [
+    {
+      "type": "джинсы",
+      "color": "синие",
+      "description": "скинни",
+      "gender": "женский"
+    },
+    {
+      "type": "футболка",
+      "color": "белая",
+      "description": "базовая",
+      "gender": "женский"
+    },
+    {
+      "type": "кеды",
+      "color": "белые",
+      "description": "классические",
+      "gender": "женский"
+    }
   ]
 }
