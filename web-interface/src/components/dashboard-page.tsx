@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Transaction, CategorySpending, MonthlyTrend } from '@/types/bank-statement';
+import { CategorySpending, MonthlyTrend } from '@/types/bank-statement';
+import { Transaction } from '@/types';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import TransactionsTable from './transactions-table';
+import { TransactionsTable } from './transactions-table';
 import SpendingPieChart from './charts/spending-pie-chart';
 import MonthlySpendingTrendChart from './charts/monthly-spending-trend';
 import SpendingAnalysis from './spending-analysis';
@@ -88,6 +89,21 @@ const mockMonthlyTrend: MonthlyTrend[] = [
     ]
   },
 ];
+
+// Функция для преобразования транзакций из формата bank-statement.ts в формат index.ts
+const convertTransactions = (transactions: any[]): Transaction[] => {
+  return transactions.map((transaction, index) => ({
+    Дата_операции: transaction.date || '2023-01-01',
+    Время_операции: '12:00:00',
+    Дата_списания: transaction.date || '2023-01-01',
+    Сумма: transaction.amount || 0,
+    Сумма_в_валюте_счета: transaction.amount || 0,
+    Описание: transaction.description || 'Описание отсутствует',
+    Идентификатор: transaction.id || `transaction-${index}`,
+    Тип: transaction.type === 'income' ? 'Доход' : 'Расход',
+    Категория: transaction.category || 'Другое'
+  }));
+};
 
 const DashboardPage = () => {
   const router = useRouter();
@@ -289,7 +305,7 @@ const DashboardPage = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <TransactionsTable transactions={transactions} />
+              <TransactionsTable transactions={convertTransactions(transactions)} />
             </CardContent>
           </Card>
         </TabsContent>

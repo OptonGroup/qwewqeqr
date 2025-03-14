@@ -6,8 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Search, ShoppingBag, Plus, Pencil, ChevronDown, ChevronUp, Home } from 'lucide-react';
-import { ProductCard } from './product-card';
-import type { GarmentItem } from './product-card';
+import { ProductCard, GarmentItem as ProductGarmentItem } from './product-card';
 import PinterestOutfitSection from './pinterest-outfit-section';
 import { Badge } from '@/components/ui/badge';
 import { useAppContext } from '@/context/app-context';
@@ -53,15 +52,16 @@ const getBase64ImageByCategory = (category: string): string => {
   return BASE64_IMAGES.default;
 };
 
-// Моковые данные для тестирования интерфейса
-const mockItems: GarmentItem[] = [
+// Моковые данные для демонстрации
+const mockItems: ProductGarmentItem[] = [
   {
     id: '1',
     name: 'Базовая белая футболка',
     description: 'Универсальная хлопковая футболка свободного кроя',
     price: 999,
-    imageUrl: 'https://basket-01.wbbasket.ru/vol1001/part100135/100135766/images/c516x688/1.webp',
-    category: 'Верх'
+    imageUrl: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&auto=format',
+    category: 'Верх',
+    gender: 'мужской'
   },
   {
     id: '2',
@@ -114,20 +114,6 @@ interface WildberriesProduct {
   url: string;
   rating?: number;
   category?: string;
-}
-
-// Интерфейс для товара одежды
-interface GarmentItem {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  oldPrice?: number;
-  imageUrl: string;
-  imageUrls?: string[]; // Добавляем массив альтернативных URL изображений
-  category: string;
-  gender?: string;
-  url?: string;
 }
 
 // Интерфейс для предмета одежды из Pinterest
@@ -183,7 +169,7 @@ const generateImageUrls = (productId: string | number): string[] => {
 export default function StylistAssistant({ onReturnHome }: StylistAssistantProps) {
   const { setSelectedRole } = useAppContext();
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<GarmentItem[]>([]);
+  const [searchResults, setSearchResults] = useState<ProductGarmentItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -414,174 +400,10 @@ export default function StylistAssistant({ onReturnHome }: StylistAssistantProps
   };
 
   const formatResultsCount = (count: number): string => {
-    if (count === 1) {
-      return "Найден 1 образ";
-    } else if (count >= 2 && count <= 4) {
-      return `Найдено ${count} образа`;
-    } else {
-      return `Найдено ${count} образов`;
-    }
-  };
-
-  // Компонент ProductCard с обработкой ошибок загрузки изображений
-  const ProductCard: React.FC<{ product: GarmentItem }> = ({ product }) => {
-    const [imgSrc, setImgSrc] = useState(product.imageUrl);
-    const [imgError, setImgError] = useState(false);
-    const [loadAttempts, setLoadAttempts] = useState(0);
-    const [currentImageIndex, setCurrentImageIndex] = useState(0); // Индекс текущего изображения
-    const [isHovering, setIsHovering] = useState(false); // Состояние наведения на карточку
-
-    // Эффект для переключения изображений при наведении
-    useEffect(() => {
-      if (!product.imageUrls || product.imageUrls.length <= 1 || !isHovering) return;
-      
-      // Запускаем автоматическое переключение изображений при наведении
-      const interval = setInterval(() => {
-        setCurrentImageIndex(prevIndex => {
-          const nextIndex = (prevIndex + 1) % product.imageUrls!.length;
-          setImgSrc(product.imageUrls![nextIndex]);
-          return nextIndex;
-        });
-      }, 1500); // Меняем изображение каждые 1.5 секунды
-
-      return () => clearInterval(interval);
-    }, [isHovering, product.imageUrls]);
-
-    // Вызываем useEffect для обновления источника изображения при изменении товара
-    useEffect(() => {
-      setImgSrc(product.imageUrl);
-      setImgError(false);
-      setLoadAttempts(0);
-      setCurrentImageIndex(0);
-    }, [product]);
-
-    // Функция для переключения на следующее изображение при клике
-    const handleNextImage = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      
-      if (!product.imageUrls || product.imageUrls.length <= 1) return;
-      
-      const nextIndex = (currentImageIndex + 1) % product.imageUrls.length;
-      setCurrentImageIndex(nextIndex);
-      setImgSrc(product.imageUrls[nextIndex]);
-    };
-
-    // Функция определения категории из названия
-    const getCategoryFromName = (name: string): string => {
-      const lowerName = name.toLowerCase();
-      if (lowerName.includes('футболка') || lowerName.includes('рубашка')) return 'tshirt';
-      if (lowerName.includes('джинс') || lowerName.includes('брюк')) return 'pants';
-      if (lowerName.includes('куртка') || lowerName.includes('пальто') || lowerName.includes('пиджак')) return 'jacket';
-      if (lowerName.includes('пиджак') || lowerName.includes('блейзер')) return 'blazer';
-      if (lowerName.includes('платье')) return 'dress';
-      if (lowerName.includes('свитер') || lowerName.includes('худи') || lowerName.includes('толстовка')) return 'sweater';
-      if (lowerName.includes('обувь') || lowerName.includes('кед') || lowerName.includes('ботин') || lowerName.includes('кроссов')) return 'shoes';
-      if (lowerName.includes('шапка') || lowerName.includes('кепка') || lowerName.includes('берет')) return 'hat';
-      return 'fashion';
-    };
-
-    // Обработчик ошибки загрузки изображения
-    const handleImageError = () => {
-      console.log(`Ошибка загрузки изображения: ${imgSrc} (попытка ${loadAttempts + 1})`);
-      setLoadAttempts(prev => prev + 1);
-      
-      // Если у товара есть массив изображений и мы не перебрали все
-      if (product.imageUrls && product.imageUrls.length > currentImageIndex + 1) {
-        // Переключаемся на следующее изображение из массива
-        const nextIndex = currentImageIndex + 1;
-        console.log(`Пробуем следующее изображение из массива: ${product.imageUrls[nextIndex]}`);
-        setCurrentImageIndex(nextIndex);
-        setImgSrc(product.imageUrls[nextIndex]);
-        return;
-      }
-      
-      // Если превышено количество попыток или это уже заглушка, используем base64 изображение
-      if (loadAttempts >= 2 || imgSrc.startsWith('data:')) {
-        console.log('Превышено количество попыток загрузки, используем base64 изображение');
-        setImgError(true);
-        
-        // Получаем категорию для base64 изображения
-        const category = getCategoryFromName(product.name || product.category || '');
-        const base64Image = getBase64ImageByCategory(category);
-        
-        setImgSrc(base64Image);
-        return;
-      }
-      
-      // Если не удалось загрузить изображение и есть ID товара, пробуем сгенерировать новые URL
-      if (!imgError && product.id) {
-        // Генерируем URL изображений с помощью нашей функции
-        const generatedUrls = generateImageUrls(product.id);
-        
-        // Сохраняем сгенерированные URL в массив product.imageUrls
-        product.imageUrls = generatedUrls;
-        
-        console.log(`Генерируем URL изображений: `, generatedUrls);
-        
-        // Используем первое изображение
-        setImgSrc(generatedUrls[0]);
-      } else {
-        // Если всё не удалось, используем заглушку
-        setImgError(true);
-        
-        // Получаем категорию для base64 изображения
-        const category = getCategoryFromName(product.name || product.category || '');
-        const base64Image = getBase64ImageByCategory(category);
-        
-        console.log(`Используем base64 изображение для категории: ${category}`);
-        setImgSrc(base64Image);
-      }
-    };
-
-    return (
-      <Card className="overflow-hidden p-0">
-        <div 
-          className="relative h-48 cursor-pointer" 
-          onClick={handleNextImage}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-        >
-          <img 
-            src={imgSrc} 
-            alt={product.name} 
-            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-            onError={handleImageError}
-          />
-          <div className="absolute top-3 right-3 bg-black/70 text-white px-2 py-1 rounded-full text-xs">
-            {product.category}
-          </div>
-          {product.gender && (
-            <div className="absolute top-3 left-3 bg-primary/80 text-primary-foreground px-2 py-1 rounded-full text-xs">
-              {product.gender === 'мужской' ? 'М' : product.gender === 'женский' ? 'Ж' : 'У'}
-            </div>
-          )}
-          {/* Добавляем индикаторы изображений, если есть несколько */}
-          {product.imageUrls && product.imageUrls.length > 1 && (
-            <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
-              {product.imageUrls.map((_, index) => (
-                <div 
-                  key={index} 
-                  className={`w-2 h-2 rounded-full ${index === currentImageIndex ? 'bg-white' : 'bg-white/50'}`}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-        <CardContent className="p-5">
-          <h3 className="font-semibold text-base mb-1">{product.name}</h3>
-          <p className="text-sm text-muted-foreground mb-4">{product.description}</p>
-          <div className="flex justify-between items-center">
-            <div className="space-y-1">
-              <span className="font-bold">{product.price} ₽</span>
-            </div>
-            <Button size="sm" onClick={() => { if (product.url) window.open(product.url, '_blank'); }}>
-              <ShoppingBag className="h-4 w-4 mr-2" />
-              Купить
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    );
+    if (count === 0) return 'Нет результатов';
+    if (count === 1) return '1 результат';
+    if (count >= 2 && count <= 4) return `${count} результата`;
+    return `${count} результатов`;
   };
 
   return (
@@ -758,7 +580,7 @@ export default function StylistAssistant({ onReturnHome }: StylistAssistantProps
                       <h2 className="text-xl font-semibold">Найдено {searchResults.length} товаров</h2>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {searchResults.map((item) => (
-                          <ProductCard key={item.id} product={item} />
+                          <ProductCard key={item.id} item={item} />
                         ))}
                       </div>
                     </div>

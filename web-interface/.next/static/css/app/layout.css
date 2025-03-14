@@ -1324,15 +1324,6 @@ video {
 .bg-yellow-500\/10 {
   background-color: rgb(234 179 8 / 0.1);
 }
-.bg-\[url\(\'https\:\/\/images\.unsplash\.com\/photo-1583248483201-e9d3e613c9bc\?ixlib\=rb-4\.0\.3\&auto\=format\&fit\=crop\&w\=200\&q\=80\'\)\] {
-  background-image: url('https://images.unsplash.com/photo-1583248483201-e9d3e613c9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');
-}
-.bg-\[url\(\'https\:\/\/images\.unsplash\.com\/photo-1604074130793-efb74419fde7\?ixlib\=rb-4\.0\.3\&auto\=format\&fit\=crop\&w\=200\&q\=80\'\)\] {
-  background-image: url('https://images.unsplash.com/photo-1604074130793-efb74419fde7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');
-}
-.bg-\[url\(\'https\:\/\/images\.unsplash\.com\/photo-1606644403560-3c8c561035ad\?ixlib\=rb-4\.0\.3\&auto\=format\&fit\=crop\&w\=200\&q\=80\'\)\] {
-  background-image: url('https://images.unsplash.com/photo-1606644403560-3c8c561035ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');
-}
 .object-contain {
   -o-object-fit: contain;
      object-fit: contain;
@@ -1424,6 +1415,9 @@ video {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
 .pb-4 {
   padding-bottom: 1rem;
 }
@@ -1456,9 +1450,6 @@ video {
 }
 .pt-6 {
   padding-top: 1.5rem;
-}
-.pb-2 {
-  padding-bottom: 0.5rem;
 }
 .text-left {
   text-align: left;

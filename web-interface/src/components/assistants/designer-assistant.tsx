@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Upload, Search, RefreshCw, ShoppingBag, ArrowRight, Sofa, Bed, UtensilsCrossed, Briefcase, Gamepad2, Printer, UserSquare, Home, ExternalLink, AlertCircle } from 'lucide-react';
 import { useAppContext } from '@/context/app-context';
-import { designerApi } from '@/lib/api';
+import { designerApi, DesignAnalysis, TextRecommendation, DesignConcept, FloorPlan, DesignerApiResponse } from '@/lib/api';
 
 // Интерфейс для элемента мебели
 interface FurnitureItem {
@@ -29,68 +29,7 @@ interface FurnitureItem {
   brand?: string;
 }
 
-// Интерфейс для анализа дизайна
-interface DesignAnalysis {
-  roomType: string;
-  style: string;
-  colorPalette: string[];
-  recommendedMaterials: string[];
-  designPrinciples: {
-    title: string;
-    description: string;
-  }[];
-  area: number;
-  identifiedNeeds: any;
-}
-
-// Интерфейс для текстовой рекомендации
-interface TextRecommendation {
-  title: string;
-  description: string;
-}
-
-// Интерфейс для дизайн-концепции
-interface DesignConcept {
-  mainIdea: string;
-  styleDescription: string;
-  moodBoard: string[];
-  keyElements: {
-    name: string;
-    description: string;
-  }[];
-}
-
-// Интерфейс для планировки помещения
-interface FloorPlan {
-  dimensions: {
-    width: number;
-    length: number;
-    area: number;
-  };
-  zoning: {
-    name: string;
-    area: number;
-    position: string;
-  }[];
-  furnitureLayout: {
-    name: string;
-    position: string;
-    dimensions: string;
-  }[];
-  recommendations: string[];
-}
-
-// Интерфейс для данных API
-interface DesignerApiResponse {
-  success: boolean;
-  designAnalysis?: DesignAnalysis;
-  textRecommendations?: TextRecommendation[];
-  designConcept?: DesignConcept;
-  floorPlan?: FloorPlan;
-  error?: string;
-}
-
-// Интерфейс для цветовой палитры
+// Интерфейс для ответа цветовой палитры
 interface ColorPaletteResponse {
   success: boolean;
   style: string;
@@ -98,20 +37,21 @@ interface ColorPaletteResponse {
   error?: string;
 }
 
+// Типы комнат и стилей для выбора
 const roomTypes = [
-  { id: 'living', name: 'Гостиная' },
-  { id: 'bedroom', name: 'Спальня' },
-  { id: 'kitchen', name: 'Кухня' },
-  { id: 'office', name: 'Домашний офис' },
-  { id: 'children', name: 'Детская' }
+  { id: 'living', name: 'Гостиная', icon: <Sofa size={20} /> },
+  { id: 'bedroom', name: 'Спальня', icon: <Bed size={20} /> },
+  { id: 'kitchen', name: 'Кухня', icon: <UtensilsCrossed size={20} /> },
+  { id: 'office', name: 'Офис', icon: <Briefcase size={20} /> },
+  { id: 'children', name: 'Детская', icon: <Gamepad2 size={20} /> },
 ];
 
-const styles = [
+const designStyles = [
   { id: 'modern', name: 'Современный' },
+  { id: 'minimalist', name: 'Минимализм' },
   { id: 'scandinavian', name: 'Скандинавский' },
-  { id: 'loft', name: 'Лофт' },
+  { id: 'industrial', name: 'Лофт' },
   { id: 'classic', name: 'Классический' },
-  { id: 'minimalist', name: 'Минимализм' }
 ];
 
 interface DesignerAssistantProps {
@@ -363,7 +303,7 @@ const DesignerAssistant: React.FC<DesignerAssistantProps> = ({ onReturnHome }) =
   };
 
   const getStyleName = (styleId: string) => {
-    const style = styles.find(s => s.id === styleId);
+    const style = designStyles.find(s => s.id === styleId);
     return style ? style.name : '';
   };
   
@@ -458,11 +398,7 @@ const DesignerAssistant: React.FC<DesignerAssistantProps> = ({ onReturnHome }) =
                   onClick={() => handleRoomSelect(room.id)}
                 >
                   <div className="flex items-center gap-3 mb-2">
-                    {room.id === 'living' && <Sofa className="h-5 w-5 text-primary" />}
-                    {room.id === 'bedroom' && <Bed className="h-5 w-5 text-primary" />}
-                    {room.id === 'kitchen' && <UtensilsCrossed className="h-5 w-5 text-primary" />}
-                    {room.id === 'office' && <Briefcase className="h-5 w-5 text-primary" />}
-                    {room.id === 'children' && <Gamepad2 className="h-5 w-5 text-primary" />}
+                    {room.icon}
                     <h3 className="font-semibold text-lg">{room.name}</h3>
                   </div>
                   <p className="text-sm text-muted-foreground">
@@ -496,7 +432,7 @@ const DesignerAssistant: React.FC<DesignerAssistantProps> = ({ onReturnHome }) =
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-              {styles.map((style) => (
+              {designStyles.map((style) => (
                 <div 
                   key={style.id}
                   className={`p-5 border rounded-xl cursor-pointer hover:border-primary transition-all ${
@@ -508,7 +444,7 @@ const DesignerAssistant: React.FC<DesignerAssistantProps> = ({ onReturnHome }) =
                   <p className="text-sm text-muted-foreground">
                     {style.id === 'modern' && 'Четкие линии, минимальный декор, практичность'}
                     {style.id === 'scandinavian' && 'Светлые тона, натуральные материалы, уют'}
-                    {style.id === 'loft' && 'Индустриальные детали, грубые фактуры, открытое пространство'}
+                    {style.id === 'industrial' && 'Индустриальные детали, грубые фактуры, открытое пространство'}
                     {style.id === 'classic' && 'Элегантность, симметрия, традиционные элементы'}
                     {style.id === 'minimalist' && 'Функциональность, простота, чистые поверхности'}
                   </p>

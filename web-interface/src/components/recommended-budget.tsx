@@ -12,6 +12,19 @@ interface RecommendedBudgetProps {
   month: string;
 }
 
+// Компонент-обертка для иконок
+const IconWrapper = ({ 
+  icon: Icon, 
+  className, 
+  style 
+}: { 
+  icon: React.ComponentType; 
+  className?: string; 
+  style?: React.CSSProperties 
+}) => {
+  return <Icon />;
+};
+
 const RecommendedBudget = ({ categorySpending, totalIncome, month }: RecommendedBudgetProps) => {
   const budgetRecommendations = useMemo(() => {
     // Рассчитываем рекомендуемый бюджет на основе доходов и текущих трат
@@ -72,7 +85,7 @@ const RecommendedBudget = ({ categorySpending, totalIncome, month }: Recommended
               <div key={item.category} className="space-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <Icon className="h-4 w-4" style={{ color }} />
+                    <IconWrapper icon={Icon} className="h-4 w-4" style={{ color }} />
                     <span className="font-medium">{item.category}</span>
                   </div>
                   <div className="text-sm text-gray-500">

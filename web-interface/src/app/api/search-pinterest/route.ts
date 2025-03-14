@@ -8,7 +8,7 @@ interface PinterestSearchResult {
   image_url: string;
   link: string;
   clothing_items: ClothingItem[];
-  gender?: 'male' | 'female';
+  gender?: 'male' | 'female' | undefined;
 }
 
 // Интерфейс для предмета одежды
@@ -21,7 +21,7 @@ interface ClothingItem {
 }
 
 // Путь к Python API
-const PYTHON_API_URL = process.env.PYTHON_API_URL || 'http://localhost:8000';
+const PYTHON_API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://backend:8000';
 
 // Кэширование результатов поиска
 const resultsCache = new Map<string, { timestamp: number, results: PinterestSearchResult[] }>();
@@ -105,7 +105,7 @@ function getFallbackOutfits(type: string, gender: string): PinterestSearchResult
       description: `${capitalizeFirstLetter(genderSpecific)} ${type} образ с Pinterest. Резервные данные.`,
       image_url: `/images/fallback/${gender}/${type}-1.jpg`,
       link: `https://pinterest.com/fallback/${gender}/${type}-1`,
-      gender: gender === 'any' ? undefined : gender
+      gender: gender === 'any' ? undefined : (gender as 'male' | 'female')
     },
     {
       pin_id: `fallback-${type}-2`,
@@ -113,7 +113,7 @@ function getFallbackOutfits(type: string, gender: string): PinterestSearchResult
       description: `${capitalizeFirstLetter(genderSpecific)} ${type} образ с Pinterest. Резервные данные.`,
       image_url: `/images/fallback/${gender}/${type}-2.jpg`,
       link: `https://pinterest.com/fallback/${gender}/${type}-2`,
-      gender: gender === 'any' ? undefined : gender
+      gender: gender === 'any' ? undefined : (gender as 'male' | 'female')
     },
     {
       pin_id: `fallback-${type}-3`,
@@ -121,7 +121,7 @@ function getFallbackOutfits(type: string, gender: string): PinterestSearchResult
       description: `${capitalizeFirstLetter(genderSpecific)} ${type} образ с Pinterest. Резервные данные.`,
       image_url: `/images/fallback/${gender}/${type}-3.jpg`,
       link: `https://pinterest.com/fallback/${gender}/${type}-3`,
-      gender: gender === 'any' ? undefined : gender
+      gender: gender === 'any' ? undefined : (gender as 'male' | 'female')
     }
   ];
   
@@ -133,7 +133,7 @@ function getFallbackOutfits(type: string, gender: string): PinterestSearchResult
     image_url: outfit.image_url || '/images/fallback/no-image.jpg',
     link: outfit.link || 'https://pinterest.com',
     clothing_items: getClothingItemsForType(type, gender),
-    gender: outfit.gender as 'male' | 'female' | undefined
+    gender: outfit.gender
   }));
 }
 

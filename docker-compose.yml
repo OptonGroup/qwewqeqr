@@ -1,0 +1,33 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    volumes:
+      - ./cache:/app/cache
+      - ./metrics:/app/metrics
+      - ./static:/app/static
+      - ./photo:/app/photo
+      - ./vision_cache:/app/vision_cache
+      - ./pinterest_cache:/app/pinterest_cache
+      - ./wildberries_cache:/app/wildberries_cache
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000 

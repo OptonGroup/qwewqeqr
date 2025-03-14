@@ -21,6 +21,7 @@ export interface GarmentItem {
   price: number;
   oldPrice?: number;
   imageUrl: string;
+  imageUrls?: string[];
   category: string;
   url?: string;
   gender?: string;

@@ -29,6 +29,7 @@ import string
 import asyncio
 import logging
 import traceback
+from cors_setup import setup_cors
 
 # Настройка логгера
 logging.basicConfig(
@@ -150,13 +151,7 @@ app = FastAPI(
 )
 
 # Настраиваем CORS для работы с фронтендом
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],  # Конкретные источники для фронтенда
-    allow_credentials=True,
-    allow_methods=["*"],  # Разрешить все методы
-    allow_headers=["*"],  # Разрешить все заголовки
-)
+app = setup_cors(app)
 
 # Хранилище для задач
 tasks: Dict[str, TaskStatus] = {}
@@ -303,9 +298,9 @@ async def shutdown_event():
 @app.get("/health")
 async def health_check():
     """
-    Проверка работоспособности сервера
+    Endpoint для проверки работоспособности API
     """
-    return {"status": "ok", "message": "Сервер работает"}
+    return {"status": "ok", "timestamp": time.time()}
 
 @app.post("/search")
 async def search_products_endpoint(request: SearchRequest):

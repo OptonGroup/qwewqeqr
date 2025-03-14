@@ -1,0 +1,29 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Установка необходимых системных зависимостей
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    wget \
+    libpq-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Копирование файла зависимостей
+COPY requirements.txt .
+
+# Установка Python зависимостей
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Копирование файлов проекта
+COPY . .
+
+# Создание необходимых директорий
+RUN mkdir -p /app/cache /app/metrics /app/static /app/photo /app/vision_cache /app/pinterest_cache /app/wildberries_cache
+
+# Открытие порта для FastAPI
+EXPOSE 8000
+
+# Запуск приложения
+CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"] 

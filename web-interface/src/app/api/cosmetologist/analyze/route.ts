@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     
     try {
       // Формируем запрос к бэкенду Python
-      const backendUrl = process.env.BACKEND_API_URL || 'http://localhost:5000';
+      const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://backend:8000';
       
       // Отправляем запрос к бэкенду для определения потребностей пользователя
       const response = await fetch(`${backendUrl}/determine_user_needs`, {

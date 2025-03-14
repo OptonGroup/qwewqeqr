@@ -1,0 +1,69 @@
+# Git
+.git
+.gitignore
+.github
+.cursorrules
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+
+# Virtual Environment
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node.js
+web-interface/node_modules/
+web-interface/.next/
+web-interface/out/
+web-interface/.cache/
+web-interface/npm-debug.log
+web-interface/yarn-debug.log
+web-interface/yarn-error.log
+
+# Cache and logs
+cache/
+metrics/
+static/
+photo/
+vision_cache/
+pinterest_cache/
+wildberries_cache/
+*.log
+
+# Docker
+.dockerignore
+Dockerfile*
+docker-compose*
+
+# Other
+README.md
+*.md
+LICENSE
+start.sh
+start.bat 

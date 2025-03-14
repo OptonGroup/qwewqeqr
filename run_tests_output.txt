@@ -1,5 +1,0 @@
-2025-03-12 02:25:37,744 - __main__ - INFO - Запуск тестов
-2025-03-12 02:25:37,744 - __main__ - INFO - Запуск теста test_assistant_wildberries_sync.py с конфигурацией formal
-2025-03-12 02:25:37,744 - __main__ - INFO - Запуск теста: test_assistant_wildberries_sync.py
-2025-03-12 02:25:37,744 - __main__ - INFO - Конфигурация теста: {"image_path": "test_image.jpg", "budget": 10000, "style_preferences": "Деловой стиль, офисная одежда", "max_results": 3, "name": "formal"}
-2025-03-12 02:25:38,502 - __main__ - ERROR - Ошибка при чтении вывода: 'utf-8' codec can't decode byte 0xc8 in position 44: invalid continuation byte

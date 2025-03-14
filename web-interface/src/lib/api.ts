@@ -5,6 +5,139 @@
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 /**
+ * Интерфейсы для типизации ответов API
+ */
+export interface SkinAnalysis {
+  description: string;
+  daily: {
+    morning: { steps: Array<{ name: string; product: string }> };
+    evening: { steps: Array<{ name: string; product: string }> };
+  };
+  weekly: {
+    procedures: Array<{ name: string; product: string; frequency: string }>;
+    additional: Array<{ name: string; description: string }>;
+  };
+  recommendations: {
+    lifestyle: Array<{ text: string }>;
+    ingredients: Array<{ name: string; purpose: string }>;
+  };
+}
+
+export interface CosmetologistAnalysisResponse {
+  skinAnalysis: SkinAnalysis;
+  productRecommendations?: any[];
+  identifiedNeeds?: any;
+  [key: string]: any;
+}
+
+// Интерфейсы для дизайнера интерьера
+export interface DesignAnalysis {
+  roomType: string;
+  style: string;
+  colorPalette: string[];
+  recommendedMaterials: string[];
+  designPrinciples: {
+    title: string;
+    description: string;
+  }[];
+  area: number;
+  identifiedNeeds: any;
+}
+
+export interface TextRecommendation {
+  title: string;
+  description: string;
+}
+
+export interface DesignConcept {
+  mainIdea: string;
+  styleDescription: string;
+  moodBoard: string[];
+  keyElements: {
+    name: string;
+    description: string;
+  }[];
+}
+
+export interface FloorPlan {
+  dimensions: {
+    width: number;
+    length: number;
+    area: number;
+  };
+  zoning: {
+    name: string;
+    area: number;
+    position: string;
+  }[];
+  furnitureLayout: {
+    name: string;
+    position: string;
+    dimensions: string;
+  }[];
+  recommendations: string[];
+}
+
+export interface DesignerApiResponse {
+  success: boolean;
+  designAnalysis?: DesignAnalysis;
+  textRecommendations?: TextRecommendation[];
+  designConcept?: DesignConcept;
+  floorPlan?: FloorPlan;
+  error?: string;
+}
+
+export interface NutritionAnalysis {
+  overview: string;
+  goals: {
+    title: string;
+    description: string;
+  }[];
+  restrictions: {
+    title: string;
+    description: string;
+  }[];
+  recommendations: {
+    category: string;
+    items: string[];
+  }[];
+}
+
+export interface MealPlan {
+  days: {
+    day: string;
+    meals: {
+      type: string;
+      name: string;
+      description: string;
+      ingredients: string[];
+      nutrition?: {
+        calories: number;
+        protein: number;
+        carbs: number;
+        fat: number;
+      };
+    }[];
+  }[];
+  nutritionSummary: {
+    dailyCalories: number;
+    macroDistribution: {
+      protein: number;
+      carbs: number;
+      fat: number;
+    };
+  };
+}
+
+export interface NutritionistAnalysisResponse {
+  success: boolean;
+  nutritionAnalysis?: NutritionAnalysis;
+  mealPlan?: MealPlan;
+  productRecommendations?: any[];
+  error?: string;
+}
+
+/**
  * Функция для отправки запроса к API
  * @param endpoint - конечная точка API
  * @param method - HTTP-метод
@@ -54,8 +187,8 @@ export const cosmetologistApi = {
   /**
    * Анализирует данные пользователя и возвращает рекомендации
    */
-  analyze: async (userData: any) => {
-    return fetchApi('/api/cosmetologist/analyze', 'POST', userData);
+  analyze: async (userData: any): Promise<CosmetologistAnalysisResponse> => {
+    return fetchApi<CosmetologistAnalysisResponse>('/api/cosmetologist/analyze', 'POST', userData);
   },
 };
 
@@ -66,8 +199,8 @@ export const nutritionistApi = {
   /**
    * Анализирует данные пользователя и возвращает рекомендации по питанию
    */
-  analyze: async (userData: any) => {
-    return fetchApi('/api/nutritionist/analyze', 'POST', userData);
+  analyze: async (userData: any): Promise<NutritionistAnalysisResponse> => {
+    return fetchApi<NutritionistAnalysisResponse>('/api/nutritionist/analyze', 'POST', userData);
   }
 };
 
@@ -82,8 +215,8 @@ export const designerApi = {
    * - дизайн-концепция (designConcept): основная идея, описание стиля, ключевые элементы
    * - планировка (floorPlan): размеры, зонирование, расстановка мебели, рекомендации
    */
-  analyze: async (userData: any) => {
-    return fetchApi('/api/designer/analyze', 'POST', userData);
+  analyze: async (userData: any): Promise<DesignerApiResponse> => {
+    return fetchApi<DesignerApiResponse>('/api/designer/analyze', 'POST', userData);
   }
 };
 

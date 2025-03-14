@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Путь к Python API
+const PYTHON_API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://backend:8000';
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
@@ -14,7 +17,7 @@ export async function POST(request: NextRequest) {
     backendFormData.append('file', file);
     
     // Отправляем файл на бэкенд
-    const response = await fetch('http://localhost:8000/upload', {
+    const response = await fetch(`${PYTHON_API_URL}/upload`, {
       method: 'POST',
       body: backendFormData,
     });

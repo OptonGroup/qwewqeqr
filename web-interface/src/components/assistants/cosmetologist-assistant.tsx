@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RefreshCw, ShoppingBag, ArrowRight, Home } from 'lucide-react';
 import { useAppContext } from '@/context/app-context';
-import { cosmetologistApi } from '@/lib/api';
+import { cosmetologistApi, SkinAnalysis } from '@/lib/api';
 
 interface CosmeticProduct {
   id: string;
@@ -20,22 +20,6 @@ interface CosmeticProduct {
   category: string;
   benefits: string[];
   url?: string;
-}
-
-interface SkinAnalysis {
-  description: string;
-  daily: {
-    morning: { steps: Array<{ name: string; product: string }> };
-    evening: { steps: Array<{ name: string; product: string }> };
-  };
-  weekly: {
-    procedures: Array<{ name: string; product: string; frequency: string }>;
-    additional: Array<{ name: string; description: string }>;
-  };
-  recommendations: {
-    lifestyle: Array<{ text: string }>;
-    ingredients: Array<{ name: string; purpose: string }>;
-  };
 }
 
 const mockProducts: CosmeticProduct[] = [

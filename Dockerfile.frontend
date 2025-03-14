@@ -1,0 +1,49 @@
+FROM node:18-alpine AS base
+
+# Установка зависимостей и сборка приложения
+FROM base AS builder
+WORKDIR /app
+
+# Копирование package.json и package-lock.json
+COPY web-interface/package*.json ./
+
+# Установка зависимостей
+RUN npm ci
+
+# Копирование исходного кода
+COPY web-interface/ ./
+
+# Копирование скрипта для создания fallback-изображений
+COPY create_fallback_images.js /app/create_fallback_images.js
+
+# Создаем директории и изображения для fallback
+ENV DOCKER=true
+RUN node /app/create_fallback_images.js
+
+# Сборка приложения
+RUN npm run build
+
+# Продакшн образ
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+
+# Создание не-root пользователя для безопасности
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+USER nextjs
+
+# Копирование необходимых файлов из стадии builder
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Открытие порта для Next.js
+EXPOSE 3000
+
+# Переменная среды для подключения к API
+ENV NEXT_PUBLIC_API_URL=http://backend:8000
+
+# Запуск приложения
+CMD ["node", "server.js"] 
